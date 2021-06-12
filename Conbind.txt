@@ -1,0 +1,14 @@
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+2021/02/29 
+
+TotCount(0,gi_tot_line); ==>  TotMiss(0,gi_tot_line);     OK 2020/29
+
+SumDisc(0,gi_pay_line); ==> pay_sub_amt(0,gi_pay_line);   OK 2020/29
+
+Sub_C0InvoAmt ==>  Sub_C0InvoAmt4VDC
+
+//_GetZDTZSALCntCheck(gtsl_tot, strchkfile, str_nz_cnt, RtnZDTCnts, RtnSALCnts ); NestPOS Mark 
+//////////////////////////////////////////////////////////////////////////////////////////////////////

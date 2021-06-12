@@ -1,0 +1,1003 @@
+
+
+XZDATA_Mag20201103
+
+
+//部門帳  
+void __fastcall BASIC::SumAllDept(DEPT *dept)
+
+  // 2020/11/03 Update by Lu
+            sUNIT = Trim(_StringSegment_EX(s, "|", 27));
+            if (sUNIT == "VS" || sUNIT == "vs" )
+                continue;
+
+
+ZDATA_Mag20200831
+
+if (str_sale_type.Pos("S") && str_spc.Pos("11") )    // 類MM
+               { ;; }
+            else if (str_sale_type.Pos("S") || str_sale_type.Pos("I") || str_sale_type.Pos("C") || str_sale_type.Pos("L") )
+               {
+                 //代售付,廢棄不歸部門 , L 洗選但 2020/08/31
+                 continue;
+                }
+
+
+
+
+XZDATA_Mag20200410 == XZDATA_Mag20200525 
+XZDATA_Mag20200409
+
+// 1051電文
+// 紙本作廢發票集計
+void __fastcall BASIC::S1051MissCnt(int StartLine, int TotalLine, string &sMissRec)
+// 2020/05/25 Lu Update
+            strtmp = _StringSegment_EX(s, "|", 18);   //保留 20 Byte
+            if (strtmp.substr(0, 1) == "1")
+                continue;
+
+
+////////////////////////////////////////////////
+
+
+if( Cpn75_amt )
+   {
+	   // 2019/11/27 Update  20200409 袋數
+	  // sprintf_s(buffer, sizeof(buffer), "%s廢墨水匣袋數:%7ld  ", CmdStr.c_str(), Cpn75_amt);   tslCrp->push_back(buffer);
+	   sprintf_s(buffer, sizeof(buffer), "%s廢平板袋數  :%7ld  ", CmdStr.c_str(), Cpn75_amt);   tslCrp->push_back(buffer);
+   }
+
+ if (Cpn76_amt)  //Update  20200409
+   {
+       sprintf_s(buffer, sizeof(buffer), "%s廢行動電源袋數:%5ld  ", CmdStr.c_str(), Cpn76_amt);   tslCrp->push_back(buffer);
+   }
+
+/////////////////
+
+ case 8:  //廢行動電源  20200409 Lu
+                             //Cpn75_cnt+=iTCnt;;
+                             Cpn76_amt += iRecyClePackCnt;
+                             break;
+
+case 8:  //廢行動電源  20200409 Lu
+                               //Cpn75_cnt+=iTCnt;;
+                             Cpn76_amt -= iRecyClePackCnt;
+                             break;
+
+/////////////////
+ strtmp = m_IniReader.ReadString("AutoX", "xPwrPaks", "0");   //strtmp=AutoCrpIni->ReadString("AutoX","xInkPaks","0");
+   i1 = _StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2 = _StrToInt(_StringSegment_EX(strtmp, "|", 3));
+   if (Cpn76_amt + i2)
+   {
+       // 2019/11/27 Update   20200409  
+       sprintf_s(buffer, sizeof(buffer), "%s廢行動電源袋數:%5ld  ", CmdStr.c_str(), Cpn76_amt + i2);   tslCrp->push_back(string(buffer));
+
+       if (Update)
+       {
+           if (iAutoZ)
+               sprintf_s(buffer, sizeof(buffer), "廢行|%02d|%8ld|", 0, Cpn76_amt + i2);
+           else
+               sprintf_s(buffer, sizeof(buffer), "廢行|%02d|%8ld|", 0, 0);
+           m_IniReader.WriteString("AutoX", "xPwrPaks", string(buffer));  // AutoCrpIni->WriteString("AutoX","xInkPaks",strtmp);
+       }
+
+   }
+
+
+
+
+
+
+XZDATA_Mag20200304
+目前只針對1040  該欄位=6排除交班短溢收計算，需新增7
+
+if (_StrFind(str_sale_type,"Z0"))
+                    {
+					//	if (iPayID == 109 || iPayID == 001 || iPayID == 003 || (iPayID >= 901 && iPayID <= 999) )     //非實體券金額   2017/06/26 追加 001, 003
+					 if (iRecycleFg == 6 || iRecycleFg == 7)   //2018/12/12 2020/3/4  目前只針對1040  該欄位=6排除交班短溢收計算，需新增7
+						giU +=iTAmt;
+                     else
+                        giV +=iTAmt;
+                    }
+				else if (_StrFind(str_sale_type, "R2") || _StrFind(str_sale_type,"R3"))
+                    {
+					//if (iPayID == 109 || iPayID == 001 || iPayID == 003 || (iPayID >= 901 && iPayID <= 999) )      //非實體券金額  2017/06/26 追加 001, 003
+					 if (iRecycleFg == 6 || iRecycleFg == 7)   //2018/12/12  2020/3/4  目前只針對1040  該欄位=6排除交班短溢收計算，需新增7 
+						giU -=iTAmt;
+                     else
+                        giV -=iTAmt;
+                    }
+
+
+XZDATA_Mag20191225
+TM_PG_新增Fami Point支付帳表
+
+//計算代現金 刷卡合計
+int __fastcall BASIC::SumTbCash(int StartLine, int TotalLine)
+// FamiPoint  2019/12/25    TM_PG_新增Fami Point支付帳表
+				iT52 = _StrToInt(_StringSegment_EX(s, "|", 52));    //備用
+				if (iT52)
+				{
+					++giI;
+					giJ += iT52;
+					logsprintf("SumTbCash:刷卡合計:%s-->FamiPoint支付金額:+%d, tot=%d", s.c_str(), iT52, giJ);
+				}
+
+// FamiPoint  2019/12/25    TM_PG_新增Fami Point支付帳表
+				iT52 = _StrToInt(_StringSegment_EX(s, "|", 52));    //備用
+				if (iT52)
+				{
+					--giI;
+					giJ -= iT52;
+					logsprintf("SumTbCash:刷卡合計:%s-->R2R3FamiPoint支付金額:+%d, tot=%d", s.c_str(), iT52, giJ);
+				}
+
+
+
+
+XZDATA_Mag20191127
+ if( Cpn75_amt )
+   {
+	   // 2019/11/27 Update
+	  // sprintf_s(buffer, sizeof(buffer), "%s廢墨水匣袋數:%7ld  ", CmdStr.c_str(), Cpn75_amt);   tslCrp->push_back(buffer);
+	   sprintf_s(buffer, sizeof(buffer), "%s廢平板台數  :%7ld  ", CmdStr.c_str(), Cpn75_amt);   tslCrp->push_back(buffer);
+   }
+
+// 2019/11/27 Update
+		  //sprintf_s(buffer, sizeof(buffer), "%s廢墨水匣袋數:%7ld  ", CmdStr.c_str(), Cpn75_amt + i2);   tslCrp->push_back(string(buffer));
+		  sprintf_s(buffer, sizeof(buffer), "%s廢平板台數  :%7ld  ", CmdStr.c_str(), Cpn75_amt + i2);   tslCrp->push_back(string(buffer));
+
+
+
+XZDATA_Mag20190918
+
+
+to_ptr("");
+		to_ptr("");
+		to_ptr("");
+		to_ptr("");
+		// 2019/11/06 For SCO
+		//_Strsprintf(StrLine, "\x1b\x69");
+		//to_ptr(StrLine);
+	}
+
+
+    ///////////////////////代售商品金額報表//////////////////////////////////
+
+// 2019/11/06 For SCO
+	   to_ptr("---------------------------------------");
+
+
+//中獎發票金額  500
+		int_drop_money += _StrToInt(_StringSegment_EX(s1041, "|", 19));
+
+
+int __fastcall BASIC::SumCasherRpt
+int __fastcall BASIC::SumCasherRptXDT
+
+int pay_other1_amt, pay_other2_amt;
+pay_other1_amt=pay_other2_amt=0;
+int itotWinInvoAmt41=(iacc_invo_amt+ pay_other1_amt+pay_other2_amt)-iWinnInvoAmt;
+
+//1041|電文 
+pay_other1_amt, //中獎發票 500
+pay_other2_amt,  //中獎發票 1000
+
+ ////////
+   strtmp = m_IniReader.ReadString("AutoX", "invo500", "0");   //strtmp=AutoCrpIni->ReadString("AutoX","invo1000","0");
+   i1 = _StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2 = _StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   sprintf_s(buffer, sizeof(buffer), "%s  ＋中獎發票金額(500元) :%7ld", CmdStr.c_str(), pay_other1_amt + i2);  tslCrp->push_back(string(buffer));
+
+   if (Update)
+   {
+	   if (iAutoZ)
+		   sprintf_s(buffer, sizeof(buffer), "中獎500|%02d|%8ld|", 0, pay_other1_amt + i2);
+	   else
+		   sprintf_s(buffer, sizeof(buffer), "中獎500|%02d|%8ld|", 0, 0);
+	   m_IniReader.WriteString("AutoX", "invo500", string(buffer));   //AutoCrpIni->WriteString("AutoX","invo500",strtmp);
+   }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+XZDATA_Mag20190213
+
+void __fastcall BASIC::Sub_C0InvoAmt(int StartLine, int TotalLine)
+case 14:    //2019/05/21 Add
+
+// 1051電文
+// 紙本作廢發票集計   2019/04/23 Update
+void __fastcall BASIC::S1051MissCnt(int StartLine, int TotalLine, string &sMissRec)
+
+
+
+
+//if (_StrFind(sDONGLE_TYPE, "FP") || _StrFind(sDONGLE_TYPE,"MFP"))
+                       //    giV += _StrToInt(_StringSegment_EX(s, "|", 29));   //類MM_MFP
+                       //else
+                       //    giX += _StrToInt(_StringSegment_EX(s, "|", 29));   //類MM_TM
+
+					   if (_StrFind(sDONGLE_TYPE, "TM") )
+						   giX += _StrToInt(_StringSegment_EX(s, "|", 29));   //類MM_TM
+   				       else
+						   giV += _StrToInt(_StringSegment_EX(s, "|", 29));   //類MM_MFP
+
+
+//本日來客數
+int __fastcall BASIC::SumQt_tcust(int StartLine,int TotalLine)
+
+//invo_amt+kcolx_amt+kcolf_amt  (32:發票金額, 37:折扣\讓金額, 44:不開發票金額(應), 45:不開發票金額(免)
+			//發票金額  2019/02/13     追加 37:折扣\讓金額
+            i_invo_cnt = _StrToInt(_StringSegment_EX(s, "|", 32))+
+				         _StrToInt(_StringSegment_EX(s, "|", 37)) +
+                         _StrToInt(_StringSegment_EX(s, "|", 44))+
+                         _StrToInt(_StringSegment_EX(s, "|", 45))-iCOInvoAmtTxt-iCOInvoAmtNxt;
+
+
+ sprintf_s(buffer, sizeof(buffer), "%s  投庫小計         :   %8ld\n", CmdStr.c_str(), ipay_cash_amt + ipay_present_amt + ipay_cpn_amt +
+	   iacc_invo_amt + pay_other1_amt + pay_other2_amt + itot_acc_amt + i2);
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+XZDATA_Mag20181207
+//廢資源回收數 /提貨券金額/提貨券張數
+void __fastcall BASIC::Sum040RecycleDataCnt(int StartLine, int TotalLine)
+{
+  giE = 0;    //提貨券金額
+    giF = 0;    //提貨券張數
+    // 2018/12/07 Lu Update
+    int iPaCpnAmt = 0;         //紙本折價券金額
+    int iPaCpnCnt = 0;         //紙本折價券張數
+    int iPaPresentAmt = 0;    //紙本禮券張數
+    int iPaPresentCnt = 0;    //紙本禮券金額
+
+    giM=iPaCpnAmt;         //紙本折價券金額
+    giN=iPaCpnCnt;         //紙本折價券張數
+    giO=iPaPresentAmt;         //紙本折價券金額
+    giP=iPaPresentCnt;         //紙本折價券張數
+
+                 if( sPayType  == "E0" ) //提貨券
+                   {
+                      giE += iTAmt;    //提貨券金額
+                      giF ++;          //提貨券張數
+                   }
+
+                 // 2018/12/07 Lu Update
+                 if( ( sPayType  == "C0" || sPayType  == "C9" ) && iRecycleFg == 0  ) //  紙本折價券
+                   {
+                      iPaCpnAmt += iTAmt;    //紙本折價券金額
+                      iPaCpnCnt ++;          //紙本折價券張數
+                   }
+
+                  // 2018/12/07 Lu Update
+                 if( ( sPayType  == "B1" || sPayType  == "B2" ) ) //  紙本禮券
+                   {
+                      iPaPresentAmt += iTAmt;    //紙本禮券金額
+                      iPaPresentCnt ++;          //紙本禮券張數
+                   }
+
+
+           ................
+
+                if( sPayType  == "E0" ) //提貨券
+                   {
+                      giE -= iTAmt;    //提貨券金額
+                      giF --;          //提貨券張數
+                   }
+
+                   // 2018/12/07 Lu Update
+                 if( ( sPayType  == "C0" || sPayType  == "C9" ) && iRecycleFg == 0  ) //  紙本折價券
+                   {
+                      iPaCpnAmt -= iTAmt;    //紙本折價券金額
+                      iPaCpnCnt --;          //紙本折價券張數
+                   }
+
+                  // 2018/12/07 Lu Update
+                 if( ( sPayType  == "B1" || sPayType  == "B2" ) ) //  紙本禮券
+                   {
+                      iPaPresentAmt -= iTAmt;    //紙本禮券金額
+                      iPaPresentCnt --;          //紙本禮券張數
+                   }
+
+
+
+
+	giM = iPaCpnAmt;         //紙本折價券金額
+	giN = iPaCpnCnt;         //紙本折價券張數
+	giO = iPaPresentAmt;         //紙本折價券金額
+	giP = iPaPresentCnt;         //紙本折價券張數
+
+
+}
+//////////////////////////////////////////////
+
+int __fastcall BASIC::SumCasherRpt
+int __fastcall BASIC::SumCasherRptXDT
+
+    iacc_amt14=giE; //提貨券金額
+    iacc_cnt14=giF; //提貨券張數
+
+    // 2018/12/07 Lu Update
+    int iPaCpnAmt = giM;         //紙本折價券金額
+    int iPaCpnCnt = giN;         //紙本折價券張數
+    int iPaPresentAmt = giO;    //紙本禮券金額
+    int iPaPresentCnt = giP;    //紙本禮券張數
+
+
+	 if( Update )
+     {
+      if( iAutoZ )
+		  sprintf_s(buffer, sizeof(buffer), "紙廢|%02d|%8ld|", 0, giA + i2);
+      else
+		  sprintf_s(buffer, sizeof(buffer), "紙廢|%02d|%8ld|", 0, 0);
+
+	  m_IniReader.WriteString("AutoX", "s1051cnt", string(buffer));  //AutoCrpIni->WriteString("AutoX","s1051cnt",strtmp);
+     }
+
+
+	 // 2018/12/07 Lu Update
+	 strtmp = m_IniReader.ReadString("AutoX", "iPaPresentCnt", "0");  //紙本折禮券張數
+	 i1 = _StrToInt(_StringSegment_EX(strtmp, "|", 2));
+	 i2 = _StrToInt(_StringSegment_EX(strtmp, "|", 3));
+	 
+	 logsprintf("SumCasherRpt 收銀員交接班明細表: AutoCrp.ini:: AutoX -> iPaPresentCnt = %s ,紙本禮券張數  :%8ld", strtmp.c_str(),  iPaPresentCnt + i2);
+
+	 sprintf_s(buffer, sizeof(buffer), "%s紙本禮券張數:%7ld │         │", CmdStr.c_str(), iPaPresentCnt + i2);   tslCrp->push_back(buffer); 
+
+	 if (Update)
+	 {
+		 if (iAutoZ)
+			 sprintf_s(buffer, sizeof(buffer), "紙禮|%02d|%8ld|", 0, iPaPresentCnt + i2);
+		 else
+			 sprintf_s(buffer, sizeof(buffer), "紙禮|%02d|%8ld|", 0, 0);
+
+		 m_IniReader.WriteString("AutoX", "iPaPresentCnt", string(buffer));
+	 }
+
+	 /////////////////////////////////////////////////
+	 strtmp = m_IniReader.ReadString("AutoX", "iPaCpnCnt", "0");  //紙本折折價券張數
+	 i1 = _StrToInt(_StringSegment_EX(strtmp, "|", 2));
+	 i2 = _StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+	 logsprintf("SumCasherRpt 收銀員交接班明細表: AutoCrp.ini:: AutoX -> iPaCpnCnt = %s ,紙本折價券張數  :%8ld", strtmp.c_str(), iPaCpnCnt + i2);
+
+	 sprintf_s(buffer, sizeof(buffer), "%s紙本折價券張數:%5ld │         │", CmdStr.c_str(), iPaCpnCnt + i2);   tslCrp->push_back(buffer);
+
+	 if (Update)
+	 {
+		 if (iAutoZ)
+			 sprintf_s(buffer, sizeof(buffer), "紙折|%02d|%8ld|", 0, iPaCpnCnt + i2);
+		 else
+			 sprintf_s(buffer, sizeof(buffer), "紙折|%02d|%8ld|", 0, 0);
+
+		 m_IniReader.WriteString("AutoX", "iPaCpnCnt", string(buffer));
+	 }
+
+
+///////////////////// 
+ //計算2017/03/08 CPN
+int __fastcall BASIC::SumBillCPN(int StartLine, int TotalLine)
+{
+
+
+if (_StrFind(str_sale_type,"Z0"))
+                    {
+					//	if (iPayID == 109 || iPayID == 001 || iPayID == 003 || (iPayID >= 901 && iPayID <= 999) )     //非實體券金額   2017/06/26 追加 001, 003
+					 if (iRecycleFg == 6)   //2018/12/12
+						giU +=iTAmt;
+                     else
+                        giV +=iTAmt;
+                    }
+				else if (_StrFind(str_sale_type, "R2") || _StrFind(str_sale_type,"R3"))
+                    {
+					//if (iPayID == 109 || iPayID == 001 || iPayID == 003 || (iPayID >= 901 && iPayID <= 999) )      //非實體券金額  2017/06/26 追加 001, 003
+					 if (iRecycleFg == 6)   //2018/12/12   
+						giU -=iTAmt;
+                     else
+                        giV -=iTAmt;
+                    }
+
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ZDATA_Mag20180820   
+0029798: (綠島朝日店)維修通知函---180619-0122...FM-014788-SC 店長告知營收帳務有問題 
+以收銀機交接班表查看6/17及6/18 於6/18有帳表上有兩條註記為次日營收 
+但6/17上則只顯示一條帳 店長詢問什麼原因造成
+ 
+
+  else if( Trim(sIdx)=="10" )  //10:最後一筆
+       {
+		   // 2018/08/20 make By Lu
+		   // x->dt_begin = _StringSegment_EX(ZNT_1099, "|", 5).SubString(0,8);
+		   // x->tm_begin = "000001";
+		    
+		       x->dt_begin = sSalesLoginDttm.substr(0, 8);        
+		       x->tm_begin = sSalesLoginDttm.substr(8, 6);        
+                
+			   x->dt_end = _StringSegment_EX(ZNT_1099, "|", 5).substr(0, 8);   // x->dt_begin;  2018/08/20 make By Lu
+               x->tm_end = ed_date_time.substr(8,6);
+               AutoXFg="1";  //0:當作是自動日結之交班
+
+       }
+
+
+
+else
+       {
+
+		   // 2018/08/20 make By Lu
+		   //x->dt_begin = _StringSegment_EX(ZNT_1099, "|", 5).substr(0, 8);     //前次結帳日期
+		   //x->tm_begin = "000001";
+		   x->dt_begin = sSalesLoginDttm.substr(0, 8);
+		   x->tm_begin = sSalesLoginDttm.substr(8, 6);
+		   x->dt_end = _StringSegment_EX(ZNT_1099, "|", 5).substr(0, 8);   // x->dt_begin;  2018/08/20 make By Lu  
+           x->tm_end = "235959";
+           AutoXFg="0";  //0:當作是自動日結之交班
+       }
+
+
+
+
+
+
+
+/*************************************************************************************************************/
+
+XZDATA_Mag20180613   部門促銷折扣金額/SumCasherRptXDT
+
+SumCasherRptXDT 收銀員交接班明細表:
+
+AnsiString nXDTdttb = _StringSegment_EX(sStr1095, "|", 10) + _StringSegment_EX(sStr1095, "|", 11);  //前次交班時間
+AnsiString nXDTdttn = _StringSegment_EX(sStr1095, "|", 12) + _StringSegment_EX(sStr1095, "|", 13);  //本次交班時間
+
+AnsiString bt,BefTime,nt,NowTime, sStoreNo, sStoreName,sLog;
+
+
+bt=  nXDTdttb;
+   BefTime=bt.SubString(1,4)+"-"+bt.SubString(5,2)+"-"+bt.SubString(7,2)+"  "+bt.SubString(9,2)+":"+bt.SubString(11,2);
+   nt=  nXDTdttn;  //_StringSegment_EX(sTranCnt, "|", 5); // sTranCnt.SubString(21,14);  1041
+   NowTime=nt.SubString(1,4)+"-"+nt.SubString(5,2)+"-"+nt.SubString(7,2)+"  "+nt.SubString(9,2)+":"+nt.SubString(11,2);
+
+
+strtmp.sprintf("%s        收銀員交接班明細表",CmdStr.c_str()); tslCrp->Add(strtmp);
+   // Vita 29175:TM_收銀員交接班表新增列示該班開始時間
+   strtmp.sprintf("%s%s 開始",CmdStr.c_str(), BefTime);   tslCrp->Add(strtmp);
+   strtmp.sprintf("%s%s 結束  機號:%s",CmdStr.c_str(), NowTime,_StringSegment_EX(sTranCnt, "|", 4) );   tslCrp->Add(strtmp);
+   //strtmp.sprintf("%s%s     機號:%s",CmdStr.c_str(),NowTime,_StringSegment_EX(sTranCnt, "|", 4) );   tslCrp->Add(strtmp);
+   strtmp.sprintf("%s店號:%s    店名:%s",CmdStr.c_str(),_StringSegment_EX(sTranCnt, "|", 3), sStoreName);  tslCrp->Add(strtmp);
+   strtmp.sprintf("%s收銀員編號:%s",CmdStr.c_str(),_StringSegment_EX(sTranCnt, "|", 8) );   tslCrp->Add(strtmp);
+   strtmp.sprintf("%s投庫明細:",CmdStr.c_str());   tslCrp->Add(strtmp);
+
+
+
+////////////
+
+
+if( Trim(SaleDataVer)=="")
+        SaleDataVer="2021030100";  //Default:Ver     last:"2017120100"
+
+
+ULog.h  OK
+//部門別集計TABLE
+typedef struct
+    {
+        int am_dpsitm;              // 部門交易項數
+        int am_dpsale;              // 部門銷售金額
+        int am_dpmitm;              // 部門誤退項數
+        int am_dpmiss;              // 部門誤退金額
+
+        int am_mmDis;               // 部門促銷折扣金額        Lu 2018/06/13
+        int am_mmDismiss;           // 部門促銷折扣誤退金額    Lu 2018/06/13
+    }DEPT;
+
+
+ULog.cpp   OK
+//部門帳  2005/10/01
+void __fastcall BASIC::SumAllDept(DEPT *dept)
+{
+
+
+ for (int i=0; i<20; i++)
+        {
+          dept[i].am_mmDis = 0;         // 部門促銷折扣金額        Lu 2018/06/13
+          dept[i].am_mmDismiss = 0;     // 部門促銷折扣誤退金額    Lu 2018/06/13
+        }
+
+ if (gbl_rec_haveline)
+    {
+	   
+   if (str_r_type.Pos("FF") || str_r_type.Pos("Z0") || str_r_type.Pos("Z1") || Trim(str_r_type)=="" )
+            {
+                if (str_sale_type.Pos("0"))             //正向
+                {
+                    dept[iDept].am_dpsitm += iItemQty;
+                    dept[iDept].am_dpsale += iNetItemAmt;
+
+                    dept[iDept].am_mmDis += (iDisSubAmt_SPC+iSubSubAmt)t;    // 部門促銷折扣金額        Lu 2018/06/13
+                }
+                else if (str_sale_type.Pos("1"))        //負向
+                {
+                    dept[iDept].am_dpsitm -= iItemQty;
+                    dept[iDept].am_dpsale -= iNetItemAmt;
+
+                    dept[iDept].am_mmDis -= (iDisSubAmt_SPC+iSubSubAmt);    // 部門促銷折扣金額        Lu 2018/06/13
+                }
+            }
+            else if (str_r_type == "R2" || str_r_type == "R3" )
+            {
+
+                //部門誤退項數、金額
+                if ( str_sale_type.Pos("0") )             //正向
+                {
+                    dept[iDept].am_dpmitm += iItemQty;
+                    dept[iDept].am_dpmiss += iNetItemAmt;
+
+                    dept[iDept].am_mmDismiss += (iDisSubAmt_SPC+iSubSubAmt);    // 部門促銷折扣誤退金額        Lu 2018/06/13
+                }
+                else if ( str_sale_type.Pos("1") )        //負向
+                {
+                    dept[iDept].am_dpmitm -= iItemQty;
+                    dept[iDept].am_dpmiss -= iNetItemAmt;
+
+                    dept[iDept].am_mmDismiss -= (iDisSubAmt_SPC+iSubSubAmt);    // 部門促銷折扣誤退金額        Lu 2018/06/13
+                }
+
+            }
+
+
+
+}
+
+
+///////
+UXZdataClass.cpp
+//盤點人員讀帳   call by _WVXZ
+int __fastcall VXZDATA::WriteData(const String StoreNO, const String EcrNO, const String SalesNo ,
+                                const String SalFileName, const String Version)
+{
+
+       AnsiString z_f, z_a1093, z_ammdis;
+
+
+        // 部門促銷折扣金額        Lu 2018/06/13
+        z_a1093.sprintf("1093|%04d|%-6s|%-2s|%14s|%5s|%-10s|", 275,
+                                      gchar_tencode,
+                                      z->no_tm.c_str(),           //收銀機機號
+                                      str_date_time.c_str(),      //現在時間
+                                      z->bg_noclose.c_str(),      //日結序號
+                                      sYYMMDDZZ.c_str()          //Z帳表序號
+                                      );
+        z_ammdis="";
+
+        for (int i=0; i<20; i++)
+        {
+            z->tb_depcal[i].am_dpsitm.sprintf("%08d", dept[i].am_dpsitm);
+            z_f += (z->tb_depcal[i].am_dpsitm+"|");
+            s1 += dept[i].am_dpsitm;
+
+            z->tb_depcal[i].am_dpsale.sprintf("%08d", dept[i].am_dpsale);
+            z_f += (z->tb_depcal[i].am_dpsale+"|");
+            s2 += dept[i].am_dpsale;
+
+            z->tb_depcal[i].am_dpmitm.sprintf("%08d", dept[i].am_dpmitm);
+            z_f += (z->tb_depcal[i].am_dpmitm+"|");
+            s3 += dept[i].am_dpmitm;
+
+            z->tb_depcal[i].am_dpmiss.sprintf("%08d", dept[i].am_dpmiss);
+            z_f += (z->tb_depcal[i].am_dpmiss+"|");
+            s4 += dept[i].am_dpmiss;
+
+            // 部門促銷折扣金額        Lu 2018/06/13
+            sTmp.sprintf("%08d", dept[i].am_mmDis - dept[i].am_mmDismiss);
+            z_a1093 += (sTmp+"|");
+
+            sTmp.sprintf("%08d|%08d", dept[i].am_mmDis , dept[i].am_mmDismiss);
+            z_ammdis += (sTmp+"|");
+
+        }
+
+        // 部門促銷折扣金額        Lu 2018/06/13
+        sTmp.sprintf("%40s|\n", " ");
+        z_a1093 += (sTmp);
+        z_ammdis += (sTmp);
+
+
+
+
+    String str_sal;
+    //str_sal = str_01 + "\n"+ str_zrp + str_98 + str_99;
+    str_sal = str_01 + "\n"+ str_98+str_zrp + z_a1093 + str_99;    // z_a1093 部門促銷折扣金額        Lu 2018/06/13
+
+   //部門帳表   
+    AnsiString str_dpt_path;
+    strcpy(report->char_filename, ChangeFileExt(str_z_filename,".vpt").c_str() );
+
+    if( _StrToInt(str_cs_entry)==1)
+         report->CreateReport("E", str_zrp, StrBillPay, gchar_tencode, gchar_ecr_no,0,0,0,0,tsl_subsale,0, z_ammdis);
+    else
+         report->CreateReport("e", str_zrp, StrBillPay, gchar_tencode, gchar_ecr_no,0,0,0,0,tsl_subsale,0, z_ammdis);
+
+
+
+}
+
+
+
+
+UReport.h  ok
+int __fastcall Dept(AnsiString &ZData, char *ptr_tencode, char *ptr_ecr_no, int XR=0,
+                        TStringList *tsl=NULL, AnsiString s1093=NULL);   //部門帳表
+
+int CreateReport(char rpt_type, AnsiString sSal, AnsiString sPayStr,
+                     char *ptr_tencode, char *ptr_ecr_no,
+                     int iqt5_15217totrev=0, int iam5_15217totrev=0,
+                     int iqt5_18219totrev=0, int iam5_18219totrev=0,
+                     TStringList *tsl = NULL, int AutoZflg=0, AnsiString s1093=NULL);
+
+
+/////////////////////////
+UReport.cpp  ok
+
+int __fastcall Dept(AnsiString &ZData, char *ptr_tencode, char *ptr_ecr_no, int XR=0,
+                        TStringList *tsl=NULL, AnsiString s1093)   //部門帳表
+
+    //部門合計加總
+    //to_ptr("部門合計");
+    //to_ptr(qtyamt);
+    //to_ptr(ramt);
+
+    /////////////////////////////////  部門促銷報表  ////////////////////////////////////
+    int int_a_Tot,  int_b_Tot;
+    if( s1093 != NULL &&  s1093.Trim() != "")
+      {
+       int_a = 0; int_b = 0; int_a_Tot=0;  int_b_Tot =0;
+
+	   to_ptr("");
+
+	   if (XR == 21 || XR == 22)
+			_Strsprintf(StrLine, "%s序號:%s店號:%s 機:%s", gchar_date_format, str_bg_noclose.c_str(),
+			str_tencode.c_str(), str_ecr_no.c_str());
+		else
+			_Strsprintf(StrLine, "%s序號:%s店號:%s 機:%s", gchar_date_format, str_nz_cnt.c_str(),
+			str_tencode.c_str(), str_ecr_no.c_str());
+		to_ptr(StrLine);
+
+       if (XR==21) //21:簽到 22:簽退
+            to_ptr("        部門促銷報表(簽到)     ");
+       else if (XR==22) //21:簽到 22:簽退
+            to_ptr("        部門促銷報表(簽退)     ");
+       else
+            to_ptr("           部門促銷報表     ");
+
+       to_ptr("");
+
+      
+       StrLine.sprintf("部門   銷售促銷金額   退貨促銷金額");
+       to_ptr(StrLine);
+       for (int i=1; i<21; i++)
+         {
+             int_a = _StrToInt(_StringSegment_EX(s1093, "|", (2*i)-1 ) );
+             int_a_Tot += int_a  ;  // total
+             int_b = _StrToInt(_StringSegment_EX(s1093, "|", (2*i) ) );
+             int_b_Tot += int_b  ;  // total
+
+             qtyamt.sprintf("%8d", int_a);
+             ramt.sprintf("%8d", int_b);
+             sCount.sprintf("%02d", (i));
+
+             StrLine.sprintf("%3s   %s      %s",sCount, qtyamt, ramt);
+             to_ptr(StrLine);
+             int_a = 0;
+             int_b = 0;
+         }
+
+      ramt.sprintf("%8d      %8d",  int_a_Tot, int_b_Tot );
+
+      StrLine.sprintf("--------------------------------------");
+      to_ptr(StrLine);
+
+      StrLine.sprintf("合計  %s   ", ramt);
+      to_ptr(StrLine);
+
+      //to_ptr("\n\n\n\n");
+      to_ptr("");
+      to_ptr("");
+      to_ptr("");
+      to_ptr("");
+      StrLine.sprintf("\x1b\x69");
+      to_ptr(StrLine);
+    }
+
+
+    ///////////////////////代售商品金額報表//////////////////////////////////
+
+
+
+
+/*************************************************************************************************************/
+
+
+/*************************************************************************************************************/
+XZDATA_Mag20180315
+// Vita 29175:TM_收銀員交接班表新增列示該班開始時間
+string nXDTdttb = _StringSegment_EX(sStr1095, "|", 10) + _StringSegment_EX(sStr1095, "|", 11);  //前次交班時間
+bt = nXDTdttb;
+BefTime = bt.substr(1, 4) + "-" + bt.substr(5, 2) + "-" + bt.substr(7, 2) + "  " + bt.substr(9, 2) + ":" + bt.substr(11, 2);
+//sprintf_s(buffer, sizeof(buffer), "%s%s     機號:%s", CmdStr.c_str(), NowTime.c_str(), _StringSegment_EX(sTranCnt, "|", 4).c_str());   tslCrp->push_back(string(buffer));
+sprintf_s(buffer, sizeof(buffer), "%s%s 開始", CmdStr.c_str(), BefTime.c_str());   tslCrp->push_back(string(buffer));
+sprintf_s(buffer, sizeof(buffer), "%s%s 結束  機號:%s", CmdStr.c_str(), NowTime.c_str(), _StringSegment_EX(sTranCnt, "|", 4).c_str());   tslCrp->push_back(string(buffer));
+
+中維2013版debug需修改的地方為
+UXZDataClass.cpp裡面的
+_Strsprintf(str_log_file, "C:\\FTLPOS\\XZDATA\\SAL\\%s.sal", EcrNO);
+     變更為
+_Strsprintf(str_log_file, "C:\\FTLPOS\\XZDATA\\SAL\\%s.sal", EcrNO.c_str());
+        
+ULOG.cpp裡面的
+       PAYCASHREC pay_cash_rec[100];
+變更為
+       PAYCASHREC pay_cash_rec[101];
+/*************************************************************************************************************/
+
+
+/*************************************************************************************************************/
+XZDATA_Mag20180101
+if( Trim(SaleDataVer)=="")
+        SaleDataVer="2018060100";  //Default:Ver     last:"2017120100"
+/*************************************************************************************************************/
+
+
+
+/*************************************************************************************************************/
+		XZDATA_Mag20171225
+/*************************************************************************************************************/
+2017/12/26 農會商品同列 C0/C1   開發票不列營收  1013.VDC_NO=17
+     // 外加手續費,即時購代售點卡集計
+    void __fastcall BASIC::Sub_C0InvoAmt(int StartLine, int TotalLine);
+	       i_trans_flag = _StrToInt(str_trans_flag);       //SPC_FLG  交易類別
+
+            ////////////////////   農會商品 CD_FMCODE => M開頭7碼   /////////////////////
+            if (str_good_no.SubString(1, 1) == "M")  //農會商品 CD_FMCODE => M開頭7碼
+            {
+                  if (str_type.Pos("A0"))
+                  {
+                      str_type = "C0";
+                      i_trans_flag = 2;    //SPC_FLG  交易類別
+                  }
+                  else if (str_type.Pos("A1"))
+                  {
+                      str_type = "C1";
+                      i_trans_flag = 2;    //SPC_FLG  交易類別
+                  }
+            }
+            //////////////////// END  農會商品 CD_FMCODE => M開頭7碼  ///////////////////
+
+			****************************************************************************************************************************************************
+
+    // 點卡手續費應免稅
+    void __fastcall BASIC::Sub_C0C1TaxInvoAmt(int StartLine, int TotalLine);
+	    ////////////////////   農會商品 CD_FMCODE => M開頭7碼   /////////////////////
+            if (str_good_no.SubString(1, 1) == "M")  //農會商品 CD_FMCODE => M開頭7碼
+            {
+                  if (str_type.Pos("A0"))
+                  {
+                      str_type = "C0";
+                      i_trans_flag = 2;    //SPC_FLG  交易類別
+                  }
+                  else if (str_type.Pos("A1"))
+                  {
+                      str_type = "C1";
+                      i_trans_flag = 2;    //SPC_FLG  交易類別
+                  }
+            }
+            //////////////////// END  農會商品 CD_FMCODE => M開頭7碼  ///////////////////
+
+          ****************************************************************************************************************************************************
+
+
+
+    // 點卡手續費數量
+    void __fastcall BASIC::Sub_C0C1TaxInvoQty(int StartLine, int TotalLine);
+	    ////////////////////   農會商品 CD_FMCODE => M開頭7碼   /////////////////////
+            if (str_good_no.SubString(1, 1) == "M")  //農會商品 CD_FMCODE => M開頭7碼
+            {
+                  if (str_type.Pos("A0"))
+                  {
+                      str_type = "C0";
+                      i_trans_flag = 2;    //SPC_FLG  交易類別
+                  }
+                  else if (str_type.Pos("A1"))
+                  {
+                      str_type = "C1";
+                      i_trans_flag = 2;    //SPC_FLG  交易類別
+                  }
+            }
+            //////////////////// END  農會商品 CD_FMCODE => M開頭7碼  ///////////////////
+
+          ****************************************************************************************************************************************************
+
+
+    // 外加手續費,即時購代售點卡集計 以連線區分分類
+    void __fastcall BASIC::Sub_C0InvoAmt4VDC(int StartLine, int TotalLine);
+	    /****************   農會商品 CD_FMCODE => M開頭7碼   /////////////////////
+            if (str_good_no.SubString(1, 1) == "M")  //農會商品 CD_FMCODE => M開頭7碼
+            {
+                  if (str_type.Pos("A0"))
+                  {
+                      str_type = "C0";
+                      i_trans_flag = 2;    //SPC_FLG  交易類別
+                  }
+                  else if (str_type.Pos("A1"))
+                  {
+                      str_type = "C1";
+                      i_trans_flag = 2;    //SPC_FLG  交易類別
+                  }
+            }
+            //////////////////// END  農會商品 CD_FMCODE => M開頭7碼  ****************/
+
+          ****************************************************************************************************************************************************
+	
+	
+	//部門帳  2005/10/01
+void __fastcall BASIC::SumAllDept(DEPT *dept)
+
+             ////////////////////   農會商品 CD_FMCODE => M開頭7碼   /////////////////////
+            str_good_no = Trim(_StringSegment_EX(s, "|", 17));
+            if (str_good_no.SubString(1, 1) == "M")  //農會商品 CD_FMCODE => M開頭7碼
+                continue;
+            //////////////////// END  農會商品 CD_FMCODE => M開頭7碼  ///////////////////
+
+****************************************************************************************************************************************************
+
+
+	
+	//本日來客數   無Update
+	int __fastcall BASIC::SumQt_tcust(int StartLine,int TotalLine)
+
+
+
+
+
+
+/*************************************************************************************************************/
+Start Source Code From XZDATA_Mag20170815
+/*************************************************************************************************************/
+2017/12/26 農會商品同列 C0/C1   開發票不列營收  1013.VDC_NO=17
+     // 外加手續費,即時購代售點卡集計
+    void __fastcall BASIC::Sub_C0InvoAmt(int StartLine, int TotalLine);
+	       i_trans_flag = _StrToInt(str_trans_flag);       //SPC_FLG  交易類別
+
+			////////////////////   農會商品 CD_FMCODE => M開頭7碼   /////////////////////
+			if (str_good_no.substr(0, 1) == "M")  //農會商品 CD_FMCODE => M開頭7碼
+			{
+				if (_StrFind(str_type, "A0"))
+				{
+					str_type = "C0";
+					i_trans_flag = 2;    //SPC_FLG  交易類別
+				}
+				else if (_StrFind(str_type, "A1"))
+				{
+					str_type = "C1";
+					i_trans_flag = 2;    //SPC_FLG  交易類別
+				}
+			}
+			//////////////////// END  農會商品 CD_FMCODE => M開頭7碼  ///////////////////
+
+			****************************************************************************************************************************************************
+
+    // 點卡手續費應免稅
+    void __fastcall BASIC::Sub_C0C1TaxInvoAmt(int StartLine, int TotalLine);
+	////////////////////   農會商品 CD_FMCODE => M開頭7碼   /////////////////////
+			if (str_good_no.substr(0, 1) == "M")  //農會商品 CD_FMCODE => M開頭7碼
+			{
+				if (_StrFind(str_type, "A0"))
+				{
+					str_type = "C0";
+					i_trans_flag = 2;    //SPC_FLG  交易類別
+				}
+				else if (_StrFind(str_type, "A1"))
+				{
+					str_type = "C1";
+					i_trans_flag = 2;    //SPC_FLG  交易類別
+				}
+			}
+			//////////////////// END  農會商品 CD_FMCODE => M開頭7碼  ///////////////////
+
+          ****************************************************************************************************************************************************
+
+
+
+    // 點卡手續費數量
+    void __fastcall BASIC::Sub_C0C1TaxInvoQty(int StartLine, int TotalLine);
+	////////////////////   農會商品 CD_FMCODE => M開頭7碼   /////////////////////
+			if (str_good_no.substr(0, 1) == "M")  //農會商品 CD_FMCODE => M開頭7碼
+			{
+				if (_StrFind(str_type, "A0"))
+				{
+					str_type = "C0";
+					i_trans_flag = 2;    //SPC_FLG  交易類別
+				}
+				else if (_StrFind(str_type, "A1"))
+				{
+					str_type = "C1";
+					i_trans_flag = 2;    //SPC_FLG  交易類別
+				}
+			}
+			//////////////////// END  農會商品 CD_FMCODE => M開頭7碼  ///////////////////
+
+          ****************************************************************************************************************************************************
+
+
+    // 外加手續費,即時購代售點卡集計 以連線區分分類
+    void __fastcall BASIC::Sub_C0InvoAmt4VDC(int StartLine, int TotalLine);
+	//#pragma region   農會商品 CD_FMCODE => M開頭7碼    
+//			if (str_good_no.substr(0, 1) == "M")  //農會商品 CD_FMCODE => M開頭7碼
+//			{
+//				if (_StrFind(str_type, "A0"))
+//				{
+//					str_type = "C0";
+//					i_trans_flag = 2;    //SPC_FLG  交易類別
+//				}
+//				else if (_StrFind(str_type, "A1"))
+//				{
+//					str_type = "C1";
+//					i_trans_flag = 2;    //SPC_FLG  交易類別
+//				}
+//			}
+//#pragma endregion
+
+          ****************************************************************************************************************************************************
+	
+	
+	//部門帳  2005/10/01
+void __fastcall BASIC::SumAllDept(DEPT *dept)
+
+             ////////////////////   農會商品 CD_FMCODE => M開頭7碼   /////////////////////
+			str_good_no = Trim(_StringSegment_EX(s, "|", 17));
+			if (str_good_no.substr(0, 1) == "M")  //農會商品 CD_FMCODE => M開頭7碼
+				continue;
+			//////////////////// END  農會商品 CD_FMCODE => M開頭7碼  ///////////////////
+
+****************************************************************************************************************************************************
+
+
+	
+	//本日來客數   無Update
+	int __fastcall BASIC::SumQt_tcust(int StartLine,int TotalLine)
+
+
+
+string __stdcall _Strsprintf(std::string &str, char* format, ...)
+{
+	char buffer[10240];
+	va_list argList;
+
+	va_start(argList, format);
+	vsnprintf_s(buffer, sizeof(buffer), format, argList);
+	va_end(argList);
+
+	str = string(buffer);
+	return(str);
+}
+
+
+
+
+
+std::string ToUtf8(std::wstring str)
+{
+    std::string ret;
+    int len = WideCharToMultiByte(CP_UTF8, 0, str.c_str(), str.length(), NULL, 0, NULL, NULL);
+    if (len > 0)
+    {
+        ret.resize(len);
+        WideCharToMultiByte(CP_UTF8, 0, str.c_str(), str.length(), &ret[0], len, NULL, NULL);
+    }
+    return ret;
+}
