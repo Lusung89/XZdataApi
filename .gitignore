@@ -3,3 +3,8 @@
 ################################################################################
 
 /.vs/XZdataApi/v16
+/.vs/slnx.sqlite
+/.vs/ProjectSettings.json
+/XZDataCS_Test/obj/Debug
+/XZDataCS_Test/obj/x64
+/XZDataCS_Test/obj/x86
