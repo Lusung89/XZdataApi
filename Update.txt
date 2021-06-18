@@ -11,5 +11,5 @@ string StrTran_cnt;
     else
         _Strsprintf(StrTran_cnt, "00%3s%05d", DDZ_1099.c_str(),  (iTran_cnt + 1) );
 
- 2021/0/18 03:30
+ 2021/0/18 04:30
 
