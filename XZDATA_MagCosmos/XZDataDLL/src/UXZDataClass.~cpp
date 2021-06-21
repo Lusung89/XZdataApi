@@ -3140,7 +3140,7 @@ int __fastcall ZDATA::WriteData(const String StoreNO, const String EcrNO, const 
 }
 
 
-//X帳表
+//X帳表  讀帳
 int __fastcall XREPORT::WriteData( const String StoreNO, const String EcrNO, const String SalesNo ,
                                    const AnsiString SalFileName, const AnsiString Version)
 {
@@ -7548,6 +7548,39 @@ int __fastcall AUTOZDATA::GetYYYYMDD_SalData(AnsiString &AutoZCnt, AnsiString Au
             }
        }
        irtn+=1;
+
+       //////////////////////////////////////////////////////////////////
+       gtsl_Ticket->Clear();
+
+      if( Autotsl_Ticket->Count > 0)
+       {
+            //  if( RecNo=="1802" || RecNo=="1805" || RecNo=="1807" )
+            //   TmpZcnt=_StringSegment_EX(sRec, "|", 7);  //日結序號
+        for (int i=0;  i<Autotsl_subsale->Count; i++)
+            {
+             sRec=Autotsl_Ticket->Strings[i];
+             TmpZcnt=_StringSegment_EX(sRec, "|", 7);  //日結序號
+             sTmpDttm=_StringSegment_EX(sRec, "|", 5);
+             //if( sTmpDttm.SubString(1,8)<=sYYYYMMDD )
+             if(  AutoZdt != "" && sTmpDttm.SubString(1,8) <= AutoZdt)
+                  {
+                    SalZcnt=TmpZcnt;
+                  }
+
+             if( TmpZcnt<=SalZcnt && sTmpDttm.SubString(1,8) <= AutoZdt)
+               {
+                 gtsl_Ticket->Add(sRec);
+               }
+             else
+               {
+                 ;;//tsl_subsale->Delete(i);
+               }
+            }
+       }
+       irtn+=1;
+
+
+
     } // end of try
   catch(...)
     {

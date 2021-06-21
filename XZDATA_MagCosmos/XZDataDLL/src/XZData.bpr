@@ -41,7 +41,7 @@
     <PFLAGS value="-N2..\obj -N0..\obj -$Y- -$L- -$D- -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-l&quot;C:\BCB_FTLPOS\SRC\XZDATA_Mag20210601\XZDataDLL\lib\&quot; -I..\obj -D&quot;&quot; -aa 
+    <LFLAGS value="-l&quot;C:\BCB_FTLPOS\SRC\XZDATA_Mag20210615\XZDataDLL\lib\&quot; -I..\obj -D&quot;&quot; -aa 
       -Tpd -x -Gn -Gi"/>
   </OPTIONS>
   <LINKER>
@@ -55,7 +55,7 @@ IncludeVerInfo=1
 AutoIncBuild=1
 MajorVer=3
 MinorVer=21
-Release=601
+Release=615
 Build=1
 Debug=0
 PreRelease=0
@@ -66,9 +66,9 @@ Locale=1028
 CodePage=950
 
 [Version Info Keys]
-CompanyName=FTL FROM 3.20.1103.2..1420800
+CompanyName=FTL FROM 3.21.0601
 FileDescription=
-FileVersion=3.21.601.1
+FileVersion=3.21.615.1
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -78,18 +78,18 @@ ProductVersion=1.0.0.0
 Comments=Update Invoice Amt 500
 
 [Excluded Packages]
-$(BCB)\Bin\bcbie50.bpl=Borland C++Builder Internet Explorer 5 Components Package
-$(BCB)\Bin\dclnet50.bpl=Borland Internet Components
-$(BCB)\Bin\dclwbm50.bpl=Borland InternetExpress Components
 $(BCB)\Bin\DCLNMF50.bpl=NetMasters Fastnet Tools
-$(BCB)\Bin\bcb2kaxserver50.bpl=Borland C++Builder COM Server Components Sample Package
+$(BCB)\Bin\dcl31w50.bpl=Delphi 1.0 Compatibility Components
+$(BCB)\Bin\dclnet50.bpl=Borland Internet Components
 $(BCB)\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
+$(BCB)\Bin\dclwbm50.bpl=Borland InternetExpress Components
+$(BCB)\Bin\bcbie50.bpl=Borland C++Builder Internet Explorer 5 Components Package
+$(BCB)\Bin\bcb2kaxserver50.bpl=Borland C++Builder COM Server Components Sample Package
 $(BCB)\Bin\dcldss50.bpl=Borland Decision Cube Components
 $(BCB)\Bin\dclsmpedit50.bpl=Borland Editor Script Enhancements
 $(BCB)\Bin\dclite50.bpl=Borland Integrated Translation Environment
 $(BCB)\Bin\applet50.bpl=Borland Control Panel Applet Package
 $(BCB)\Bin\dcltqr50.bpl=TeeChart 5.0 for QuickReport Components Design Package
-$(BCB)\Bin\dcl31w50.bpl=Delphi 1.0 Compatibility Components
 $(BCB)\Bin\dclado50.bpl=Borland ADO DB Components
 $(BCB)\Bin\DCLIB50.bpl=InterBase Data Access Components
 C:\WINDOWS\system32\ibsmp50.bpl=Borland C++ InterBase Alerter Component
@@ -122,35 +122,36 @@ Count=1
 Item0=..\bin\
 
 [HistoryLists\hIBPIOutputDir]
-Count=28
-Item0=C:\BCB_FTLPOS\SRC\XZDATA_Mag20210601\XZDataDLL\lib\
-Item1=C:\BCB_FTLPOS\SRC\XZDATA_Mag20210423\XZDataDLL\lib\
-Item2=C:\BCB_FTLPOS\SRC\XZDATA_Mag20201103\XZDataDLL\lib\
-Item3=C:\BCB_FTLPOS\SRC\XZDATA_Mag20200831\XZDataDLL\lib\
-Item4=C:\BCB_FTLPOS\SRC\XZDATA_Mag20200525\XZDataDLL\lib\
-Item5=C:\BCB_FTLPOS\SRC\XZDATA_Mag20200409\XZDataDLL\lib\
-Item6=C:\BCB_FTLPOS\SRC\XZDATA_Mag20200304\XZDataDLL\lib\
-Item7=C:\BCB_FTLPOS\SRC\XZDATA_Mag20191225\XZDataDLL\lib\
-Item8=C:\BCB_FTLPOS\SRC\XZDATA_Mag20191127\XZDataDLL\lib\
-Item9=C:\BCB_FTLPOS\SRC\XZDATA_Mag20190918\XZDataDLL\lib\
-Item10=C:\BCB_FTLPOS\SRC\XZDATA_Mag20190213\XZDataDLL\lib\
-Item11=C:\BCB_FTLPOS\SRC\XZDATA_Mag20181207\XZDataDLL\lib\
-Item12=C:\BCB_FTLPOS\SRC\XZDATA_Mag20180820\XZDataDLL\lib\
-Item13=C:\BCB_FTLPOS\SRC\XZDATA_Mag20180101\XZDataDLL\lib\
-Item14=C:\BCB_FTLPOS\SRC\XZDATA_Mag20170815\XZDataDLL\lib\
-Item15=C:\BCB_FTLPOS\SRC\XZDATA_Mag20170707\XZDataDLL\lib\
-Item16=C:\BCB_FTLPOS\SRC\XZDATA_Mag20170426\XZDataDLL\lib\
-Item17=C:\BCB_FTLPOS\SRC\XZDATA_Mag20170105\XZDataDLL\lib\
-Item18=C:\BCB_FTLPOS\SRC\XZDATA_Mag20161130\XZDataDLL\lib\
-Item19=C:\BCB_FTLPOS\SRC\XZDATA_Mag20161001\XZDataDLL\lib\
-Item20=C:\BCB_FTLPOS\SRC\XZDATA_Mag20160808\XZDataDLL\lib\
-Item21=C:\BCB_FTLPOS\SRC\XZDATA_Mag20160530\XZDataDLL\lib\
-Item22=C:\BCB_FTLPOS\SRC\XZDATA_Mag20160318\XZDataDLL\lib\
-Item23=C:\FTLPOS\SRC\XZDATA_Mag20160225\XZDataDLL\lib\
-Item24=C:\FTLPOS\SRC\XZDATA_Mag20151223\XZDataDLL\lib\
-Item25=C:\FTLPOS\SRC\XZDATA_Mag20151123\XZDataDLL\lib\
-Item26=C:\BCB_FTLPOS\SRC\XZDATA_Mag20151022\XZDataDLL\lib\
-Item27=C:\FTLPOS\SRC\XZDATA_Mag20150206\XZDataDLL\lib\
+Count=29
+Item0=C:\BCB_FTLPOS\SRC\XZDATA_Mag20210615\XZDataDLL\lib\
+Item1=C:\BCB_FTLPOS\SRC\XZDATA_Mag20210601\XZDataDLL\lib\
+Item2=C:\BCB_FTLPOS\SRC\XZDATA_Mag20210423\XZDataDLL\lib\
+Item3=C:\BCB_FTLPOS\SRC\XZDATA_Mag20201103\XZDataDLL\lib\
+Item4=C:\BCB_FTLPOS\SRC\XZDATA_Mag20200831\XZDataDLL\lib\
+Item5=C:\BCB_FTLPOS\SRC\XZDATA_Mag20200525\XZDataDLL\lib\
+Item6=C:\BCB_FTLPOS\SRC\XZDATA_Mag20200409\XZDataDLL\lib\
+Item7=C:\BCB_FTLPOS\SRC\XZDATA_Mag20200304\XZDataDLL\lib\
+Item8=C:\BCB_FTLPOS\SRC\XZDATA_Mag20191225\XZDataDLL\lib\
+Item9=C:\BCB_FTLPOS\SRC\XZDATA_Mag20191127\XZDataDLL\lib\
+Item10=C:\BCB_FTLPOS\SRC\XZDATA_Mag20190918\XZDataDLL\lib\
+Item11=C:\BCB_FTLPOS\SRC\XZDATA_Mag20190213\XZDataDLL\lib\
+Item12=C:\BCB_FTLPOS\SRC\XZDATA_Mag20181207\XZDataDLL\lib\
+Item13=C:\BCB_FTLPOS\SRC\XZDATA_Mag20180820\XZDataDLL\lib\
+Item14=C:\BCB_FTLPOS\SRC\XZDATA_Mag20180101\XZDataDLL\lib\
+Item15=C:\BCB_FTLPOS\SRC\XZDATA_Mag20170815\XZDataDLL\lib\
+Item16=C:\BCB_FTLPOS\SRC\XZDATA_Mag20170707\XZDataDLL\lib\
+Item17=C:\BCB_FTLPOS\SRC\XZDATA_Mag20170426\XZDataDLL\lib\
+Item18=C:\BCB_FTLPOS\SRC\XZDATA_Mag20170105\XZDataDLL\lib\
+Item19=C:\BCB_FTLPOS\SRC\XZDATA_Mag20161130\XZDataDLL\lib\
+Item20=C:\BCB_FTLPOS\SRC\XZDATA_Mag20161001\XZDataDLL\lib\
+Item21=C:\BCB_FTLPOS\SRC\XZDATA_Mag20160808\XZDataDLL\lib\
+Item22=C:\BCB_FTLPOS\SRC\XZDATA_Mag20160530\XZDataDLL\lib\
+Item23=C:\BCB_FTLPOS\SRC\XZDATA_Mag20160318\XZDataDLL\lib\
+Item24=C:\FTLPOS\SRC\XZDATA_Mag20160225\XZDataDLL\lib\
+Item25=C:\FTLPOS\SRC\XZDATA_Mag20151223\XZDataDLL\lib\
+Item26=C:\FTLPOS\SRC\XZDATA_Mag20151123\XZDataDLL\lib\
+Item27=C:\BCB_FTLPOS\SRC\XZDATA_Mag20151022\XZDataDLL\lib\
+Item28=C:\FTLPOS\SRC\XZDATA_Mag20150206\XZDataDLL\lib\
 
 [Debugging]
 DebugSourceDirs=

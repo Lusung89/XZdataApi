@@ -3140,7 +3140,7 @@ int __fastcall ZDATA::WriteData(const String StoreNO, const String EcrNO, const 
 }
 
 
-//X±bªí
+//X±bªí  Åª±b
 int __fastcall XREPORT::WriteData( const String StoreNO, const String EcrNO, const String SalesNo ,
                                    const AnsiString SalFileName, const AnsiString Version)
 {
