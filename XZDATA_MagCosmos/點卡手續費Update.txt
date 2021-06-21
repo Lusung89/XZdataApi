@@ -1,0 +1,261 @@
+//代收、售、付 ,點卡手續費.作廢 For TM3.0    2003/02/20 , 2013/10/17
+
+int __fastcall BASIC::SumKamt(int StartLine, int TotalLine)
+{
+     writelog("代收、售、付 集計金額 For TM3.0 ");
+    //收、售、付
+    giA = giB = giC = giD= giE = 0;
+    gi_mix = 0;                 //混登次數    代收商品客數
+
+    bool bl_mix = false;        //是否混登
+    int i_invo_cnt = 0;         //銷售數量不為0
+
+    int iT1, iT2, iT3,kcolx_amt,kcolf_amt, iT4, iT5;
+    iT1 = iT2 = iT3 = kcolx_amt=kcolf_amt=iT4=0;
+
+    AnsiString str_sale_type, temp, s;   //銷貨型態
+
+    if (gbl_tot_haveline)
+    {
+        //for (int i=StartLine; i<=TotalLine; i++)
+        for (int i=0; i<gtsl_tot->Count; i++)
+        {
+
+            s=gtsl_tot->Strings[i];
+            str_sale_type=_StringSegment_EX(s, "|", 8);
+
+            i_invo_cnt = _StrToInt(_StringSegment_EX(s, "|", 30));
+            //str_sale_type = gtsl_tot->Strings[i].SubString(67,2);
+            //kcolx_amt=_StrToInt(gtsl_tot->Strings[i].SubString(345,8)); //代收應稅
+            //kcolf_amt=_StrToInt(gtsl_tot->Strings[i].SubString(354,8)); //代收免稅
+             kcolx_amt=_StrToInt(_StringSegment_EX(s, "|", 41)); //代收
+
+            if ( str_sale_type.Pos("Z0") )
+            {
+                //代售
+                iT1 = _StrToInt(_StringSegment_EX(s, "|", 42));
+                if (iT1)
+                {
+                    giA += iT1;
+                }
+
+                //代付
+                iT2 = _StrToInt(_StringSegment_EX(s, "|", 43));
+                if (iT2)
+                {
+                    giB += iT2;
+                }
+
+                //代收
+                iT3 =  kcolx_amt+kcolf_amt ;
+                if (iT3)
+                {
+                    giC += iT3;
+                    bl_mix = true;      //有代收
+                }
+
+                //點卡手續費
+                iT4 = _StrToInt(_StringSegment_EX(s, "|", 49));
+                if (iT4)
+                {
+                    giD += iT4;
+                }
+
+                //混登
+                if (bl_mix)             //計算代收混登次數
+                {
+                    if (i_invo_cnt)     //銷售數量不為0，也有代收算混登次數
+                        ++gi_mix;       //代收商品客數
+
+                    bl_mix = false;
+                }
+            }
+            else if ( str_sale_type.Pos("R2") || str_sale_type.Pos("R3") )
+            {
+                //代售
+                iT1 = _StrToInt(_StringSegment_EX(s, "|", 42));
+                if (iT1)
+                {
+                    giA -= iT1;
+                }
+
+                //代付
+                iT2 = _StrToInt(_StringSegment_EX(s, "|", 43));
+                if (iT2)
+                {
+                    giB -= iT2;
+                }
+
+                //代收
+                iT3 = kcolx_amt+kcolf_amt;
+                if (iT3)
+                {
+                    giC -= iT3;
+                }
+
+                //點卡手續費作廢
+                iT5 = _StrToInt(_StringSegment_EX(s, "|", 49));
+                if (iT5)
+                {
+                    giE -= iT5;
+                }
+
+                //☆☆ 混登不可以全退貨 ☆☆
+            }
+        }
+    }
+
+    temp.sprintf("SumKamt:1050->(代收:41,代售:42,代付:43) 代收合計金額(%d,%d), 代售合計金額(%d), 代付合計金額(%d), 點卡手續費(%d)",
+                                       kcolx_amt, kcolf_amt, giA, giB, giD);
+    writelog(temp);
+
+    gi_mix=0;       //代收商品客數    2005/06/17
+    return 0;
+}
+
+
+
+
+
+
+// 外加手續費,即時購代售點卡集計 如要扣攤提參部門帳
+void __fastcall BASIC::Sub_C0InvoAmt(int StartLine, int TotalLine)
+{
+    //外加手續費,即時購代售點卡金額次數統計
+
+    AnsiString str_is_rtype, str_trans_flag,Stmp, s;        //銷售形態，交易形態
+    int i_trans_num = 0;                            //銷售數量
+
+    //0:一般商品    1:代收   2:代售   3:代付   4:加值機(開,售)卡   5:加值機(加值)
+
+    int i_trans_flag = 0;                          //交易型態
+    int iRelType;
+
+    //外加手續費, 即時購代售
+    giA=giB=giC=giD=giE=giF=giG=0;
+
+    AnsiString str_good_no, str_menu_no, str_bar_name, str_item_amt;
+    AnsiString str_type, str_item_qty, strRelType;
+
+    if (gbl_rec_haveline)
+    {
+        for (int i=0; i<gtsl_rec->Count; i++)
+        {
+            s=gtsl_rec->Strings[i];
+
+            str_is_rtype = _StringSegment_EX(s, "|", 38).SubString(1,2);   // 交易狀態區分
+
+            i_trans_num = _StrToInt(_StringSegment_EX(s, "|", 26) );  //銷售數量
+            str_type = _StringSegment_EX(s, "|", 8);                  //銷貨型態
+
+            //連線商品區分
+            strRelType = _StringSegment_EX(s, "|", 36).SubString(1,2);   // 連線商品狀態
+            iRelType=_StrToInt(strRelType);
+        
+            str_item_qty=IntToStr(i_trans_num);
+            str_trans_flag = _StringSegment_EX(s, "|", 10); //代售付區分       //SPC_FLG  交易類別
+
+            str_good_no  = _StringSegment_EX(s, "|", 17).Trim();
+            //str_menu_no = gtsl_rec->Strings[i].SubString(128,4).Trim();      //代收售,付類別
+            str_menu_no = "0000";
+            str_bar_name = _StringSegment_EX(s, "|", 19).Trim();
+            str_item_amt = _StringSegment_EX(s, "|", 29).Trim();;
+
+            i_trans_flag = _StrToInt(str_trans_flag);       //SPC_FLG  交易類別
+
+            if (str_is_rtype.Pos("FF") || str_is_rtype.Pos("Z0") || str_is_rtype.Pos("Z1") || Trim(str_is_rtype)=="" )
+            {
+                if (str_type.Pos("C0"))
+                {
+                    switch (i_trans_flag)
+                    {
+                        case 1:     //外加手續費
+                             giA+=_StrToInt(str_item_amt);   //金額
+                             giB+=i_trans_num;               //次數
+                             break;
+                        case 2:     //即時購代售點卡
+                             giC+=_StrToInt(str_item_amt);   //金額
+                             giD+=i_trans_num;               //次數
+                             break;
+
+                    }
+                }
+                else if (str_type.Pos("C1"))
+                {
+                    switch (i_trans_flag)
+                    {
+                        case 1:     //外加手續費
+                             giA-=_StrToInt(str_item_amt);   //金額
+                             giB-=i_trans_num;               //次數
+                             break;
+                        case 2:     //即時購代售點卡
+                             giC-=_StrToInt(str_item_amt);   //金額
+                             giD-=i_trans_num;               //次數
+                             break;
+                    }
+                }
+            }
+            else if ( str_is_rtype.Pos("R2") || str_is_rtype.Pos("R3") )
+            {
+                if (str_type.Pos("S0"))
+                {
+                    switch (i_trans_flag)
+                    {
+                        case 1:     //外加手續費
+                             giA-=_StrToInt(str_item_amt);   //金額
+                             giB-=i_trans_num;               //次數
+                             break;
+                        case 2:     //即時購代售點卡
+                             giC-=_StrToInt(str_item_amt);   //金額
+                             giD-=i_trans_num;               //次數
+                             break;
+                    }
+                }
+                else if (str_type.Pos("S1"))
+                {
+                    switch (i_trans_flag)
+                    {
+                       case 1:     //外加手續費
+                             giA+=_StrToInt(str_item_amt);   //金額
+                             giB+=i_trans_num;               //次數
+                             break;
+                        case 2:     //即時購代售點卡
+                             giC+=_StrToInt(str_item_amt);   //金額
+                             giD+=i_trans_num;               //次數
+                             break;
+                    }
+                }
+            }
+        }
+    }
+
+    
+    Stmp.sprintf("Sub_C0InvoAmt C0C1: 外加手續費金次數(%d)(%d), 即時購代售點卡(%d)(%d)",
+                             giA, giB, giC, giD );
+
+    writelog(Stmp);
+
+}
+
+
+
+Sub_C0InvoAmt(0,gi_rec_line);        // 外加手續費giA,即時購代售點卡集計 giC
+    // 健康捐合計
+    SumHealthAmt(0,gi_tot_line);
+//////////////////////////////////////////
+
+Sub_C0InvoAmt(0,gi_rec_line);        // 外加手續費giA,即時購代售點卡集計 giC
+    int iSub_C0InvoAmtA,iSub_C0InvoAmtC;
+    iSub_C0InvoAmtA=giA;  iSub_C0InvoAmtC=giC;
+    //SumHealthAmt(0,gi_tot_line);         // 健康捐合計  2013/10/17  取消
+    //x_j += x->tb_newadd.qt_ffu7.sprintf("%08d",giA);   //原加值機加值取消次數
+    x_j += (x->tb_newadd.am_ffu7.sprintf("%08d",iSub_C0InvoAmtA)+"|");   //原加值機加值取消金額
+
+
+    SumRelDimAgn(0, gi_rec_line); //即時購代售
+    int iSumRelDimAgn=giB;
+    x_j += (x->tb_newadd.qt_ffu7.sprintf("%08d",giB+iSub_C0InvoAmtC)+"|");   //原加值機加值取消次數
+
+
+
+

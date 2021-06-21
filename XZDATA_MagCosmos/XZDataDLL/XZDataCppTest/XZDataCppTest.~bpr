@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.05.03"/>
+    <PROJECT value="..\bin\XZDataCppTest.exe"/>
+    <OBJFILES value="..\obj\XZDataCppTest.obj ..\obj\UFmXZData.obj ..\obj\ULOG.obj 
+      ..\obj\UReport.obj ..\obj\UXZDataClass.obj"/>
+    <RESFILES value="XZDataCppTest.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) UFmXZData.dfm"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value="Vclx50.lib Vcl50.lib"/>
+    <SPARELIBS value="Vcl50.lib Vclx50.lib"/>
+    <PACKAGES value="Vcl50.bpi Vcldb50.bpi vclado50.bpi Vclx50.bpi Vclbde50.bpi vcldbx50.bpi 
+      ibsmp50.bpi bcbsmp50.bpi bcb2kaxserver50.bpi bcbie50.bpi Dss50.bpi 
+      vclie50.bpi Inetdb50.bpi Inet50.bpi webmid50.bpi Vclmid50.bpi dclocx50.bpi 
+      opos2000.bpi IcsBcb50.bpi VCLIB50.bpi NMFast50.bpi Qrpt50.bpi TeeQR50.bpi"/>
+    <PATHCPP value=".;..\src"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="tlink32"/>
+    <USERDEFINES value="_DEBUG;TM_20"/>
+    <SYSDEFINES value="NO_STRICT"/>
+    <MAINSOURCE value="XZDataCppTest.cpp"/>
+    <INCLUDEPATH value="..\src;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="..\src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par -w-aus"/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-I..\src -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG 
+      -DTM_20 -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl50.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k -y -v -vi- -c 
+      -tW -tWM"/>
+    <PFLAGS value="-N2..\obj -N0..\obj -$Y+ -$W -$O- -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-l&quot;C:\BCB_FTLPOS\SRC\XZDATA_Mag20170815\XZDataDLL\lib\&quot; -I..\obj -D&quot;&quot; -aa 
+      -Tpe -x -Gn -v"/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0w32.obj sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
+  </LINKER>
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1028
+CodePage=950
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[Excluded Packages]
+$(BCB)\Bin\bcbie50.bpl=Borland C++Builder Internet Explorer 5 Components Package
+$(BCB)\Bin\bcb2kaxserver50.bpl=Borland C++Builder COM Server Components Sample Package
+$(BCB)\Bin\dcldss50.bpl=Borland Decision Cube Components
+$(BCB)\Bin\dclsmpedit50.bpl=Borland Editor Script Enhancements
+$(BCB)\Bin\dclite50.bpl=Borland Integrated Translation Environment
+$(BCB)\Bin\applet50.bpl=Borland Control Panel Applet Package
+$(BCB)\Bin\dcltqr50.bpl=TeeChart 5.0 for QuickReport Components Design Package
+$(BCB)\Bin\DCLNMF50.bpl=NetMasters Fastnet Tools
+$(BCB)\Bin\dcl31w50.bpl=Delphi 1.0 Compatibility Components
+$(BCB)\Bin\dclnet50.bpl=Borland Internet Components
+$(BCB)\Bin\DBWEBXPRT.BPL=Borland Web Wizard Package
+$(BCB)\Bin\dclwbm50.bpl=Borland InternetExpress Components
+$(BCB)\Bin\dclado50.bpl=Borland ADO DB Components
+$(BCB)\Bin\DCLIB50.bpl=InterBase Data Access Components
+C:\WINDOWS\system32\ibsmp50.bpl=Borland C++ InterBase Alerter Component
+$(BCB)\Bin\dclqrt50.bpl=QuickReport Components
+
+[HistoryLists\hlIncludePath]
+Count=2
+Item0=..\src;$(BCB)\include;$(BCB)\include\vcl
+Item1=$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=2
+Item0=..\src;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item1=$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=2
+Item0=_DEBUG;TM_20
+Item1=_DEBUG
+
+[HistoryLists\hlIntOutputDir]
+Count=1
+Item0=..\obj
+
+[HistoryLists\hlFinalOutputDir]
+Count=2
+Item0=..\bin\
+Item1=..\bin
+
+[HistoryLists\hIBPIOutputDir]
+Count=20
+Item0=C:\BCB_FTLPOS\SRC\XZDATA_Mag20170815\XZDataDLL\lib\
+Item1=C:\BCB_FTLPOS\SRC\XZDATA_Mag20170426\XZDataDLL\lib\
+Item2=C:\BCB_FTLPOS\SRC\XZDATA_Mag20160318\XZDataDLL\lib\
+Item3=C:\FTLPOS\SRC\XZDATA_Mag20160225\XZDataDLL\lib\
+Item4=C:\FTLPOS\SRC\XZDATA_Mag20151123\XZDataDLL\lib\
+Item5=C:\FTLPOS\SRC\XZDATA_Mag20140401\XZDataDLL\lib\
+Item6=C:\FTLPOS\SRC\XZDATA_Mag20140101\XZDataDLL\lib\
+Item7=C:\FTLPOS\SRC\XZDATA_Mag20130601\XZDataDLL\lib\
+Item8=C:\FTLPOS\SRC\XZDATA_Mag20130201\XZDataDLL\lib\
+Item9=C:\FTLPOS\SRC\XZDATA_Mag20120701\XZDataDLL\lib\
+Item10=C:\FTLPOS\SRC\XZDATA_Mag20120401\XZDataDLL\lib\
+Item11=C:\FTLPOS\SRC\XZDATA_Mag20110902\XZDataDLL\lib\
+Item12=C:\FTLPOS\SRC\XZDATA_Mag20110901\XZDataDLL\lib\
+Item13=..\lib
+Item14=C:\FTLPOS\SRC\ZDATA_Mag20110801\XZDataDLL\lib\
+Item15=..\lib\
+Item16=C:\FTLPOS\SRC\ZDATA_Mag20110801\XZDataDLL_CallerForTest\BCB5\lib\
+Item17=C:\FTLPOS\SRC\ZDATA_Mag20110801\XZDataDLL_CallerForTest\BCB5\lib
+Item18=C:\FTLPOS\SRC\ZDATA_Mag20110801\XZDataDLL\lib
+Item19=D:\DLL4Magic1K\XZDATA_Mag0604\XZDataDLL\lib\
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+  </IDEOPTIONS>
+</PROJECT>
