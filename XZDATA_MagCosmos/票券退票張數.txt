@@ -1,3 +1,50 @@
+2021/6/23更新
+
+//接班明細:信用卡簽單張數
+//新增：信用卡簽單張數依1028.FG_SIGN=’1’
+void __fastcall BASIC::Sig_Cnt(int StartLine, int TotalLine)
+{
+    AnsiString str_type, sTmp,s, sFG_SIGN;        //Fetc 加值交易類別
+    int iFG_SIGN_Cnt, int_type;
+    iFG_SIGN_Cnt = int_type = giA = 0;
+
+     if (gbl_fetc_haveline)
+    {
+        //for (int i=StartLine; i<=TotalLine; i++)
+        for (int i=0; i<gtsl_fetc_card->Count; i++)
+        {
+            s=gtsl_fetc_card->Strings[i];
+
+            int_type = _StrToInt(s.SubString(1,4));
+            if( int_type == 1028)
+             {
+                //信用卡簽單張數  FG_SIGN==1
+                sFG_SIGN=_StringSegment_EX(s, "|", 35);
+                str_type=_StringSegment_EX(s, "|", 9);
+                if (str_type.Pos("FF") || str_type.Pos("Z0") || str_type.Pos("Z1") || Trim(str_type)=="" )
+                   {
+                       iFG_SIGN_Cnt++;   //信用卡簽單張數
+                   }
+                 continue;
+             } // end of   if( int_type == 1028)
+
+        }
+
+    }
+
+
+    giA= iFG_SIGN_Cnt;   //信用卡簽單張數
+
+    sTmp.sprintf("Sig_Cnt: 信用卡簽單張數=%d", iFG_SIGN_Cnt );
+    writelog(sTmp);
+    
+}
+
+
+
+
+
+
 這個要開發
 0034516: TFM問題/需求/規格書變更通知(交接班明細調整)
 http://10.166.202.194/mantis/view.php?id=34545

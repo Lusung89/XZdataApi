@@ -5372,7 +5372,7 @@ void __fastcall BASIC::Sig_Cnt(int StartLine, int TotalLine)
 {
     AnsiString str_type, sTmp,s, sFG_SIGN;        //Fetc 加值交易類別
     int iFG_SIGN_Cnt, int_type = 0;
-    giA=0;
+    iFG_SIGN_Cnt=giA=0;
 
      if (gbl_fetc_haveline)
     {
@@ -5398,7 +5398,6 @@ void __fastcall BASIC::Sig_Cnt(int StartLine, int TotalLine)
         }
 
     }
-
 
     giA= iFG_SIGN_Cnt;   //信用卡簽單張數
 

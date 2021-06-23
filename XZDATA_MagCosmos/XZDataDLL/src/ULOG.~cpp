@@ -5372,7 +5372,7 @@ void __fastcall BASIC::Sig_Cnt(int StartLine, int TotalLine)
 {
     AnsiString str_type, sTmp,s, sFG_SIGN;        //Fetc 加值交易類別
     int iFG_SIGN_Cnt, int_type = 0;
-    giA=0;
+    iFG_SIGN_Cnt=giA=0;
 
      if (gbl_fetc_haveline)
     {
@@ -5438,7 +5438,7 @@ void __fastcall BASIC::Rtn_Ticket(int StartLine, int TotalLine)
                  break;
             case 1806:
                  str_type = _StringSegment_EX(s, "|", 9); //S0
-                 str_Space = _StringSegment_EX(s, "|", 26).SubString(1,1);
+                 str_Space = _StringSegment_EX(s, "|", 27).SubString(1,1);
                   if (str_type.Pos("S0") && str_Space=="1"  )
                     {
                        giB++;
