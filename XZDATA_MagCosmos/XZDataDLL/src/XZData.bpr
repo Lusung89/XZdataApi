@@ -56,7 +56,7 @@ AutoIncBuild=1
 MajorVer=3
 MinorVer=21
 Release=615
-Build=1
+Build=3
 Debug=0
 PreRelease=0
 Special=0
@@ -68,7 +68,7 @@ CodePage=950
 [Version Info Keys]
 CompanyName=FTL FROM 3.21.0601
 FileDescription=
-FileVersion=3.21.615.1
+FileVersion=3.21.615.3
 InternalName=
 LegalCopyright=
 LegalTrademarks=

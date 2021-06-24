@@ -1,4 +1,141 @@
-2021/6/23更新
+2021/6/24更新----------------------------------------------------------------------
+
+1."票券退票張數"改成"劃位票券退票張數"(手動&自動日結2個地方)
+2."票券退票張數"&"信用卡簽單張數"位置移到"提貨券張數"下(手動&自動日結2個地方)
+3.log補上函式名稱：Rtn_Ticket:劃位票券退票張數
+
+  /////////////////////////// 2015/10/22 //////////////////////////////////////////////////////////////
+
+   strtmp=AutoCrpIni->ReadString("AutoX","BillAmt","0");
+   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
+   //iacc_amt14,     //提貨券金額
+   //iacc_cnt14,     //提貨券張數
+
+   sLog.sprintf("SumCasherRpt 收銀員交接班明細表: AutoCrp.ini:: AutoX -> BillAmt = %s ,提貨券張數 :%4ld, 提貨券金額 :%8ld,", strtmp,
+                                                      iacc_cnt14+i1, iacc_amt14+i2);
+   writelog(sLog);
+   strtmp.sprintf("%s提貨券金額  :%7ld │         │",CmdStr.c_str(), iacc_amt14+i2 );   tslCrp->Add(strtmp);
+   strtmp.sprintf("%s提貨券張數  :%7ld │         │",CmdStr.c_str(), iacc_cnt14+i1 );   tslCrp->Add(strtmp);
+   if( Update )
+     {
+      if( iAutoZ )
+       strtmp.sprintf("提貨|%04d|%8ld|",iacc_cnt14+i1, iacc_amt14+i2);
+      else
+       strtmp.sprintf("提貨|%04d|%8ld|", 0, 0);
+      AutoCrpIni->WriteString("AutoX","BillAmt",strtmp);
+     }
+
+
+  ////////////////////////////// 票券退票張數 //////////////////////////////////////
+   strtmp=AutoCrpIni->ReadString("AutoX","rTickcnt","0");
+   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   sLog.sprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,票券退票張數  :%8ld", strtmp,
+                                                     iqt_RTicketCnt+i2);
+   writelog(sLog);
+
+   strtmp.sprintf("%s劃位票券退票張數:%3ld │         │",CmdStr.c_str(),iqt_RTicketCnt+i2);   tslCrp->Add(strtmp);
+
+   if( Update )
+     {
+      if( iAutoZ )
+       strtmp.sprintf("退票|%02d|%8ld|", 0, iqt_RTicketCnt+i2);
+      else
+       strtmp.sprintf("退票|%02d|%8ld|", 0, 0);
+      AutoCrpIni->WriteString("AutoX","rTickcnt",strtmp);
+     }
+
+   ////////////////////////////// 信用卡簽單張數 //////////////////////////////////////
+   strtmp=AutoCrpIni->ReadString("AutoX","rSigcnt","0");
+   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   sLog.sprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,信用卡簽單張數  :%8ld", strtmp,
+                                                     iqt_SigCnt+i2);
+   writelog(sLog);
+
+   strtmp.sprintf("%s信用卡簽單張數:%5ld └─── ─┘",CmdStr.c_str(),iqt_SigCnt+i2);   tslCrp->Add(strtmp);
+
+   if( Update )
+     {
+      if( iAutoZ )
+       strtmp.sprintf("簽單|%02d|%8ld|", 0, iqt_SigCnt+i2);
+      else
+       strtmp.sprintf("簽單|%02d|%8ld|", 0, 0);
+      AutoCrpIni->WriteString("AutoX","rSigcnt",strtmp);
+     }
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//接班明細:劃位票券退票張數
+//依1805.FU_SPACE第3碼='1'及1806~1807.FU_SPACE 第1碼='1'，判斷劃位票券退票張數。
+void __fastcall BASIC::Rtn_Ticket(int StartLine, int TotalLine)
+{
+    AnsiString str_type;
+    AnsiString str_Space,s, sTmp;
+    int int_type=0;
+    giA = giB = giC = 0;
+
+    if (gbl_Ticket_haveline)
+    {
+        for (int i=0; i<gtsl_Ticket->Count; i++)
+        {
+            s=gtsl_Ticket->Strings[i];
+
+            int_type = _StrToInt(s.SubString(1,4));
+
+            switch( int_type )
+            {
+            case 1805:
+                 str_type = _StringSegment_EX(s, "|", 9);  //S0
+                 str_Space = _StringSegment_EX(s, "|", 26).SubString(3,1);
+                 if (str_type.Pos("S0")  && str_Space=="1" )
+                    {
+                       giA++;
+                    }
+                 break;
+            case 1806:
+                 str_type = _StringSegment_EX(s, "|", 9); //S0
+                 str_Space = _StringSegment_EX(s, "|", 27).SubString(1,1);
+                  if (str_type.Pos("S0") && str_Space=="1"  )
+                    {
+                       giB++;
+                    }
+                 break;
+            case 1807:
+                 str_type = _StringSegment_EX(s, "|", 9); //S0
+                 str_Space = _StringSegment_EX(s, "|", 28).SubString(1,1);
+                 if (str_type.Pos("S0") && str_Space=="1"   )
+                    {
+                       giC++;
+                    }
+                 break;
+             default:
+                  break;
+            }
+
+
+
+        }    //for (int i=0; i<gtsl_Ticket->Count; i++)
+    }
+
+
+    sTmp.sprintf("Rtn_Ticket:劃位票券退票張數:合計(1805=%d,1806=%d,1807=%d)",giA, giB, giC  );
+    writelog(sTmp);
+
+}
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+2021/6/23更新----------------------------------------------------------
 
 //接班明細:信用卡簽單張數
 //新增：信用卡簽單張數依1028.FG_SIGN=’1’
@@ -43,6 +180,7 @@ void __fastcall BASIC::Sig_Cnt(int StartLine, int TotalLine)
 
 
 
+/////////////////////////////////////////////////////////////////////////
 
 
 這個要開發

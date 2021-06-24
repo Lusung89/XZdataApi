@@ -5399,7 +5399,6 @@ void __fastcall BASIC::Sig_Cnt(int StartLine, int TotalLine)
 
     }
 
-
     giA= iFG_SIGN_Cnt;   //信用卡簽單張數
 
     sTmp.sprintf("Sig_Cnt: 信用卡簽單張數=%d", iFG_SIGN_Cnt );
@@ -5462,7 +5461,7 @@ void __fastcall BASIC::Rtn_Ticket(int StartLine, int TotalLine)
     }
 
 
-    sTmp.sprintf("劃位票券退票張數:合計(1805=%d,1806=%d,1807=%d)",giA, giB, giC  );
+    sTmp.sprintf("Rtn_Ticket:劃位票券退票張數:合計(1805=%d,1806=%d,1807=%d)",giA, giB, giC  );
     writelog(sTmp);
 
 }
@@ -6717,45 +6716,6 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
      }
 
 
-  ////////////////////////////// 票券退票張數 //////////////////////////////////////
-   strtmp=AutoCrpIni->ReadString("AutoX","rTickcnt","0");
-   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
-   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
-
-   sLog.sprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,票券退票張數  :%8ld", strtmp,
-                                                     iqt_RTicketCnt+i2);
-   writelog(sLog);
-
-   strtmp.sprintf("%s票券退票張數:%7ld │         │",CmdStr.c_str(),iqt_RTicketCnt+i2);   tslCrp->Add(strtmp);
-
-   if( Update )
-     {
-      if( iAutoZ )
-       strtmp.sprintf("退票|%02d|%8ld|", 0, iqt_RTicketCnt+i2);
-      else
-       strtmp.sprintf("退票|%02d|%8ld|", 0, 0);
-      AutoCrpIni->WriteString("AutoX","rTickcnt",strtmp);
-     }
-
-   ////////////////////////////// 信用卡簽單張數 //////////////////////////////////////
-   strtmp=AutoCrpIni->ReadString("AutoX","rSigcnt","0");
-   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
-   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
-
-   sLog.sprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,信用卡簽單張數  :%8ld", strtmp,
-                                                     iqt_SigCnt+i2);
-   writelog(sLog);
-
-   strtmp.sprintf("%s信用卡簽單張數:%5ld │         │",CmdStr.c_str(),iqt_SigCnt+i2);   tslCrp->Add(strtmp);
-
-   if( Update )
-     {
-      if( iAutoZ )
-       strtmp.sprintf("簽單|%02d|%8ld|", 0, iqt_SigCnt+i2);
-      else
-       strtmp.sprintf("簽單|%02d|%8ld|", 0, 0);
-      AutoCrpIni->WriteString("AutoX","rSigcnt",strtmp);
-     }
 
 
 ////////////////////食安退款筆數2015/12/02///////////////////////////////////////////////////////////////////////////////////
@@ -6801,6 +6761,47 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
       else
        strtmp.sprintf("提貨|%04d|%8ld|", 0, 0);
       AutoCrpIni->WriteString("AutoX","BillAmt",strtmp);
+     }
+
+
+  ////////////////////////////// 票券退票張數 //////////////////////////////////////
+   strtmp=AutoCrpIni->ReadString("AutoX","rTickcnt","0");
+   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   sLog.sprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,票券退票張數  :%8ld", strtmp,
+                                                     iqt_RTicketCnt+i2);
+   writelog(sLog);
+
+   strtmp.sprintf("%s劃位票券退票張數:%3ld │         │",CmdStr.c_str(),iqt_RTicketCnt+i2);   tslCrp->Add(strtmp);
+
+   if( Update )
+     {
+      if( iAutoZ )
+       strtmp.sprintf("退票|%02d|%8ld|", 0, iqt_RTicketCnt+i2);
+      else
+       strtmp.sprintf("退票|%02d|%8ld|", 0, 0);
+      AutoCrpIni->WriteString("AutoX","rTickcnt",strtmp);
+     }
+
+   ////////////////////////////// 信用卡簽單張數 //////////////////////////////////////
+   strtmp=AutoCrpIni->ReadString("AutoX","rSigcnt","0");
+   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   sLog.sprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,信用卡簽單張數  :%8ld", strtmp,
+                                                     iqt_SigCnt+i2);
+   writelog(sLog);
+
+   strtmp.sprintf("%s信用卡簽單張數:%5ld │         │",CmdStr.c_str(),iqt_SigCnt+i2);   tslCrp->Add(strtmp);
+
+   if( Update )
+     {
+      if( iAutoZ )
+       strtmp.sprintf("簽單|%02d|%8ld|", 0, iqt_SigCnt+i2);
+      else
+       strtmp.sprintf("簽單|%02d|%8ld|", 0, 0);
+      AutoCrpIni->WriteString("AutoX","rSigcnt",strtmp);
      }
 
  /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8805,46 +8806,6 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
       AutoCrpIni->WriteString("AutoX","r23cnt",strtmp);
      }
 
-  ////////////////////////////// 票券退票張數 //////////////////////////////////////
-   strtmp=AutoCrpIni->ReadString("AutoX","rTickcnt","0");
-   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
-   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
-
-   sLog.sprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,票券退票張數  :%8ld", strtmp,
-                                                     iqt_RTicketCnt+i2);
-   writelog(sLog);
-
-   strtmp.sprintf("%s票券退票張數:%7ld │         │",CmdStr.c_str(),iqt_RTicketCnt+i2);   tslCrp->Add(strtmp);
-
-   if( Update )
-     {
-      if( iAutoZ )
-       strtmp.sprintf("退票|%02d|%8ld|", 0, iqt_RTicketCnt+i2);
-      else
-       strtmp.sprintf("退票|%02d|%8ld|", 0, 0);
-      AutoCrpIni->WriteString("AutoX","rTickcnt",strtmp);
-     }
-
-   ////////////////////////////// 信用卡簽單張數 //////////////////////////////////////
-   strtmp=AutoCrpIni->ReadString("AutoX","rSigcnt","0");
-   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
-   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
-
-   sLog.sprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,信用卡簽單張數  :%8ld", strtmp,
-                                                     iqt_SigCnt+i2);
-   writelog(sLog);
-
-   strtmp.sprintf("%s信用卡簽單張數:%5ld │         │",CmdStr.c_str(),iqt_SigCnt+i2);   tslCrp->Add(strtmp);
-
-   if( Update )
-     {
-      if( iAutoZ )
-       strtmp.sprintf("簽單|%02d|%8ld|", 0, iqt_SigCnt+i2);
-      else
-       strtmp.sprintf("簽單|%02d|%8ld|", 0, 0);
-      AutoCrpIni->WriteString("AutoX","rSigcnt",strtmp);
-     }
-
 
  ////////////////////食安退款筆數2015/12/02/////////////////////////////////////////////////
 
@@ -8890,6 +8851,48 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
        strtmp.sprintf("提貨|%04d|%8ld|", 0, 0);
       AutoCrpIni->WriteString("AutoX","BillAmt",strtmp);
      }
+
+
+ ////////////////////////////// 票券退票張數 //////////////////////////////////////
+   strtmp=AutoCrpIni->ReadString("AutoX","rTickcnt","0");
+   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   sLog.sprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,票券退票張數  :%8ld", strtmp,
+                                                     iqt_RTicketCnt+i2);
+   writelog(sLog);
+
+   strtmp.sprintf("%s劃位票券退票張數:%3ld │         │",CmdStr.c_str(),iqt_RTicketCnt+i2);   tslCrp->Add(strtmp);
+
+   if( Update )
+     {
+      if( iAutoZ )
+       strtmp.sprintf("退票|%02d|%8ld|", 0, iqt_RTicketCnt+i2);
+      else
+       strtmp.sprintf("退票|%02d|%8ld|", 0, 0);
+      AutoCrpIni->WriteString("AutoX","rTickcnt",strtmp);
+     }
+
+   ////////////////////////////// 信用卡簽單張數 //////////////////////////////////////
+   strtmp=AutoCrpIni->ReadString("AutoX","rSigcnt","0");
+   i1=_StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2=_StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   sLog.sprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,信用卡簽單張數  :%8ld", strtmp,
+                                                     iqt_SigCnt+i2);
+   writelog(sLog);
+
+   strtmp.sprintf("%s信用卡簽單張數:%5ld │         │",CmdStr.c_str(),iqt_SigCnt+i2);   tslCrp->Add(strtmp);
+
+   if( Update )
+     {
+      if( iAutoZ )
+       strtmp.sprintf("簽單|%02d|%8ld|", 0, iqt_SigCnt+i2);
+      else
+       strtmp.sprintf("簽單|%02d|%8ld|", 0, 0);
+      AutoCrpIni->WriteString("AutoX","rSigcnt",strtmp);
+     }
+
 
  /////////////////////////////////////////////////////////////////////////////////////////////////
 
