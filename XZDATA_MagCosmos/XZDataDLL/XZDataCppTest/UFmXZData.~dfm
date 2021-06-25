@@ -1,8 +1,8 @@
 object FmMain: TFmMain
-  Left = 235
-  Top = 221
-  Width = 945
-  Height = 545
+  Left = 239
+  Top = 157
+  Width = 963
+  Height = 544
   Caption = 'XZData Cpp Teat'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -34,7 +34,7 @@ object FmMain: TFmMain
     Width = 317
     Height = 25
     AutoSize = False
-    Caption = 'V20210601 '
+    Caption = 'V20210615'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clRed
     Font.Height = -16
@@ -108,6 +108,7 @@ object FmMain: TFmMain
     Font.Height = -16
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     Lines.Strings = (
       'XZDATA_Mag20210601   雲端中獎發票新增獎項800元'
       ''
@@ -129,8 +130,8 @@ object FmMain: TFmMain
     TabOrder = 0
   end
   object Button1: TButton
-    Left = 6
-    Top = 428
+    Left = 8
+    Top = 436
     Width = 119
     Height = 33
     Caption = 'CheckIn'
@@ -147,6 +148,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 2
     Text = 'c:\FTLPOS\XZDATA\SAL\02.sal'
@@ -161,8 +163,8 @@ object FmMain: TFmMain
     OnClick = Button2Click
   end
   object Button3: TButton
-    Left = 130
-    Top = 428
+    Left = 128
+    Top = 438
     Width = 119
     Height = 33
     Caption = 'XDT'
@@ -179,8 +181,8 @@ object FmMain: TFmMain
     OnClick = Button4Click
   end
   object Button5: TButton
-    Left = 376
-    Top = 428
+    Left = 372
+    Top = 436
     Width = 119
     Height = 33
     Caption = '日結'
@@ -197,8 +199,8 @@ object FmMain: TFmMain
     OnClick = Button6Click
   end
   object Button7: TButton
-    Left = 252
-    Top = 428
+    Left = 250
+    Top = 436
     Width = 119
     Height = 33
     Caption = '重點商品'
@@ -215,6 +217,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 9
     Text = '00000000'
@@ -229,8 +232,8 @@ object FmMain: TFmMain
     OnClick = Button8Click
   end
   object Button9: TButton
-    Left = 500
-    Top = 430
+    Left = 492
+    Top = 436
     Width = 119
     Height = 33
     Caption = '自動日結'
@@ -256,6 +259,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 13
   end
@@ -269,6 +273,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 14
     Text = '00000'
@@ -283,6 +288,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 15
     Text = '00000'
@@ -297,6 +303,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 16
     Text = '00000000'

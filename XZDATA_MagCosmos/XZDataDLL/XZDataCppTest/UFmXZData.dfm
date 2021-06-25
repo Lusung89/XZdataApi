@@ -1,8 +1,8 @@
 object FmMain: TFmMain
-  Left = 235
-  Top = 221
-  Width = 945
-  Height = 545
+  Left = 239
+  Top = 157
+  Width = 963
+  Height = 544
   Caption = 'XZData Cpp Teat'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -29,7 +29,7 @@ object FmMain: TFmMain
     ParentFont = False
   end
   object Label2: TLabel
-    Left = 618
+    Left = 616
     Top = 436
     Width = 317
     Height = 25
@@ -108,7 +108,10 @@ object FmMain: TFmMain
     Font.Height = -16
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     Lines.Strings = (
+      'XZDATA_Mag20210615  新增信用卡簽單張數 劃位票券退票張數'
+      ''
       'XZDATA_Mag20210601   雲端中獎發票新增獎項800元'
       ''
       'XZDATA_Mag20210423   目前針對1811 加值處理'
@@ -129,7 +132,7 @@ object FmMain: TFmMain
     TabOrder = 0
   end
   object Button1: TButton
-    Left = 8
+    Left = 4
     Top = 436
     Width = 119
     Height = 33
@@ -147,6 +150,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 2
     Text = 'c:\FTLPOS\XZDATA\SAL\02.sal'
@@ -161,7 +165,7 @@ object FmMain: TFmMain
     OnClick = Button2Click
   end
   object Button3: TButton
-    Left = 128
+    Left = 126
     Top = 436
     Width = 119
     Height = 33
@@ -215,6 +219,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 9
     Text = '00000000'
@@ -256,6 +261,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 13
   end
@@ -269,6 +275,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 14
     Text = '00000'
@@ -283,6 +290,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 15
     Text = '00000'
@@ -297,6 +305,7 @@ object FmMain: TFmMain
     Font.Height = -19
     Font.Name = 'MS Sans Serif'
     Font.Style = [fsBold]
+    ImeName = '中文 (繁體) - 新注音'
     ParentFont = False
     TabOrder = 16
     Text = '00000000'
