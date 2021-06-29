@@ -1102,7 +1102,7 @@ int __fastcall _GetZDTZSALCntCheck(TStringList *ZCntLst, string SalFileName, str
                 if(  TmpZcnt ==  OrgZcnt )                //sTmpDttm.SubString(1,8) <= AutoZdt)
                  {
                     iSal1050++;
-					logsprintf("_GetZDTZSALCntCheck:SAL(%6d)(%s)", iSal1050, sRec.substr(1, 526).c_str());
+					logsprintf("_GetZDTZSALCntCheck:SAL(%6d)(%s)", iSal1050, sRec.substr(0, 526).c_str());
                  }
              }
      }
@@ -9184,9 +9184,9 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
 
    //sTranCnt +="|";
    bt = nXDTdttb;
-   BefTime = bt.substr(1, 4) + "-" + bt.substr(5, 2) + "-" + bt.substr(7, 2) + "  " + bt.substr(9, 2) + ":" + bt.substr(11, 2);
+   BefTime = bt.substr(0, 4) + "-" + bt.substr(4, 2) + "-" + bt.substr(6, 2) + "  " + bt.substr(8, 2) + ":" + bt.substr(10, 2);
    nt = nXDTdttn;  //_StringSegment_EX(sTranCnt, "|", 5); // sTranCnt.SubString(21,14);  1041
-   NowTime=nt.substr(1,4)+"-"+nt.substr(5,2)+"-"+nt.substr(7,2)+"  "+nt.substr(9,2)+":"+nt.substr(11,2);
+   NowTime=nt.substr(0,4)+"-"+nt.substr(4,2)+"-"+nt.substr(6,2)+"  "+nt.substr(8,2)+":"+nt.substr(10,2);
    read_ten_name(sStoreNo, sStoreName);
 
    sprintf_s(buffer, sizeof(buffer), "%s        收銀員交接班明細表", CmdStr.c_str()); tslCrp->push_back(string(buffer));
