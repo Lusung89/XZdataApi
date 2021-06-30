@@ -1,0 +1,106 @@
+﻿  stdafx.cpp
+  dllmain.cpp
+  INI.cpp
+  Lcommon.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xstring(2575,23): warning C4244: 'argument': conversion from 'wchar_t' to 'const _Elem', possible loss of data
+          with
+          [
+              _Elem=char
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xstring(2586): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xstring(2586): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xstring(2566): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xstring(2566): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\Lcommon.cpp(836): message : see reference to function template instantiation 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)' being compiled
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\Lcommon.cpp(836): message : see reference to function template instantiation 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)' being compiled
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+  ULOG.cpp
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\ULOG.cpp(856,22): warning C4018: '>=': signed/unsigned mismatch
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\ULOG.cpp(891,27): warning C4018: '>=': signed/unsigned mismatch
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\ULOG.cpp(6627,21): warning C4473: 'fscanf_s' : not enough arguments passed for format string
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\ULOG.cpp(6627,21): message : placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\ULOG.cpp(6627,21): message : the missing variadic argument 2 is required by format string '%c'
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\ULOG.cpp(6627,21): message : this argument is used as a buffer size
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xstring(2575,23): warning C4244: 'argument': conversion from 'wchar_t' to 'const _Elem', possible loss of data
+          with
+          [
+              _Elem=char
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xstring(2586): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xstring(2586): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xstring(2566): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\xstring(2566): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\ULOG.cpp(83): message : see reference to function template instantiation 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)' being compiled
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\ULOG.cpp(83): message : see reference to function template instantiation 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)' being compiled
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+  UReport.cpp
+  UXZDataClass.cpp
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\UXZDataClass.cpp(272,14): warning C4834: discarding return value of function with 'nodiscard' attribute
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\UXZDataClass.cpp(4076,9): warning C4101: 'RtnZDTCnts': unreferenced local variable
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\UXZDataClass.cpp(4076,21): warning C4101: 'RtnSALCnts': unreferenced local variable
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\UXZDataClass.cpp(4782,9): warning C4101: 'fxdata': unreferenced local variable
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\UXZDataClass.cpp(5697,27): warning C4473: 'fscanf_s' : not enough arguments passed for format string
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\UXZDataClass.cpp(5697,27): message : placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\UXZDataClass.cpp(5697,27): message : the missing variadic argument 2 is required by format string '%c'
+D:\2020NextPOS\SRC\XZDATA\XZdataApi\XZdataApi\UXZDataClass.cpp(5697,27): message : this argument is used as a buffer size
+  XZdataApi.cpp
+     Creating library D:\2020NextPOS\SRC\XZDATA\XZdataApi\Release\XZdataApi.lib and object D:\2020NextPOS\SRC\XZDATA\XZdataApi\Release\XZdataApi.exp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 1111 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  XZdataApi.vcxproj -> D:\2020NextPOS\SRC\XZDATA\XZdataApi\Release\XZdataApi.dll
