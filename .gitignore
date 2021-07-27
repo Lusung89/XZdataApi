@@ -14,3 +14,11 @@
 /XZdataApi/Debug
 /XZDataCS_Test/bin/Debug
 obj
+*.pdb
+*.obj
+*.log
+*.recipe
+*.iobj
+*.ipdb
+*.pch
+*.tlog

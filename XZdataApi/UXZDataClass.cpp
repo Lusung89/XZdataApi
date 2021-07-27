@@ -433,7 +433,24 @@ int __stdcall MtnDirHistory(string RptYYYYMMDD, string SysYYYYMMDD, string RptDa
 	return 1;
 }
 
+string __stdcall GetStoreName()
+{
+    wstring pathName = L"C:\\Nextpos\\INI\\settings\\StoreInfo.xml";
+    wstring MEcode, GetFileData,  wsKeyVal, wsRepKeyVal, RepData;
+    MEcode = L"r,ccs=UTF-16LE";
 
+    GetFileData=_WOpenFile(pathName,  MEcode);
+
+    wsKeyVal = L"store_name";
+    MEcode = _XMLParser(GetFileData, wsKeyVal, RepData);
+
+    wsRepKeyVal=_WStringSegmentW(MEcode, L"||", 1);
+
+    if (_Trim(_WStringToString(wsRepKeyVal)) == "")
+        wsRepKeyVal = L"FFFF";
+ 
+    return( _WStringToString(wsRepKeyVal));
+}
 
 
 // REPORT *report;     報表Class  手動交班
@@ -1411,7 +1428,7 @@ int __fastcall XDATA::WriteData(const string StoreNO, const string EcrNO, const 
     if (Trim(g_orgtencode) == "")
         g_orgtencode = StoreNO;
 		//sprintf_s(gchar_orgtencode, sizeof(gchar_orgtencode), "%s", gchar_tencode);      //原始店號
-
+    g_store_name = GetStoreName();
     //SPOS_XRPDT *x = new SPOS_XRPDT;         //X帳檔案結構
 
     //備份載入之原始之料
@@ -2763,6 +2780,7 @@ int __fastcall ZDATA::WriteData(const string StoreNO, const string EcrNO, const 
     if (Trim(g_orgtencode) == "")
         g_orgtencode = StoreNO;
 		//sprintf_s(gchar_orgtencode, sizeof(gchar_orgtencode), "%s", gchar_tencode);      //原始店號
+    g_store_name = GetStoreName();
 
     //備份載入之原始之料
     Auto_Sal->clear();
@@ -3343,6 +3361,7 @@ int __fastcall XREPORT::WriteData( const string StoreNO, const string EcrNO, con
     if (Trim(g_orgtencode) == "")
         g_orgtencode = StoreNO;
 		//sprintf_s(gchar_orgtencode, sizeof(gchar_orgtencode), "%s", gchar_tencode);      //原始店號
+    g_store_name = GetStoreName();
 
     str_ver_num = get_version(Version);
 
@@ -4147,7 +4166,7 @@ int __fastcall CHECKIN::WriteData(const string StoreNO, const string EcrNO, cons
     if (Trim(g_orgtencode) == "")
         g_orgtencode = StoreNO;
 		//sprintf_s(gchar_orgtencode, sizeof(gchar_orgtencode), "%s", gchar_tencode);      //原始店號
-   
+    g_store_name = GetStoreName();
     string str_x_filename,              //XDATA檔名
                str_ptran_cnt,               //前次結帳序號
                str_date_z,                  //DataZ(日期加X帳次數)
@@ -5171,7 +5190,7 @@ int __fastcall SPCDATA::WriteSpcInqData(const string SalFileName, const string V
 
     str_tencode = g_tencode;   //店號
 	ed_date_time = currentDateTime(1);  //FormatDateTime("yyyymmddhhnnss", Now());
-
+    g_store_name = GetStoreName();
     string spc_a;
     
 	_Strsprintf(spc_a,"3180||0025||%-6s||%2s||%14s||%5s||%10s||%2s||%10s||%14s||",
@@ -5868,7 +5887,7 @@ int __fastcall VXZDATA::WriteData(const string StoreNO, const string EcrNO, cons
     if (Trim(g_orgtencode) == "")
         g_orgtencode = StoreNO;
 		//sprintf_s(gchar_orgtencode, sizeof(gchar_orgtencode), "%s", gchar_tencode);      //原始店號
-
+    g_store_name = GetStoreName();
     //SPOS_ZRPDT *z = new SPOS_ZRPDT;         //Z帳結構
     string str_z_filename;              //Z帳輸出檔名
 
@@ -8354,7 +8373,7 @@ int __fastcall AUTOZDATA::WriteData(const string StoreNO, const string EcrNO, co
     if (Trim(g_orgtencode) == "")
         g_orgtencode = StoreNO;
 		//sprintf_s(gchar_orgtencode, sizeof(gchar_orgtencode), "%s", gchar_tencode);      //原始店號
-
+    g_store_name = GetStoreName();
 
     //備份載入之原始之料
     Auto_Sal->clear();
@@ -9058,6 +9077,7 @@ string __fastcall AUTOZDATA::AutoXData(const string StoreNO, const string EcrNO,
     if (Trim(g_orgtencode) == "")
         g_orgtencode = StoreNO;
 		//sprintf_s(gchar_orgtencode, sizeof(gchar_orgtencode), "%s", gchar_tencode);      //原始店號
+    g_store_name = GetStoreName();
 
     string str_x_filename,              //XDATA檔名
                str_ptran_cnt,               //前次結帳序號

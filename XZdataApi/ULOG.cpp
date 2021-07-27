@@ -5189,12 +5189,12 @@ void __fastcall BASIC::init_data()
 	{ 
 	//m_IniReader.WriteString(m_strKeyValue, m_strKeyName, m_strSectionName);
 	m_IniReader.setINIFileName(XZDATA_INI);
-	int_ten_code = stoi(m_IniReader.ReadString("ECR", "StoreNO", "009913"));
+	int_ten_code = stoi(m_IniReader.ReadString("ECR", "StoreNO", "009999"));
 	int_ecr_no = stoi(m_IniReader.ReadString("ECR", "EcrNO", "01"));
 	int_cashier = stoi(m_IniReader.ReadString("ECR", "SalesNo", "00000"));
 
 	str_x_trans = m_IniReader.ReadString("X", "ptran_cnt", "00000000");
-	OrgStoreNo = m_IniReader.ReadString("ECR", "OrgStoreNO", "009913"); //原始店號
+	OrgStoreNo = m_IniReader.ReadString("ECR", "OrgStoreNO", "009999"); //原始店號
 
 	//sprintf_s(gchar_tencode, sizeof(gchar_tencode), "%06d", int_ten_code);
     _Strsprintf(g_tencode, "%06d", int_ten_code);
@@ -5236,6 +5236,8 @@ void __fastcall BASIC::init_data()
 	{
 		;;
 	}
+
+    g_store_name = ""; // GetStoreName();
 
 	//m_IniReader.getSectionNames(); // getSectionData("ECR");
 
@@ -7501,6 +7503,12 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
 
 int __fastcall BASIC::read_ten_name(string &sStoreNo, string &sStoreName)
 {
+    sStoreNo = g_tencode;
+    sStoreName = g_store_name;
+    return(0);
+
+ /****************************************
+
   FILE  *code_file;
   char   tmp_buf[81],tmp_data[31];
   string strtmp;
@@ -7537,8 +7545,9 @@ int __fastcall BASIC::read_ten_name(string &sStoreNo, string &sStoreName)
 
      }
    fclose(code_file);
-
- return(0);
+   return(0);
+ *******************************************/
+ 
 }
 
 
@@ -7605,7 +7614,7 @@ int __fastcall BASIC::SumBillCPN(int StartLine, int TotalLine)
 	iPayType = iPayID = iTAmt = iTCnt = iRecycleFg = 0;
     giU=giV=0;
 
-    logsprintf("SumBillCPN: 非實體券金額折價券合計金額計算 (1040:StartLine:%d,TotalLine:%d)",StartLine, TotalLine);
+    logsprintf("SumBillCPN: 非實體券金額折價券合計金額計算 (3240:StartLine:%d,TotalLine:%d)",StartLine, TotalLine);
 
     if (gbl_bil_haveline)
     {
@@ -7622,7 +7631,7 @@ int __fastcall BASIC::SumBillCPN(int StartLine, int TotalLine)
             iTAmt = _StrToInt( _StringSegment_EX(s, SGM, 13), "支付金額" );
 			iRecycleFg = _StrToInt(_StringSegment_EX(s, SGM, 29), "廢資源回fg_29");  //回收註記
 
-            if( sPAY_TYPE.substr(1,1)=="C" )
+            if( sPAY_TYPE.substr(0,1)=="C" )
             {
                 /*stmp.sprintf("SumBillCPN:1040->%s",gtsl_bil->Strings[i] );
                 writelog(stmp);*/
@@ -7647,13 +7656,13 @@ int __fastcall BASIC::SumBillCPN(int StartLine, int TotalLine)
         }  // end of  for (int i=StartLine; i<=TotalLine; i++)
     }      // end of if (gbl_bil_haveline)
 
-    logsprintf("SumBillCPN: 非實體券金額折價券合計金額計算 1040 (非實體券金額:%d), 實體券金額:%d)",giU, giV);
+    logsprintf("SumBillCPN: 非實體券金額折價券合計金額計算 3240 (非實體券金額:%d), 實體券金額:%d)",giU, giV);
     return giU;
 }
 
 
 
-////即時購合計   即時購與銷轉進值 3110
+////即時購合計   即時購與銷轉進值 3110, 3113
 int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
 {
 
@@ -7707,9 +7716,9 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
 
 
             str_sale_type = _StringSegment_EX(s, SGM, seg1);
-            TaxFlg = _StringSegment_EX(s, SGM, seg9);           // 稅別  '0'(免稅) '1'(應稅)
+            TaxFlg = Trim(_StringSegment_EX(s, SGM, seg9));           // 稅別  '0'(免稅) '1'(應稅)
 
-            str_r_type = _StringSegment_EX(s, SGM, seg11);     // 交易狀態區分
+            str_r_type = Trim( _StringSegment_EX(s, SGM, seg11) );     // 交易狀態區分
            
 
             //A1:正常銷售取消    B1:部門銷售取消   M1:Menu銷售取消
@@ -7734,12 +7743,15 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
             TmpBarcode2="";
 
             /************    2012/04/01 Update,  2012/04/04 ReCover  ******************/
-			if (Trim(VdcStatus.substr(2, 1)) == "0" || Trim(VdcStatus.substr(2, 1)) == "")  //存貨推移FG
+			if (Trim(VdcStatus.substr(1, 1)) == "0" || Trim(VdcStatus.substr(1, 1)) == "")  //存貨推移FG
                     continue;
 
-            if ( _StrFind(str_sale_type,"A") && ifg_spc==9 )  //預售商品
-               { ;;}
-            else if ( ifg_spc==4 || ifg_spc==5 || ifg_spc==6 || ifg_spc==9 )
+            //if ( _StrFind(str_sale_type,"A") && ifg_spc==9 )  //預售商品
+            //   { ;; }
+            //else if ( ifg_spc==4 || ifg_spc==5 || ifg_spc==6 || ifg_spc==9 )
+            //   {     continue;   }
+
+            if (ifg_spc == 4 || ifg_spc == 5 || ifg_spc == 6 || ifg_spc == 9)
                {     continue;   }
 
             /************             2012/04/01  Update            ******************/
@@ -7751,7 +7763,7 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
 
             tmpQty= _StrToInt(_StringSegment_EX(s, SGM, seg4));      //數量;
             tmpAmt= _StrToInt(_StringSegment_EX(s, SGM, seg5));      //金額
-
+            /*****   
             if ( iRelType==11 ) // 租賃
                {
                  if( str_sale_type=="A0" || str_sale_type=="A1" )
@@ -7776,35 +7788,37 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
                      }
 
                }
+             ********/   
 
-			if (_StrFind(str_sale_type,"0"))
+      	   if ( _StrFind(str_sale_type,"0") )
             {
 
-				if (_StrFind(str_r_type, "FF") || _StrFind(str_r_type, "Z0") || _StrFind(str_r_type,"Z1"))
+				if (str_r_type == "FF" || str_r_type=="Z0" || str_r_type=="Z1" )
                 {
-                   if( Trim(TaxFlg)=="0" )
-                     {
-                       giC += tmpQty;    //(免稅次數)
-                       giD += tmpAmt;   //(免稅金額)
-                     }
-                   else
-                     {
-                       giA += tmpQty;       //(應稅次數)
-                       giB += tmpAmt;      //(應稅金額)
-                     }
+                    
+                    if (TaxFlg == "0")
+                    {
+                        giC += tmpQty;
+                        giD += tmpAmt;
+                    }
+                    else
+                    {
+                        giA += tmpQty;
+                        giB += tmpAmt;
+                    }
 
-                  if (iRelType==99)
-                     {
-                       iVDC99Cnt+=tmpQty;
-                       iVDC99Amt+=tmpAmt;
-                     }
-
-                   logsprintf("VdcInvSumdat:即時購與銷轉進值:%s->金額:+%d, Acc=%d ... VDC99(%d,%d)", s.c_str(),tmpAmt, giB+giD, iVDC99Cnt, iVDC99Amt );
+                    if (iRelType == 99)
+                    {
+                        iVDC99Cnt += tmpQty;
+                        iVDC99Amt += tmpAmt;
+                    }
+                                    
+                  //logsprintf("VdcInvSumdat:即時購與銷轉進值:%s->金額:+%d, Acc=%d ... VDC99(%d,%d)", s.c_str(),tmpAmt, giB+giD, iVDC99Cnt, iVDC99Amt );
 
                 }
-				else if (_StrFind(str_r_type, "R2") || _StrFind(str_r_type,"R3"))
+               else if (str_r_type=="R2" || str_r_type=="R3" )
                 {
-                    if( Trim(TaxFlg)=="0" )
+                    if( TaxFlg == "0" )
                      {
                        giC -= tmpQty;   //(免稅次數)
                        giD -= tmpAmt;   //(免稅金額)
@@ -7815,21 +7829,22 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
                        giB -= tmpAmt;       //(應稅金額)
                      }
 
-                    if (iRelType==99)
+                    if (iRelType == 99)
                      {
                        iVDC99Cnt-=tmpQty;
                        iVDC99Amt-=tmpAmt;
                      }
 
-                   logsprintf("VdcInvSumdat:即時購與銷轉進值:%s->金額:-%d, Acc=%d ... VDC99(%d,%d)", s.c_str(),tmpAmt, giB+giD, iVDC99Cnt, iVDC99Amt);
+                   //logsprintf("VdcInvSumdat:即時購與銷轉進值:%s->金額:-%d, Acc=%d ... VDC99(%d,%d)", s.c_str(),tmpAmt, giB+giD, iVDC99Cnt, iVDC99Amt);
 
                 }
+                              
             }    //if (str_sale_type.Pos("1"))
-           else  //0001    更正
+           else  //1    更正
             {
-				if (_StrFind(str_r_type, "FF") || _StrFind(str_r_type, "Z0") || _StrFind(str_r_type,"Z1"))
+				if (str_r_type=="FF" || str_r_type=="Z0" || str_r_type=="Z1" )
                 {
-                   if( Trim(TaxFlg)=="0" )
+                   if( TaxFlg == "0" )
                      {
                        giC -= tmpQty;    //(免稅次數)
                        giD -= tmpAmt;   //(免稅金額)
@@ -7847,13 +7862,13 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
                        iVDC99Amt-=tmpAmt;
                      }
 
-                  logsprintf("VdcInvSumdat:即時購與銷轉進值:%s->金額:-%d, Acc=%d ... VDC99(%d,%d)",
-                                s.c_str(),tmpAmt, giB+giD, iVDC99Cnt, iVDC99Amt);
-                  //t->Add(gtsl_rec->Strings[i]);
+                  //logsprintf("VdcInvSumdat:即時購與銷轉進值:%s->金額:-%d, Acc=%d ... VDC99(%d,%d)",
+                  //              s.c_str(),tmpAmt, giB+giD, iVDC99Cnt, iVDC99Amt);
+                  
                 }
-				else if (_StrFind(str_r_type, "R2") || _StrFind(str_r_type,"R3"))
+				else if (str_r_type=="R2" || str_r_type=="R3")
                 {
-                    if( Trim(TaxFlg)=="0" )
+                    if( TaxFlg=="0" )
                      {
                        giC += tmpQty;   //(免稅次數)
                        giD += tmpAmt;   //(免稅金額)
@@ -7869,7 +7884,7 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
                        iVDC99Amt+=tmpAmt;
                      }
 
-                   logsprintf("VdcInvSumdat:即時購與銷轉進值:%s->金額:+%d, Acc=%d ... VDC99(%d,%d)", s.c_str(),tmpAmt, giB+giD, iVDC99Cnt, iVDC99Amt );
+                  // logsprintf("VdcInvSumdat:即時購與銷轉進值:%s->金額:+%d, Acc=%d ... VDC99(%d,%d)", s.c_str(),tmpAmt, giB+giD, iVDC99Cnt, iVDC99Amt );
                    //t->Add(gtsl_rec->Strings[i]);
                 }
 

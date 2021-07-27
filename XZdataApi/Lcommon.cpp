@@ -1,11 +1,13 @@
 ﻿#include "stdafx.h"
 #include "Lcommon.h"
 
+
 string LlogFileName;
 string LWorkDir;
 string LlogDir;
 
 const int FBLOCK_MAX_BYTES = 256;    // File Type.  
+
 
 /// <summary>  Lcommon_init()
 ///  Init Lcommon ..Create sWorkDir目錄, Create sLogFile 檔案.. 程式啟動時執行.
@@ -34,9 +36,106 @@ void __stdcall Lcommon_init(string sWorkDir, string sLogFile)
 	if (!DirExists(LlogDir))
 		SHCreateDirectory(NULL, wstmp.c_str());
 
+
+	CString pathName, CszXML = _T("");
+	pathName = _T("d:\\StoreInfo.xml");
+
+	//("堃；", "煊；"媖)  
+	FILE* file;
+	wstring line;
+	errno_t err;
+
+	// <param name = "MEcode:r,ccs=UNICODE">< / param>
+	// <param name="MEcode:r,ccs=UTF-16LE"></param>
+	// <param name="MEcode:r,ccs=UTF-8"></param>  
+	// <param name="MEcode:r,ccs=CP_ACP"></param> 
+
+	err = _wfopen_s(&file, pathName.GetBuffer(), L"r,ccs=UTF-8");  //L"r,ccs=UTF-16LE", L"r,ccs=UTF-8"
+
+	if (err == 0)
+	{
+		//logsprintf("The file %s was opened ,MEcode=%s ", _WStringToString(pathName).c_str(), _WStringToString(MEcode).c_str());
+		line = L"";
+		while (!feof(file) && !ferror(file)) {
+			line = _ReadOneLine(file, line);
+			//wcout << line;
+		}
+		fclose(file);
+
+		CszXML= CString(line.c_str());
+
+		
+		Cxml* xml = new  Cxml();
+		xml->ParseString(CszXML.GetBuffer() );
+		CNode* root = xml->GetRootNode();
+
+		CString crepdate = _T("");
+		//_GetSettingVal(root, _T("store_name"), crepdate);
+
+		delete(xml);
+	
+		//CString cs("Hello");
+		//std::string s((LPCTSTR)cs);
+		//std::string s("Hello");
+		//CString cs(s.c_str());
+		// std::wstring wstrStd = strMfc.GetString(); // wsrStd = L"Test"
+	
+		// wstring -> CString
+		//std::wstring src;
+		//CString result(src.c_str());
+		//SetWindowTextW(result);
+
+		// CString -> wstring
+		//CString src;
+		//std::wstring des(src.GetString());
+		
+	}
+	else
+	{
+		//logsprintf("The file %s  opene error=%d ", _WStringToString(FileName).c_str(), err);
+	}
+
+
 }
+/***********************************
+bool CtestDlg::_GetSettingVal(CNode* xml_node, CString cKeyVal, CString& cRepVal)
+{
+	CAttribute* a = NULL;
+	CString szText = _T("");
+	CString szVal = _T("");
 
 
+	if (xml_node == NULL)
+		return(false);
+	szText.Append(xml_node->GetName());
+	szText.Append(_T(" - "));
+	szText.Append(xml_node->GetValue());
+	while ((a = xml_node->GetNextAttribute()) != NULL)
+	{
+		//szText.Append(_T(" _ "));
+		//szText.Append(a->GetName());
+		//szText.Append(_T(" = "));
+		szVal += (a->GetValue() + CString(_T("||")));
+		//szText.Append(szVal);
+		//if (szVal == _T("NO_RECEIPT"))
+		if (szVal.Find(cKeyVal) != -1)
+		{
+			cRepVal = szVal;
+			return(false);
+		}
+	}
+
+	while (true)
+	{
+		CNode* chld = xml_node->GetNextChild();
+		if (chld == NULL)
+			return(true);
+
+		if (!_GetSettingVal(chld, cKeyVal, cRepVal))
+			break;
+	}
+}
+******************************************/
 
 /// <summary> wMtnDirFile_Ex
 /// 刪除 sDir 目錄下的檔案
@@ -429,6 +528,66 @@ void __stdcall _MtnDirFile_Ex(string dirName_in, int MtnDay, int FileCnt)
 //}
 
 
+
+wstring __stdcall _XMLParser(wstring wsXMLDATA, wstring wsKeyVal, wstring& wsRepKeyVal)
+{
+	CString cKeyVal, cRepKeyVal, CszXML;
+	cKeyVal = CszXML = cRepKeyVal = _T("");
+
+	CszXML = CString(wsXMLDATA.c_str());
+	cKeyVal = CString(wsKeyVal.c_str());
+	//SetWindowTextW(CszXML);
+	Cxml* xml = new  Cxml();
+	xml->ParseString(CszXML.GetBuffer());
+	CNode* root = xml->GetRootNode();
+	 
+	_GetSettingVal(root, cKeyVal, cRepKeyVal);
+	
+	// std::wstring wstrStd = strMfc.GetString(); // wsrStd = L"Test"
+	return(cRepKeyVal.GetString());
+}
+
+bool __stdcall _GetSettingVal(CNode* xml_node, CString cKeyVal, CString& cRepVal)
+{
+	CAttribute* a = NULL;
+	CString szText = _T("");
+	CString szVal = _T("");
+
+	if (xml_node == NULL)
+		return(false);
+	szText.Append(xml_node->GetName());
+	szText.Append(_T(" - "));
+	szText.Append(xml_node->GetValue());
+	while ((a = xml_node->GetNextAttribute()) != NULL)
+	{
+		//szText.Append(_T(" _ "));
+		//szText.Append(a->GetName());
+		//szText.Append(_T(" = "));
+		szVal += (a->GetValue() + CString(_T("||")));
+		cRepVal = szVal;
+		//szText.Append(szVal);
+		//if (szVal == _T("NO_RECEIPT"))
+		if (cRepVal.MakeUpper().Find(cKeyVal.MakeUpper()) != -1)
+		{
+			cRepVal = szVal;
+			return(false);
+		}
+	}
+
+	while (true)
+	{
+		CNode* chld = xml_node->GetNextChild();
+		if (chld == NULL)
+			return(true);
+
+		if (!_GetSettingVal(chld, cKeyVal, cRepVal))
+			break;
+	}
+}
+
+
+
+
 /// <summary> _WOpenFile 
 /// Open Unicode file , 
 /// </summary>
@@ -438,11 +597,11 @@ void __stdcall _MtnDirFile_Ex(string dirName_in, int MtnDay, int FileCnt)
 /// <param name="MEcode:r,ccs=UTF-8"></param>  
 /// <param name="MEcode:r,ccs=CP_ACP"></param> 
 /// <returns> void</returns>
-void __stdcall _WOpenFile(wstring FileName, wstring MEcode )
+wstring __stdcall _WOpenFile(wstring FileName, wstring MEcode )
 {
 	//("堃；", "煊；"媖)  
 	FILE *file;
-	wstring line;
+	wstring line = L"";
 	errno_t err;
 
 	err = _wfopen_s(&file, FileName.c_str(), MEcode.c_str());  //L"r,ccs=UTF-16LE", L"r,ccs=UTF-8"
@@ -450,19 +609,19 @@ void __stdcall _WOpenFile(wstring FileName, wstring MEcode )
 	if (err == 0)
 	{
 		logsprintf("The file %s was opened ,MEcode=%s ", _WStringToString(FileName).c_str(), _WStringToString(MEcode).c_str());
+		while (!feof(file) && !ferror(file)) {
+			line = _ReadOneLine(file, line);
+			//wcout << line;
+		}
+		fclose(file);
 	}
 	else
 	{
-		logsprintf("The file %s  opene erroe=%d ", _WStringToString(FileName).c_str(), err);
+		logsprintf("The file %s  opene error=%d ", _WStringToString(FileName).c_str(), err);
+		//return(line);
 	}
 
-
-	while (!feof(file) && !ferror(file)){
-		line = _ReadOneLine(file, line);
-		//wcout << line;
-	}
-
-	fclose(file);
+	return(line);
 }
 
 
@@ -471,15 +630,17 @@ void __stdcall _WOpenFile(wstring FileName, wstring MEcode )
 wstring __stdcall _ReadOneLine(FILE *File, wstring Line)
 {
 
-	wchar_t LineOfChars[4096];
-	wmemset(LineOfChars, 0x00, 4096);
-	fgetws(LineOfChars, 4096, File);
+	//wchar_t LineOfChars[FBLOCK_MAX_BYTES];
+	wchar_t* LineOfChars = new wchar_t[FBLOCK_MAX_BYTES + 1];//一定要加1，不然?出?尾巴
 
-	Line.clear();
+	wmemset(LineOfChars, 0x00, FBLOCK_MAX_BYTES);
+	fgetws(LineOfChars, FBLOCK_MAX_BYTES, File);
+
+	//Line.clear();
 	Line.append(LineOfChars);
 	//string str = _WStringToString(Line);  // Unicode 轉成 Big5 後, ("堃；", "煊, "媖" ) 會無法顯示, 變成 "?"
 	//str=_UnicodeToUTF8(Line);
-
+	delete[]LineOfChars;
 	return Line;
 }
 

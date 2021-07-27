@@ -2,6 +2,8 @@
 #define LCOMMONH   
 
 #include "ULOG.h"
+#include "Cxml.h"
+//#include <string>
 
 typedef enum FileType
 {
@@ -20,6 +22,12 @@ void  __stdcall _Llog(string SLog);
 void  __stdcall _LlogPrintf(char* format, ...);
 #pragma endregion
 
+
+#pragma region    XML Parser 
+wstring __stdcall _XMLParser(wstring wsXMLDATA, wstring wsKeyVal, wstring& wsRepKeyVal);
+bool __stdcall _GetSettingVal(CNode* xml_node, CString cKeyVal, CString& cRepVal);
+#pragma endregion
+
 #pragma region   FileSystem Function
 int __stdcall    _GetFileList(TStringList *lsFileList, std::wstring &refcstrRootDirectory, std::wstring refFileExt = L"*.*", int iBefDay = 0, int ifileCnt = 0);
 int __stdcall    _DeleteDirectory(std::wstring &refcstrRootDirectory, bool bDeleteSubdirectories = true);
@@ -27,7 +35,7 @@ bool __stdcall   _DirExists(const std::string& dirName_in);
 void __stdcall   _DelTree(string dirName_in);
 void __stdcall   _wMtnDirFile_Ex(wstring wdirName_in, int MtnDay, int FileCnt);
 void __stdcall   _MtnDirFile_Ex(string dirName_in, int MtnDay, int FileCnt);
-void __stdcall   _WOpenFile(wstring FileName, wstring MEcode);
+wstring __stdcall   _WOpenFile(wstring FileName, wstring MEcode);
 wstring __stdcall _ReadOneLine(FILE *File, wstring Line);
 FILETYPE __stdcall _GetTextFileType(const std::string & strFileName);
 std::stringstream __stdcall _AnsiFileTostringstream(std::string filename);
