@@ -43,7 +43,7 @@ XZDATAAPI_API int __stdcall INITXZDATA(byte *OrgStoreNO, byte *StoreNO, byte *Ec
 	MyIni.setINIFileName(XZDATA_INI);
 
 	//[ECR}
-	MyIni.WriteString("ECR", "OrgStoreNO", string((char*)OrgStoreNO));  //Jack Add _ByteArrayToAnsiString
+	MyIni.WriteString("ECR", "OrgStoreNO", string((char*)OrgStoreNO));  // _ByteArrayToAnsiString
 	MyIni.WriteString("ECR", "StoreNO", string((char*)StoreNO));
 	MyIni.WriteString("ECR", "EcrNO", string((char*)EcrNO));
 	MyIni.WriteString("ECR", "Version", string((char*)Version));
