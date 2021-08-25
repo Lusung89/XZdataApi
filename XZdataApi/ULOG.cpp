@@ -7614,7 +7614,7 @@ int __fastcall BASIC::SumBillCPN(int StartLine, int TotalLine)
 	iPayType = iPayID = iTAmt = iTCnt = iRecycleFg = 0;
     giU=giV=0;
 
-    logsprintf("SumBillCPN: 非實體券金額折價券合計金額計算 (3240:StartLine:%d,TotalLine:%d)",StartLine, TotalLine);
+    logsprintf("SumBillCPN: 非實體券金額折價券合計金額計算 3240 (StartLine:%d,TotalLine:%d)",StartLine, TotalLine);
 
     if (gbl_bil_haveline)
     {
@@ -7656,7 +7656,7 @@ int __fastcall BASIC::SumBillCPN(int StartLine, int TotalLine)
         }  // end of  for (int i=StartLine; i<=TotalLine; i++)
     }      // end of if (gbl_bil_haveline)
 
-    logsprintf("SumBillCPN: 非實體券金額折價券合計金額計算 3240 (非實體券金額:%d), 實體券金額:%d)",giU, giV);
+    logsprintf("SumBillCPN: 非實體券金額折價券合計金額計算 3240 (非實體券金額:%d, 實體券金額:%d)",giU, giV);
     return giU;
 }
 
@@ -8665,7 +8665,7 @@ void __fastcall BASIC::Sub_C0C1TaxInvoQty(int StartLine, int TotalLine)
 
 
 /// <summary>
-///  外加手續費,即時購代售點卡集計 以連線區分分類  3110
+///  外加手續費,即時購代售點卡集計 以連線區分分類  3110, 3113
 ///  
 /// </summary>
 /// <param name1="StartLine",  name2="TotalLine" ></param>

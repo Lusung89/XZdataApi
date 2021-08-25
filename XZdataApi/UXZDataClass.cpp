@@ -787,11 +787,11 @@ int __fastcall XDATA::GetXDTData(string StrZCnt, string StoreNO, string EcrNO, s
     //代售合計次數                    代售商品合計
     iqt5_15217totrev=BaseTbSubrev[15].iqt5_totrev+
                      BaseTbSubrev[16].iqt5_totrev+
-                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC-iC0InvoQty4VDCN;   //2014/03/15
+                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC;  //-iC0InvoQty4VDCN; 2021/08/25 Update
     //代售合計金額   無須加入預售商品 代售商品合計
     iam5_15217totrev=BaseTbSubrev[15].iam5_totrev+
                      BaseTbSubrev[16].iam5_totrev+
-                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC-iC0InvoAmt4VDCN; // + ( PreSal09_AmtTX + PreSal09_AmtNTX ) - ( R2R3PreSal09_AmtTX +  R2R3PreSal09_AmtNTX);   //2014/03/15
+                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC; //-iC0InvoAmt4VDCN; 2021/08/25 Update 
 
     //代付合計次數
     iqt5_18219totrev=BaseTbSubrev[18].iqt5_totrev+
@@ -2175,7 +2175,7 @@ int __fastcall ZDATA::GetZDTData(string StrZCnt, string StoreNO,  string EcrNO, 
 	_Strsprintf(z->tb_trans.am_trcptax,"%010d", giF - C01TaxAmt - R4_C01TaxAmt - (PreSal09_AmtTX + R4PreSal09_AmtTX));       // 發票日結帳額(稅)
 	_Strsprintf(z->tb_trans.am_trcptot,"%010d", giG - C01FTaxAmt - C01TaxAmt - R4_C01FTaxAmt - R4_C01TaxAmt - (PreSal09_AmtTX + PreSal09_AmtNTX + R4PreSal09_AmtTX + R4PreSal09_AmtNTX));       // 發票日結帳金額
     int_tot_amt = giG-C01FTaxAmt-C01TaxAmt-R4_C01FTaxAmt-R4_C01TaxAmt - ( PreSal09_AmtTX + PreSal09_AmtNTX + R4PreSal09_AmtTX + R4PreSal09_AmtNTX );
-
+                  
     logsprintf("ZDATA::GetZDTData: 發票結帳累計金額=%s, 發票日結帳金額=%d ", str_am_tclsacc.c_str(), int_tot_amt  );
 
       //本日結帳累計金額   //20150318 Mantis:0019359(開封店)維修通知函---150315-0078本日結帳累計金額已超過-1000萬
@@ -2295,11 +2295,11 @@ int __fastcall ZDATA::GetZDTData(string StrZCnt, string StoreNO,  string EcrNO, 
     //代售合計次數 25
     iqt5_15217totrev=BaseTbSubrev[15].iqt5_totrev+
                      BaseTbSubrev[16].iqt5_totrev+
-                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC-iC0InvoQty4VDCN;
+                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC; //-iC0InvoQty4VDCN; 2021/08/25 Update
     //代售合計金額   無須加入預售商品 26  
     iam5_15217totrev=BaseTbSubrev[15].iam5_totrev+
                      BaseTbSubrev[16].iam5_totrev+
-                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC-iC0InvoAmt4VDCN; // + ( PreSal09_AmtTX + PreSal09_AmtNTX ) - ( R2R3PreSal09_AmtTX +  R2R3PreSal09_AmtNTX);
+                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC; //-iSub_C0InvoAmtC; 2021/08/25 Update
 
     //代付合計次數 27
     iqt5_18219totrev=BaseTbSubrev[18].iqt5_totrev+
@@ -3634,11 +3634,11 @@ int __fastcall XREPORT::WriteData( const string StoreNO, const string EcrNO, con
     //代售合計次數  代售手續費商品合計回數
     iqt5_15217totrev=BaseTbSubrev[15].iqt5_totrev+
                      BaseTbSubrev[16].iqt5_totrev+
-                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC-iC0InvoQty4VDCN;
+                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC; //-iC0InvoQty4VDCN; 2021/08/25 Update
     //代售合計金額  代售手續費商品合計金額 無須加入預售商品
     iam5_15217totrev=BaseTbSubrev[15].iam5_totrev+
                      BaseTbSubrev[16].iam5_totrev+
-                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC-iC0InvoAmt4VDCN; // + ( PreSal09_AmtTX + PreSal09_AmtNTX ) - ( R2R3PreSal09_AmtTX +  R2R3PreSal09_AmtNTX);
+                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC; //-iC0InvoAmt4VDCN; 2021/08/25 Update
 
     //代付合計次數
     iqt5_18219totrev=BaseTbSubrev[18].iqt5_totrev+
@@ -4437,11 +4437,11 @@ int __fastcall CHECKIN::WriteData(const string StoreNO, const string EcrNO, cons
     //代售合計次數
     iqt5_15217totrev=BaseTbSubrev[15].iqt5_totrev+
                      BaseTbSubrev[16].iqt5_totrev+
-                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC-iC0InvoQty4VDCN;
+                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC; //-iC0InvoQty4VDCN; 2021/08/25 Update
     //代售合計金額   無須加入預售商品
     iam5_15217totrev=BaseTbSubrev[15].iam5_totrev+
                      BaseTbSubrev[16].iam5_totrev+
-                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC-iC0InvoAmt4VDCN ; //+ ( PreSal09_AmtTX + PreSal09_AmtNTX ) - ( R2R3PreSal09_AmtTX +  R2R3PreSal09_AmtNTX);
+                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC; //-iC0InvoAmt4VDCN; 2021/08/25 Update
 
     //代付合計次數
     iqt5_18219totrev=BaseTbSubrev[18].iqt5_totrev+
@@ -6221,11 +6221,11 @@ int __fastcall VXZDATA::WriteData(const string StoreNO, const string EcrNO, cons
     //代售合計次數
     iqt5_15217totrev=BaseTbSubrev[15].iqt5_totrev+
                      BaseTbSubrev[16].iqt5_totrev+
-                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC-iC0InvoQty4VDCN;
+                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC; //-iC0InvoQty4VDCN; 2021/08/25 Update
     //代售合計金額   無須加入預售商品
     iam5_15217totrev=BaseTbSubrev[15].iam5_totrev+
                      BaseTbSubrev[16].iam5_totrev+
-                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC-iC0InvoAmt4VDCN; // + ( PreSal09_AmtTX + PreSal09_AmtNTX ) - ( R2R3PreSal09_AmtTX +  R2R3PreSal09_AmtNTX);
+                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC; //-iC0InvoAmt4VDCN; 2021/08/25 Update
 
     //代付合計次數
     iqt5_18219totrev=BaseTbSubrev[18].iqt5_totrev+
@@ -7766,11 +7766,11 @@ int __fastcall AUTOZDATA::GetZDTData(string StrZCnt, string StoreNO,  string Ecr
     //代售合計次數
     iqt5_15217totrev=BaseTbSubrev[15].iqt5_totrev+
                      BaseTbSubrev[16].iqt5_totrev+
-                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC-iC0InvoQty4VDCN;
+                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC; //-iC0InvoQty4VDCN; 2021/08/25 Update
     //代售合計金額   無須加入預售商品
     iam5_15217totrev=BaseTbSubrev[15].iam5_totrev+
                      BaseTbSubrev[16].iam5_totrev+
-                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC-iC0InvoAmt4VDCN; // + ( PreSal09_AmtTX + PreSal09_AmtNTX ) - ( R2R3PreSal09_AmtTX +  R2R3PreSal09_AmtNTX);
+                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC; //-iC0InvoAmt4VDCN; 2021/08/25 Update
 
     //代付合計次數
     iqt5_18219totrev=BaseTbSubrev[18].iqt5_totrev+
@@ -9418,11 +9418,11 @@ string __fastcall AUTOZDATA::AutoXData(const string StoreNO, const string EcrNO,
     //代售合計次數
     iqt5_15217totrev=BaseTbSubrev[15].iqt5_totrev+
                      BaseTbSubrev[16].iqt5_totrev+
-                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC-iC0InvoQty4VDCN;
+                     BaseTbSubrev[17].iqt5_totrev+iSub_C0InvoQtyC; //-iC0InvoQty4VDCN; 2021/08/25 Update
     //代售合計金額   無須加入預售商品
     iam5_15217totrev=BaseTbSubrev[15].iam5_totrev+
                      BaseTbSubrev[16].iam5_totrev+
-                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC-iC0InvoAmt4VDCN; // + ( PreSal09_AmtTX + PreSal09_AmtNTX ) - ( R2R3PreSal09_AmtTX +  R2R3PreSal09_AmtNTX);
+                     BaseTbSubrev[17].iam5_totrev+iSub_C0InvoAmtC; //-iC0InvoAmt4VDCN; 2021/08/25 Update
 
     //代付合計次數
     iqt5_18219totrev=BaseTbSubrev[18].iqt5_totrev+
