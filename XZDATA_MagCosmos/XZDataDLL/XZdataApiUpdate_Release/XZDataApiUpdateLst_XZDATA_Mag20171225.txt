@@ -1,3 +1,183 @@
+XZDATA_Mag20210812
+2021/8/13§ó·s----------------------------------------------------------------------
+
+¥»¦¸¾÷¯à½Õ¾ã­«ÂI
+¤@¡B	±bªí¡@
+(1)	¹w°â§I´«°Ó«~²£¥ÍªºÀô«OªMª÷ÃB¡A­ì¤J±bªíªº¥N°â°Ó«~§éÅýª÷ÃB¡A§ï¤J[§é¦©(À³µ|)]¡C
+ƒÜ	­ì¥»§PÂ_1010¹w°â§I´«ªº°O¿ýÀô«OªMª÷ÃB±a¤J±bªí[¥N°â°Ó«~§éÅýª÷ÃB]¡A§ï±a¤J±bªí[§é¦©(À³µ|)] ¡C
+ref:Àô«OªM¥N°â°Ó«~§éÅý§ï­p¤J§é¦©(À³µ|).txt
+
+(¶È¦C¥X¨ç¦¡¸Ì¦³­×§ïªº¨º´X¦æ,¨ä¥L¬Ù²¤¨S¶K¤W¨Ó)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+¤@¡C
+int __fastcall XDATA::GetXDTData(String StrZCnt, String StoreNO,  String EcrNO, String SalesNo, String XDTsysDttm, String StrNxnoSeq,
+                          String Version, String Z_date, String DDZ_1099, String ZNT_1099, String sIdx,
+                          String &RtnXDTData, String &RtnXRPFile, String &RtnCRPFile )
+{
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                     //¥N°â°Ó«~§éÅýª÷ÃB 0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]):¹w°â§I´«ªºÀô«OªM­ì­p¤J¥N°â°Ó«~§éÅýª÷ÃB,§ï­p¤J§é¦©(À³µ|)
+    x_f += (sTmp+"|");                           // ¥N°â°Ó«~§éÅýª÷ÃB  ­É¹s¦X­pª÷ÃB
+
+(¤¤¶¡¬Ù²¤)
+
+    //x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");                 //§é¦©ª÷ÃB ¤£§t§éÅý³æ : iPreSalINVODisAmt
+    x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");                 //§é¦©ª÷ÃB,§ï¦¨¥]§t¹w°â§I´«Àô«OªM§éÅý(0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]))
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+¤G¡C
+int __fastcall ZDATA::GetZDTData(String StrZCnt, String StoreNO,  String EcrNO, String SalesNo ,
+                          String Version, String PZ_date, String Z_date, String DDZ_1099, String ZDT_1050,
+                          String &RtnZDTData, AnsiString &Tclsacc,
+                          String &str_zrp_path, String &str_dpt_path)
+{
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                       //¥N°â°Ó«~§éÅýª÷ÃB 0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]):¹w°â§I´«ªºÀô«OªM­ì­p¤J¥N°â°Ó«~§éÅýª÷ÃB,§ï­p¤J§é¦©(À³µ|)
+    z_h += (sTmp+"|");                           // ¥N°â°Ó«~§éÅý³æª÷ÃB
+
+(¤¤¶¡¬Ù²¤)
+
+    //z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");            // §é¦©ª÷ÃB(À³µ|)
+    z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");            // §é¦©ª÷ÃB(À³µ|),§ï¦¨¥]§t¹w°â§I´«Àô«OªM§éÅý(0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]))
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+¤T¡C
+//X±bªí  Åª±b
+int __fastcall XREPORT::WriteData( const String StoreNO, const String EcrNO, const String SalesNo ,
+                                   const AnsiString SalFileName, const AnsiString Version)
+{
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                       //¥N°â°Ó«~§éÅýª÷ÃB 0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]):¹w°â§I´«ªºÀô«OªM­ì­p¤J¥N°â°Ó«~§éÅýª÷ÃB,§ï­p¤J§é¦©(À³µ|)
+    xr_h += (sTmp+"|");                           // ¥N¦¬°Ó«~§éÅý³æ§é¦©  ­É¹s¦X­pª÷ÃB
+
+(¤¤¶¡¬Ù²¤)
+
+    //xr_h += (xr->tb_casher.am_disc.sprintf("%08d",giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");             // §é¦©ª÷ÃB(À³µ|)   62
+    xr_h += (xr->tb_casher.am_disc.sprintf("%08d",giB+iPreSalMMDisAmt_MFP)+"|");             // §é¦©ª÷ÃB(À³µ|)   62 ,§ï¦¨¥]§t¹w°â§I´«Àô«OªM§éÅý(0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]))
+}
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+¥|¡C
+//¾á·í¦P¥æ¯Z
+int __fastcall CHECKIN::WriteData(const String StoreNO, const String EcrNO, const String SalesNo ,
+                                const String SalFileName, const String Version)
+{
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);             //¥N°â°Ó«~§éÅýª÷ÃB 0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]):¹w°â§I´«ªºÀô«OªM­ì­p¤J¥N°â°Ó«~§éÅýª÷ÃB,§ï­p¤J§é¦©(À³µ|)
+    x_f += (sTmp+"|");                           // ¥N°â°Ó«~§éÅýª÷ÃB  ­É¹s¦X­pª÷ÃB
+
+(¤¤¶¡¬Ù²¤)
+
+    //x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");                 //§é¦©ª÷ÃB
+    x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");        //§é¦©ª÷ÃB(À³µ|),§ï¦¨¥]§t¹w°â§I´«Àô«OªM§éÅý(0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]))
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+¤­¡C
+//½LÂI¤H­ûÅª±b   call by _WVXZ
+int __fastcall VXZDATA::WriteData(const String StoreNO, const String EcrNO, const String SalesNo ,
+                                const String SalFileName, const String Version)
+{
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                                       //¥N°â°Ó«~§éÅýª÷ÃB 0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]):¹w°â§I´«ªºÀô«OªM­ì­p¤J¥N°â°Ó«~§éÅýª÷ÃB,§ï­p¤J§é¦©(À³µ|)
+    z_h += (sTmp+"|");                                            // ¥N°â°Ó«~§éÅýª÷ÃB  ­É¹s¦X­pª÷ÃB
+
+(¤¤¶¡¬Ù²¤)
+
+    //z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");            // §é¦©ª÷ÃB(À³µ|)
+    z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");            // §é¦©ª÷ÃB(À³µ|),§ï¦¨¥]§t¹w°â§I´«Àô«OªM§éÅý(0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]))
+}
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+¤»¡C
+int __fastcall AUTOZDATA::GetZDTData(String StrZCnt, String StoreNO,  String EcrNO, String SalesNo ,
+                          String Version, String PZ_date, String Z_date, String DDZ_1099, String ZDT_1050,
+                          String &RtnZDTData, AnsiString &Tclsacc,
+                          String &str_zrp_path, String &str_dpt_path)
+{
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                                       //¥N°â°Ó«~§éÅýª÷ÃB 0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]):¹w°â§I´«ªºÀô«OªM­ì­p¤J¥N°â°Ó«~§éÅýª÷ÃB,§ï­p¤J§é¦©(À³µ|)
+    z_h += (sTmp+"|");                                            // ¥N°â°Ó«~§éÅýª÷ÃB  ­É¹s¦X­pª÷
+
+(¤¤¶¡¬Ù²¤)
+
+    //z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");            // §é¦©ª÷ÃB(À³µ|)
+    z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");            // §é¦©ª÷ÃB(À³µ|),§ï¦¨¥]§t¹w°â§I´«Àô«OªM§éÅý(0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]))
+}
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+¤C¡C
+//¦Û°Ê¦¬»È­û¥æ¯Z
+AnsiString __fastcall AUTOZDATA::AutoXData(const String StoreNO, const String EcrNO, const String SalesNo ,
+                                const String SalFileName, const String Version, const AnsiString AutoZ_cnt,
+                                const AnsiString AutoZ_Dt )
+{
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                      //¥N°â°Ó«~§éÅýª÷ÃB 0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]):¹w°â§I´«ªºÀô«OªM­ì­p¤J¥N°â°Ó«~§éÅýª÷ÃB,§ï­p¤J§é¦©(À³µ|)
+    x_f += (sTmp+"|");                           // ¥N°â°Ó«~§éÅýª÷ÃB  ­É¹s¦X­pª÷ÃB
+
+(¤¤¶¡¬Ù²¤)
+
+    //x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");         //§é¦©ª÷ÃB(À³µ|)
+    x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");         //§é¦©ª÷ÃB(À³µ|),§ï¦¨¥]§t¹w°â§I´«Àô«OªM§éÅý(0034576: (TMSCÀô«OªMÂàÀxfami¿ú¥]))
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+XZDATA_Mag20210615
+2021/6/24§ó·s----------------------------------------------------------------------
+
+1."²¼¨é°h²¼±i¼Æ"§ï¦¨"¹º¦ì²¼¨é°h²¼±i¼Æ"(¤â°Ê&¦Û°Ê¤éµ²2­Ó¦a¤è)
+2."²¼¨é°h²¼±i¼Æ"&"«H¥Î¥dÃ±³æ±i¼Æ"¦ì¸m²¾¨ì"´£³f¨é±i¼Æ"¤U(¤â°Ê&¦Û°Ê¤éµ²2­Ó¦a¤è)
+3.log¸É¤W¨ç¦¡¦WºÙ¡GRtn_Ticket:¹º¦ì²¼¨é°h²¼±i¼Æ
+ref:²¼¨é°h²¼±i¼Æ.txt
 
 
 XZDATA_Mag20210601
@@ -170,6 +350,15 @@ int __fastcall BASIC::VoicePayAmt(int StartLine, int TotalLine)
 1095/1096  ¥u²Î­pª÷ÃB
 171	¤¤¼úµo²¼±i¼Æ  ==> ¤¤¼úµo²¼ª÷ÃB/200
 172	¤¤¼úµo²¼ª÷ÃB
+
+
+
+
+
+
+
+
+
 
 
 

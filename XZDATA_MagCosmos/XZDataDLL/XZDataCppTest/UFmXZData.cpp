@@ -45,11 +45,15 @@ void __fastcall TFmMain::Button1Click(TObject *Sender)
 
 void __fastcall TFmMain::Button2Click(TObject *Sender)
 {
-    String  stmp;
+    String  stmp, sExt;
     xreport = new XREPORT();
     stmp=EdiSalFile->Text;
+
+    //sExt=ExtractFileExt(stmp);
+    sExt=ExtractFileName(stmp);
+
     //X±bªí /Åª±b
-    int i=xreport->WriteData("009986", "01", "99999" , stmp, "V99.9999");
+    int i=xreport->WriteData("009986", sExt.SubString(1,2)  , "99999" , stmp, "V99.9999");
     stmp.sprintf("xreport->WriteData: X±bªí  Rtn=%d",i );
     mLog(stmp);
 

@@ -531,8 +531,9 @@ int __fastcall XDATA::GetXDTData(String StrZCnt, String StoreNO,  String EcrNO, 
     x_f += (sTmp+"|");      //借零次數  : VisuilCpnAmt :  無紙本折價金額   25176:TFM問題/需求/規格書變更通知(TMSC無紙本折價券修改)
 
     //x_f += (x->tb_casher.am_vendtot+"|");      //借零合計金額
-    sTmp.sprintf("%08d",iPreSalINVODisAmt);
-    x_f += (sTmp+"|");                           // 代收商品折讓單折扣  借零合計金額
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                     //代售商品折讓金額 0034576: (TMSC環保杯轉儲fami錢包):預售兌換的環保杯原計入代售商品折讓金額,改計入折扣(應稅)
+    x_f += (sTmp+"|");                           // 代售商品折讓金額  借零合計金額
 
     AnsiString x_g;
 
@@ -667,7 +668,8 @@ int __fastcall XDATA::GetXDTData(String StrZCnt, String StoreNO,  String EcrNO, 
     //小計折扣  1011
     SumDisc(0,gi_pay_line);
     x_i += (x->tb_casher.qt_dise.sprintf("%08d", giA)+"|");                 //折扣次數
-    x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");                 //折扣金額 不含折讓單 : iPreSalINVODisAmt
+    //x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");                 //折扣金額 不含折讓單 : iPreSalINVODisAmt
+    x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");                 //折扣金額,改成包含預售兌換環保杯折讓(0034576: (TMSC環保杯轉儲fami錢包))
 
     pay_sub_amt(0,gi_pay_line);
     x_i += (x->tb_newadd.qt_ffu6.sprintf("%08d", giA)+"|");         //促銷折扣/讓次數
@@ -2257,8 +2259,9 @@ int __fastcall ZDATA::GetZDTData(String StrZCnt, String StoreNO,  String EcrNO, 
     sTmp.sprintf("%08d",VisuilCpnAmt);
     z_h += (sTmp+"|");                                           //借零次數  : VisuilCpnAmt :  無紙本折價金額   25176:TFM問題/需求/規格書變更通知(TMSC無紙本折價券修改)
     //z_h += (z->tb_casher.am_vendtot.sprintf("%08d", 0)+"|");    // 借零合計金額
-    sTmp.sprintf("%08d",iPreSalINVODisAmt);
-    z_h += (sTmp+"|");                           // 代收商品折讓單折扣  借零合計金額
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                       //代售商品折讓金額 0034576: (TMSC環保杯轉儲fami錢包):預售兌換的環保杯原計入代售商品折讓金額,改計入折扣(應稅)
+    z_h += (sTmp+"|");                           // 代售商品折讓單金額
 
     z_h += (z->tb_casher.qt_feedtot.sprintf("%08d", 0)+"|");    // 投零次數
     z_h += (z->tb_casher.am_feedtot.sprintf("%08d", 0)+"|");    // 投零合計金額
@@ -2375,7 +2378,8 @@ int __fastcall ZDATA::GetZDTData(String StrZCnt, String StoreNO,  String EcrNO, 
     //折扣讓次數   //小計折扣
     SumDisc(0,gi_pay_line);
     z_h += (z->tb_casher.qt_disc.sprintf("%08d", giA)+"|");             // 折扣次數(應稅)
-    z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");            // 折扣金額(應稅)
+    //z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");            // 折扣金額(應稅)
+    z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");            // 折扣金額(應稅),改成包含預售兌換環保杯折讓(0034576: (TMSC環保杯轉儲fami錢包))
 
     pay_sub_amt(0,gi_pay_line);
     z_h += (z->tb_newadd.qt_ffu6.sprintf("%08d", giA)+"|");            //促銷折扣/讓次數
@@ -3688,7 +3692,8 @@ int __fastcall XREPORT::WriteData( const String StoreNO, const String EcrNO, con
     //xr_h += (sTmp+"|");
 
     //xr_h += (xr->tb_casher.am_vendtot.sprintf("%08d", 0)+"|");         // 借零合計金額  47
-    sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                       //代售商品折讓金額 0034576: (TMSC環保杯轉儲fami錢包):預售兌換的環保杯原計入代售商品折讓金額,改計入折扣(應稅)
     xr_h += (sTmp+"|");                           // 代收商品折讓單折扣  借零合計金額
 
     xr_h += (xr->tb_casher.qt_feedtot.sprintf("%08d", 0)+"|");         // 投零次數      48
@@ -3807,7 +3812,8 @@ int __fastcall XREPORT::WriteData( const String StoreNO, const String EcrNO, con
     //折扣次數   //小計折扣
     SumDisc(0,gi_pay_line);
     xr_h += (xr->tb_casher.qt_disc.sprintf("%08d",giA)+"|");             // 折扣次數(應稅)   61
-    xr_h += (xr->tb_casher.am_disc.sprintf("%08d",giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");             // 折扣金額(應稅)   62
+    //xr_h += (xr->tb_casher.am_disc.sprintf("%08d",giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");             // 折扣金額(應稅)   62
+    xr_h += (xr->tb_casher.am_disc.sprintf("%08d",giB+iPreSalMMDisAmt_MFP)+"|");             // 折扣金額(應稅)   62 ,改成包含預售兌換環保杯折讓(0034576: (TMSC環保杯轉儲fami錢包))
 
     pay_sub_amt(0,gi_pay_line);
     xr_h += (xr->tb_newadd.qt_ffu6.sprintf("%08d",giA)+"|");             //促銷折扣/讓次數   63
@@ -4499,8 +4505,9 @@ int __fastcall CHECKIN::WriteData(const String StoreNO, const String EcrNO, cons
     x_f += (sTmp+"|");                          //借零次數  : VisuilCpnAmt :  無紙本折價金額   25176:TFM問題/需求/規格書變更通知(TMSC無紙本折價券修改)
 
     //x_f += (x->tb_casher.am_vendtot+"|");      //借零合計金額
-    sTmp.sprintf("%08d",iPreSalINVODisAmt);
-    x_f += (sTmp+"|");                           // 代收商品折讓單折扣  借零合計金額
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);             //代售商品折讓金額 0034576: (TMSC環保杯轉儲fami錢包):預售兌換的環保杯原計入代售商品折讓金額,改計入折扣(應稅)
+    x_f += (sTmp+"|");                           // 代售商品折讓金額  借零合計金額
 
     AnsiString x_g;
 
@@ -4630,7 +4637,8 @@ int __fastcall CHECKIN::WriteData(const String StoreNO, const String EcrNO, cons
     //小計折扣  1011
     SumDisc(0,gi_pay_line);
     x_i += (x->tb_casher.qt_dise.sprintf("%08d", giA)+"|");                 //折扣次數
-    x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");                 //折扣金額
+    //x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");                 //折扣金額
+    x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");        //折扣金額(應稅),改成包含預售兌換環保杯折讓(0034576: (TMSC環保杯轉儲fami錢包))
 
     pay_sub_amt(0,gi_pay_line);
     x_i += (x->tb_newadd.qt_ffu6.sprintf("%08d", giA)+"|");         //促銷折扣/讓次數
@@ -6540,8 +6548,9 @@ int __fastcall VXZDATA::WriteData(const String StoreNO, const String EcrNO, cons
     sTmp.sprintf("%08d",VisuilCpnAmt);
     z_h += (sTmp+"|");                                            //借零次數  : VisuilCpnAmt :  無紙本折價金額   25176:TFM問題/需求/規格書變更通知(TMSC無紙本折價券修改)
     //z_h += (z->tb_casher.am_vendtot.sprintf("%08d", 0)+"|");    // 借零合計金額
-    sTmp.sprintf("%08d",iPreSalINVODisAmt);
-    z_h += (sTmp+"|");                                            // 代收商品折讓單折扣  借零合計金額
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                                       //代售商品折讓金額 0034576: (TMSC環保杯轉儲fami錢包):預售兌換的環保杯原計入代售商品折讓金額,改計入折扣(應稅)
+    z_h += (sTmp+"|");                                            // 代售商品折讓金額  借零合計金額
 
     z_h += (z->tb_casher.qt_feedtot.sprintf("%08d", 0)+"|");    // 投零次數
     z_h += (z->tb_casher.am_feedtot.sprintf("%08d", 0)+"|");    // 投零合計金額
@@ -6661,7 +6670,8 @@ int __fastcall VXZDATA::WriteData(const String StoreNO, const String EcrNO, cons
     //折扣讓次數   //小計折扣
     SumDisc(0,gi_pay_line);
     z_h += (z->tb_casher.qt_disc.sprintf("%08d", giA)+"|");             // 折扣次數(應稅)
-    z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");            // 折扣金額(應稅)
+    //z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");            // 折扣金額(應稅)
+    z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");            // 折扣金額(應稅),改成包含預售兌換環保杯折讓(0034576: (TMSC環保杯轉儲fami錢包))
 
     pay_sub_amt(0,gi_pay_line);
     z_h += (z->tb_newadd.qt_ffu6.sprintf("%08d", giA)+"|");            //促銷折扣/讓次數
@@ -8091,8 +8101,9 @@ int __fastcall AUTOZDATA::GetZDTData(String StrZCnt, String StoreNO,  String Ecr
     z_h += (sTmp+"|");                                            //借零次數  : VisuilCpnAmt :  無紙本折價金額   25176:TFM問題/需求/規格書變更通知(TMSC無紙本折價券修改)
 
     //z_h += (z->tb_casher.am_vendtot.sprintf("%08d", 0)+"|");    // 借零合計金額
-    sTmp.sprintf("%08d",iPreSalINVODisAmt);
-    z_h += (sTmp+"|");                                            // 代收商品折讓單折扣  借零合計金額
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                                       //代售商品折讓金額 0034576: (TMSC環保杯轉儲fami錢包):預售兌換的環保杯原計入代售商品折讓金額,改計入折扣(應稅)
+    z_h += (sTmp+"|");                                            // 代售商品折讓金額  借零合計金
 
     z_h += (z->tb_casher.qt_feedtot.sprintf("%08d", 0)+"|");    // 投零次數
     z_h += (z->tb_casher.am_feedtot.sprintf("%08d", 0)+"|");    // 投零合計金額
@@ -8212,7 +8223,8 @@ int __fastcall AUTOZDATA::GetZDTData(String StrZCnt, String StoreNO,  String Ecr
     //折扣讓次數   //小計折扣
     SumDisc(0,gi_pay_line);
     z_h += (z->tb_casher.qt_disc.sprintf("%08d", giA)+"|");             // 折扣次數(應稅)
-    z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");            // 折扣金額(應稅)
+    //z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");            // 折扣金額(應稅)
+    z_h += (z->tb_casher.am_disc.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");            // 折扣金額(應稅),改成包含預售兌換環保杯折讓(0034576: (TMSC環保杯轉儲fami錢包))
 
     pay_sub_amt(0,gi_pay_line);
     z_h += (z->tb_newadd.qt_ffu6.sprintf("%08d", giA)+"|");            //促銷折扣/讓次數
@@ -9798,8 +9810,9 @@ AnsiString __fastcall AUTOZDATA::AutoXData(const String StoreNO, const String Ec
     sTmp.sprintf("%08d",VisuilCpnAmt);
     x_f += (sTmp+"|");                          //借零次數  : VisuilCpnAmt :  無紙本折價金額   25176:TFM問題/需求/規格書變更通知(TMSC無紙本折價券修改)
     //x_f += (x->tb_casher.am_vendtot+"|");      //借零合計金額
-    sTmp.sprintf("%08d",iPreSalINVODisAmt);
-    x_f += (sTmp+"|");                           // 代收商品折讓單折扣  借零合計金額
+    //sTmp.sprintf("%08d",iPreSalINVODisAmt);
+    sTmp.sprintf("%08d",0);                      //代售商品折讓金額 0034576: (TMSC環保杯轉儲fami錢包):預售兌換的環保杯原計入代售商品折讓金額,改計入折扣(應稅)
+    x_f += (sTmp+"|");                           // 代售商品折讓金額  借零合計金額
 
 
     AnsiString x_g;
@@ -9937,7 +9950,8 @@ AnsiString __fastcall AUTOZDATA::AutoXData(const String StoreNO, const String Ec
     //小計折扣  1011
     SumDisc(0,gi_pay_line);
     x_i += (x->tb_casher.qt_dise.sprintf("%08d", giA)+"|");                 //折扣次數
-    x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");         //折扣金額
+    //x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP - iPreSalINVODisAmt)+"|");         //折扣金額(應稅)
+    x_i += (x->tb_casher.am_dise.sprintf("%08d", giB+iPreSalMMDisAmt_MFP)+"|");         //折扣金額(應稅),改成包含預售兌換環保杯折讓(0034576: (TMSC環保杯轉儲fami錢包))
 
     pay_sub_amt(0,gi_pay_line);
     x_i += (x->tb_newadd.qt_ffu6.sprintf("%08d", giA)+"|");         //促銷折扣/讓次數

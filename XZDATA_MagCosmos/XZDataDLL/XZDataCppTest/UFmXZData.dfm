@@ -1,6 +1,6 @@
 object FmMain: TFmMain
-  Left = 239
-  Top = 157
+  Left = 341
+  Top = 146
   Width = 963
   Height = 544
   Caption = 'XZData Cpp Teat'
@@ -99,8 +99,8 @@ object FmMain: TFmMain
     ParentFont = False
   end
   object Memo1: TMemo
-    Left = 4
-    Top = 130
+    Left = 6
+    Top = 122
     Width = 921
     Height = 301
     Font.Charset = DEFAULT_CHARSET
@@ -110,6 +110,10 @@ object FmMain: TFmMain
     Font.Style = [fsBold]
     ImeName = '中文 (繁體) - 新注音'
     Lines.Strings = (
+      
+        'XZDATA_Mag20210812  預售兌換環保杯原計入代售商品折讓金額,改計入' +
+        '折扣(應稅)'
+      ''
       'XZDATA_Mag20210615  新增信用卡簽單張數 劃位票券退票張數'
       ''
       'XZDATA_Mag20210601   雲端中獎發票新增獎項800元'
@@ -157,7 +161,7 @@ object FmMain: TFmMain
   end
   object Button2: TButton
     Left = 6
-    Top = 472
+    Top = 474
     Width = 119
     Height = 33
     Caption = 'XReport'
@@ -169,7 +173,7 @@ object FmMain: TFmMain
     Top = 436
     Width = 119
     Height = 33
-    Caption = 'XDT'
+    Caption = '交班'
     TabOrder = 4
     OnClick = Button3Click
   end
