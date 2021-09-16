@@ -1514,6 +1514,7 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
                     case 10:
                     case 110:
                     case 113:
+                    case 120:
                         gtsl_rec->push_back(str_sal_data);
                         break;
                         //折扣讓
@@ -1616,6 +1617,7 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
             case 10:
             case 110:
             case 113:
+            case 120:
                 gtsl_rec->push_back(stmp);
                 break;
                 //折扣讓
@@ -5294,8 +5296,12 @@ void __fastcall BASIC::sub_times(int StartLine, int TotalLine)
                 seg9 = 38, seg10 = 19, seg11 = 82;
                 break;
             case 120:
-                //seg1, seg2, seg3, seg4, seg5, seg6, seg7, seg8, seg9, seg10, seg11;
-                continue;
+                // seg1.銷貨型態:9, seg2.FG_SPC:10, seg3.CD_FMCODE:14, seg4.銷售數量:35, seg5.AM_ITEM:38, 
+                // seg6.AM_DIS_SUB:39, seg7.AM_SUB_SUB:40, seg8.AM_PAY_SUB:41, seg9.FG_TAX:44  seg10.連線商品狀態:45, 
+                // seg11.交易狀態區分:50 ,  segDONGLE.DONGLE_TYPE:11, segNam.NM_PLU:19
+                seg1 = 9, seg2 = 10, seg3 = 14, seg4 = 35, seg5 = 38, seg6 = 39, seg7 = 40, seg8 = 41;
+                seg9 = 44, seg10 = 45, seg11 = 50;
+                break;
             default:
                 continue;
 
