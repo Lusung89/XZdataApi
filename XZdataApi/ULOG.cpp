@@ -1524,10 +1524,12 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
                         break;
                         //easy card / 31:Kstc 高捷
                         //case 25:
-                        //case 31:
-                    case 32:  //TM一卡通加值(支付)明細電文檔(3232)
-                    case 34:  //TM遠鑫加值(支付)明細電文檔 (3234)
-                    case 38:  //TM二代悠遊卡加值 二代悠遊加值明細 3238
+                    case 231:  //TM一卡通加值(支付)明細電文檔(3231,3232)
+                    case 232:  
+                    case 233:  //TM遠鑫加值(支付)明細電文檔 (3233,3234)
+                    case 234:
+                    case 237:  //TM二代悠遊卡加值 二代悠遊加值明細 3237,3238
+                    case 238:  
                     case 811: //plus Pay
                         gtsl_easy_card->push_back(str_sal_data);
                         break;
@@ -1628,14 +1630,16 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
                 //easy card
                 //case 1025:
                 //easy card / 31:Kstc 高捷
-                //case 31:
-            case 32:  //TM一卡通加值(支付)明細電文檔(3232)
-            case 34:  //TM遠鑫加值(支付)明細電文檔 (3234)
-            case 38:  //TM二代悠遊卡加值 二代悠遊加值明細 3238
+            case 231:  //TM一卡通加值(支付)明細電文檔(3231,3232)
+            case 232:
+            case 233:  //TM遠鑫加值(支付)明細電文檔 (3233,3234)
+            case 234:
+            case 237:  //TM二代悠遊卡加值 二代悠遊加值明細 3237,3238
+            case 238:
             case 811: //plus Pay
                 gtsl_easy_card->push_back(stmp);
                 break;
-            case 30:
+            case 330:
                 gtsl_fetc_card->push_back(stmp);
                 break;
                 // BIL
@@ -5852,301 +5856,296 @@ void __fastcall BASIC::SumDisc(int StartLine, int TotalLine)
  //TM二代悠遊卡加值 二代悠遊加值明細 3238
 int __fastcall BASIC::easy_card(int StartLine, int TotalLine)
 {
-    string str_type, str_sale_type, str_r_type, StrTranType,s;        //加值交易類別
-    int iTmpAmt,int_type = 0;
+    string str_type, str_sale_type, str_r_type, StrTranType, s;        //加值交易類別
+    int iTmpAmt, int_type = 0;
 
-    int int_0_time  = 0, int_0_money  = 0;
-    int int_2_time  = 0, int_2_money  = 0;
-    int int_7_time  = 0, int_7_money  = 0;
-    int int_9_time  = 0, int_9_money  = 0;
+    int int_0_time = 0, int_0_money = 0;
+    int int_2_time = 0, int_2_money = 0;
+    int int_7_time = 0, int_7_money = 0;
+    int int_9_time = 0, int_9_money = 0;
     int int_11_time = 0, int_11_money = 0;
 
-//  開售卡    //加值      //結帳      //取消
-    giA = giB = giC = giD = giE = giF = giG = giH = 0;
-    iTmpAmt=0;
-    //return 0;
-    if (gbl_easy_haveline)
-    {
-       // for (int i=0; i< gtsl_easy_card->Count; i++)
-		for (list<string>::iterator ls = gtsl_easy_card->begin(); ls != gtsl_easy_card->end(); ls++)
-        {
-			s = *ls; // gtsl_easy_card->Strings[i];
-            
-			StrTranType = _StringSegment_EX(s, SGM, 1);    //gtsl_easy_card->Strings[i].SubString(1,4);
-            
-            if( StrTranType == "1031")   
-               {
-                ;;
-               } // end of if( StrTranType == "0031")
-			else if (StrTranType == "3432" &&  Trim(_StringSegment_EX(s, SGM, 9)) == "K2")  //New Dongle 高捷
-               {
+    //  開售卡    //加值      //結帳      //取消
+     giA = giB = giC = giD = giE = giF = giG = giH = 0;
+     iTmpAmt = 0;
+     //return 0;
+     if (gbl_easy_haveline)
+     {
+            // for (int i=0; i< gtsl_easy_card->Count; i++)
+            for (list<string>::iterator ls = gtsl_easy_card->begin(); ls != gtsl_easy_card->end(); ls++)
+            {
+                s = *ls; // gtsl_easy_card->Strings[i];
+
+                StrTranType = _StringSegment_EX(s, SGM, 1);
+
+                if (StrTranType == "1031")   //高捷 
+                {
+                    ;;
+                } // end of if( StrTranType == "0031")
+                else if (StrTranType == "3231" || StrTranType == "3232") // &&  Trim(_StringSegment_EX(s, SGM, 9)) == "K2")  //New Dongle 高捷
+                {
 #pragma region  New Dongle 高捷 
-				 str_type = Trim(_StringSegment_EX(s, SGM, 10));
-                 str_r_type = _StringSegment_EX(s, SGM, 28).substr(0,2);
-                 str_sale_type=str_r_type;
-                 //int_type = _StrToInt(str_type);
-                 //iTmpAmt=
-				 if (_StrFind(str_sale_type, "X") || _StrFind(str_sale_type,"V"))         //LOG錯誤不處理
-                    continue;
+                    //加值 => '05'(加值) '06'(加值取消) '07/19'(自動加值) '13'(自動加值購貨)  支付 = > '03'(購貨)'04'(退貨)
+                    str_type = Trim(_StringSegment_EX(s, SGM, 9));
+                    str_r_type = _StringSegment_EX(s, SGM, 27).substr(0, 2);
+                    str_sale_type = str_r_type;
+                    //int_type = _StrToInt(str_type);
+                    //iTmpAmt=
+                    if (_StrFind(str_sale_type, "X") || _StrFind(str_sale_type, "V"))         //LOG錯誤不處理
+                        continue;
 
-                 //if (str_type != "00" && int_type == 0)  //錯誤交易類別
-                 //   continue;
+                    if (_StrFind(str_r_type, "FF") || _StrFind(str_r_type, "Z0") || _StrFind(str_r_type, "Z1") || Trim(str_r_type) == "")
+                    {
+                        if (str_type == "05") // 加值
+                        {
+                            ++int_2_time;
+                            int_2_money += _StrToInt(_StringSegment_EX(s, SGM, 17));
+                        }
+                        else if (str_type == "06")     //加值取消
+                        {
+                            ++int_11_time;
+                            int_11_money += _StrToInt(_StringSegment_EX(s, SGM, 17));
+                        }
+                        else
+                        {
+                            //++int_2_time;
+                             //int_2_money += _StrToInt(_StringSegment_EX(s, "|", 18));
+                            ;;
+                        }
 
-				 if (_StrFind(str_r_type, "FF") || _StrFind(str_r_type, "Z0") || _StrFind(str_r_type,"Z1") || Trim(str_r_type) == "")
-		          {
-                     if(str_type=="05" ) // 加值
-                       {
-                          ++int_2_time;
-                          int_2_money += _StrToInt(_StringSegment_EX(s, SGM, 18));
-                       }
-                     else if(str_type=="06")     //加值取消
-                       {
-                          ++int_11_time;
-                           int_11_money += _StrToInt(_StringSegment_EX(s, SGM, 18));
-                       }
-                     else
-                       {
-                         //++int_2_time;
-	                //int_2_money += _StrToInt(_StringSegment_EX(s, "|", 18));
-                         ;;
-                       }
+                    }   // end if (str_r_type.Pos("FF") || str_r_type.Pos("Z0") || str_r_type.Pos("Z1"))
+                    else if (_StrFind(str_r_type, "R2") || _StrFind(str_r_type, "R3"))
+                    {
+                        if (str_type == "05") // 加值
+                        {
+                            --int_2_time;
+                            int_2_money -= _StrToInt(_StringSegment_EX(s, SGM, 17));
+                        }
+                        else  if (str_type == "06")     //加值取消
+                        {
+                            --int_11_time;
+                            int_11_money -= _StrToInt(_StringSegment_EX(s, SGM, 17));
+                        }
+                        else
+                        {
+                            //  --int_2_time;
+                        // int_2_money -= _StrToInt(_StringSegment_EX(s, "|", 18));
+                            ;;
+                        }
 
-	              }   // end if (str_r_type.Pos("FF") || str_r_type.Pos("Z0") || str_r_type.Pos("Z1"))
-				 else if (_StrFind(str_r_type, "R2") || _StrFind(str_r_type,"R3"))
-	              {
-                     if(str_type=="05") // 加值
-                       {
-                          --int_2_time;
-                          int_2_money -= _StrToInt(_StringSegment_EX(s, SGM, 18));
-                       }
-                     else  if(str_type=="06")     //加值取消
-                       {
-                          --int_11_time;
-                           int_11_money -= _StrToInt(_StringSegment_EX(s, SGM, 18));
-                       }
-                     else
-                       {
-                       //  --int_2_time;
-	               // int_2_money -= _StrToInt(_StringSegment_EX(s, "|", 18));
-                         ;;
-                       }
-
-	             }   // end else if (str_r_type.Pos("R2") || str_r_type.Pos("R3"))
+                    }   // end else if (str_r_type.Pos("R2") || str_r_type.Pos("R3"))
 #pragma endregion
-               } // end of if( StrTranType == "0032")
-			else if (StrTranType == "3234" && Trim(_StringSegment_EX(s, SGM, 10)) == "K3")  //New Dongle 八合一 for HappyCash(遠鑫)
-               {
+                } // end of StrTranType == "3231"
+                else if (StrTranType == "3233" || StrTranType == "3234") //&& Trim(_StringSegment_EX(s, SGM, 10)) == "K3")  //New Dongle 八合一 for HappyCash(遠鑫)
+                {
 #pragma region  New Dongle 八合一 for HappyCash(遠鑫) 
-				 str_type = Trim(_StringSegment_EX(s, SGM, 13));           // Processing_Code
-                 str_r_type = _StringSegment_EX(s, SGM, 31).substr(0,2);
-                 str_sale_type=str_r_type;
-                 //int_type = _StrToInt(str_type);
-                 //iTmpAmt=
-				 if (_StrFind(str_sale_type, "X") || _StrFind(str_sale_type,"V"))         //LOG錯誤不處理
-                    continue;
+                    // Processing_Code  加值 => '7307'(指定加值) '7707'(現金加值) '7708'(現金加值取消) '7717'(自動加值) '7517'(鎖卡)
+                    str_type = Trim(_StringSegment_EX(s, SGM, 11));
+                    str_r_type = _StringSegment_EX(s, SGM, 29).substr(0, 2);
+                    str_sale_type = str_r_type;
 
-                 //if (str_type != "00" && int_type == 0)  //錯誤交易類別
-                 //   continue;
+                    if (_StrFind(str_sale_type, "X") || _StrFind(str_sale_type, "V"))         //LOG錯誤不處理
+                        continue;
 
-				 if (_StrFind(str_r_type, "FF") || _StrFind(str_r_type, "Z0") || _StrFind(str_r_type,"Z1") || Trim(str_r_type) == "")
-		            {
-                     if(str_type=="7707" ) // 加值
-                       {
-                          ++int_2_time;
-                          int_2_money += _StrToInt(_StringSegment_EX(s, SGM, 23).substr(0,10));
-                       }
-                     else if(str_type=="7708")     //加值取消
-                       {
-                          ++int_11_time;
-                           int_11_money += _StrToInt(_StringSegment_EX(s, SGM, 23).substr(0,10));
-                       }
-                     else
-                       {
-                         //++int_2_time;
-	                //int_2_money += _StrToInt(_StringSegment_EX(s, "|", 23).SubString(1,10));
-                         ;;
-                       }
+                    if (_StrFind(str_r_type, "FF") || _StrFind(str_r_type, "Z0") || _StrFind(str_r_type, "Z1") || Trim(str_r_type) == "")
+                    {
+                        if (str_type == "7707") // 加值
+                        {
+                            ++int_2_time;
+                            int_2_money += _StrToInt(_StringSegment_EX(s, SGM, 21).substr(0, 10));
+                        }
+                        else if (str_type == "7708")     //加值取消
+                        {
+                            ++int_11_time;
+                            int_11_money += _StrToInt(_StringSegment_EX(s, SGM, 21).substr(0, 10));
+                        }
+                        else
+                        {
+                            //++int_2_time;
+                            //int_2_money += _StrToInt(_StringSegment_EX(s, "|", 23).SubString(1,10));
+                            ;;
+                        }
 
-	                }   // end if (str_r_type.Pos("FF") || str_r_type.Pos("Z0") || str_r_type.Pos("Z1"))
-				 else if (_StrFind(str_r_type, "R2") || _StrFind(str_r_type,"R3"))
-	                {
-                     if(str_type=="7707") // 加值
-                       {
-                          --int_2_time;
-                          int_2_money -= _StrToInt(_StringSegment_EX(s, SGM, 23).substr(0,10));
-                       }
-                     else  if(str_type=="7708")     //加值取消
-                       {
-                          --int_11_time;
-                           int_11_money -= _StrToInt(_StringSegment_EX(s, SGM, 23).substr(0,10));
-                       }
-                     else
-                       {
-                       //  --int_2_time;
-	               // int_2_money -= _StrToInt(_StringSegment_EX(s, "|", 23).SubString(1,10));
-                         ;;
-                       }
-	               }   // end else if (str_r_type.Pos("R2") || str_r_type.Pos("R3"))
+                    }   // end if (str_r_type.Pos("FF") || str_r_type.Pos("Z0") || str_r_type.Pos("Z1"))
+                    else if (_StrFind(str_r_type, "R2") || _StrFind(str_r_type, "R3"))
+                    {
+                        if (str_type == "7707") // 加值
+                        {
+                            --int_2_time;
+                            int_2_money -= _StrToInt(_StringSegment_EX(s, SGM, 21).substr(0, 10));
+                        }
+                        else  if (str_type == "7708")     //加值取消
+                        {
+                            --int_11_time;
+                            int_11_money -= _StrToInt(_StringSegment_EX(s, SGM, 21).substr(0, 10));
+                        }
+                        else
+                        {
+                            //  --int_2_time;
+                            // int_2_money -= _StrToInt(_StringSegment_EX(s, "|", 23).SubString(1,10));
+                            ;;
+                        }
+                    }   // end else if (str_r_type.Pos("R2") || str_r_type.Pos("R3"))
 #pragma endregion
-             } // end of if( StrTranType == "1034")
-         else if( StrTranType == "3238")
-              {
+                } // end of if( StrTranType == "1034")
+                else if (StrTranType == "3237" || StrTranType == "3238")
+                {
 #pragma region  New Dongle 八合一 for (悠遊卡) 
-                 str_sale_type = _StringSegment_EX(s, SGM, 9); //FG_SALETYPE
-                 // '811799'(現金加值) '810899'(加值取消) 'X10799'(加值異常) 'X10899'(加值取消異常) '850799'(開售卡) '850899'(開售卡取消) 'X50799'(開售卡異常)
-                 str_type = _StringSegment_EX(s, SGM, 18).substr(1,3);  // ID_MESSAGE    悠遊訊息代號
-                 str_r_type = _StringSegment_EX(s, SGM, 20).substr(0,2);  //gtsl_easy_card->Strings[i].SubString(225,2);
-                 int_type = _StrToInt(str_type);
-                
-				 if (_StrFind(str_sale_type, "X") || _StrFind(str_sale_type, "Z") || _StrFind(str_sale_type,"V"))         //LOG錯誤不處理
-                    continue;
- 
-				 if (_StrFind(str_r_type,"FF") || _StrFind(str_r_type,"Z0") || _StrFind(str_r_type,"Z1") || Trim(str_r_type) == "")
-		          {
-	              switch (int_type)
-	              {
-	                //結帳 = 開卡 + 加值
-	                case 0:
-	                    ++int_0_time;
-	                    break;
-	                //加值
-                        case 417:     //841799
-	                case 117:     //811799
-	                    ++int_2_time;
-	                    int_2_money += _StrToInt(_StringSegment_EX(s, SGM, 14));
-	                    break;
-	                //開售卡
-	                case 517:
-	                    ++int_7_time;
-                        int_7_money +=  _StrToInt(_StringSegment_EX(s, SGM, 14));
-	                    break;
-	                //開卡取消
-	                case 518:
-	                    ++int_9_time;
-                        int_9_money +=  _StrToInt(_StringSegment_EX(s, SGM, 14));
-	                    break;
+                    str_sale_type = _StringSegment_EX(s, SGM, 19).substr(0, 2);
+                    // '811799'(現金加值) '810899'(加值取消) 'X10799'(加值異常) 'X10899'(加值取消異常) '850799'(開售卡) '850899'(開售卡取消) 'X50799'(開售卡異常)
+                    str_type = _StringSegment_EX(s, SGM, 17).substr(1, 3);  // ID_MESSAGE    悠遊訊息代號
+                    str_r_type = _StringSegment_EX(s, SGM, 19).substr(0, 2);
+                    int_type = _StrToInt(str_type);
 
-	                //加值取消
-                        //case 408:
-	                case 118:          //811899
-	                    ++int_11_time;
-	                    int_11_money += _StrToInt(_StringSegment_EX(s, SGM, 14));
+                    if (_StrFind(str_sale_type, "X") || _StrFind(str_sale_type, "V"))         //LOG錯誤不處理
+                        continue;
+
+                    if (_StrFind(str_r_type, "FF") || _StrFind(str_r_type, "Z0") || _StrFind(str_r_type, "Z1") || Trim(str_r_type) == "")
+                    {
+                        switch (int_type)
+                        {
+                            //結帳 = 開卡 + 加值
+                        case 0:
+                            ++int_0_time;
                             break;
-                        // 824799  信用加值 AutoLoad  837799 847799  825799
-                        // 學生卡展期加值:816799    學生卡展期:813399 // 展期:811399
+                            //加值
+                        case 417:     //841799
+                        case 117:     //811799
+                            ++int_2_time;
+                            int_2_money += _StrToInt(_StringSegment_EX(s, SGM, 13));
+                            break;
+                            //開售卡
+                        case 517:
+                            ++int_7_time;
+                            int_7_money += _StrToInt(_StringSegment_EX(s, SGM, 13));
+                            break;
+                            //開卡取消
+                        case 518:
+                            ++int_9_time;
+                            int_9_money += _StrToInt(_StringSegment_EX(s, SGM, 13));
+                            break;
+
+                            //加值取消
+                                //case 408:
+                        case 118:          //811899
+                            ++int_11_time;
+                            int_11_money += _StrToInt(_StringSegment_EX(s, SGM, 13));
+                            break;
+                            // 824799  信用加值 AutoLoad  837799 847799  825799
+                            // 學生卡展期加值:816799    學生卡展期:813399 // 展期:811399
                         case 247:
                         case 257:
                         case 167:
                         case 133:
                         case 113:
-                             break;
+                            break;
 
-                        // 小額扣款
-                        //case 105:
-                        //     break;
+                            // 小額扣款
+                            //case 105:
+                            //     break;
 
-                        // 退貨
-                        //case 509:
-                        //     break;
+                            // 退貨
+                            //case 509:
+                            //     break;
 
                         default:
                             ++int_2_time;
-	                    int_2_money += _StrToInt(_StringSegment_EX(s, SGM, 14));
-	                    break;
-	                  }
-	                }   // end if (str_r_type.Pos("FF") || str_r_type.Pos("Z0") || str_r_type.Pos("Z1"))
-				 else if (_StrFind(str_r_type, "R2") || _StrFind(str_r_type,"R3"))
-	                {
-						switch (int_type)
-							{
-							//結帳
-							case 0:
-								--int_0_time;
-			                    break;
-			                //加值
-	                        case 417:
-			                case 117:
-			                    --int_2_time;
-			                    int_2_money -= _StrToInt(_StringSegment_EX(s, SGM, 14));
-			                    break;
-			                //開售卡
-			                case 517:
-			                    --int_7_time;
-	                            int_7_money -=  _StrToInt(_StringSegment_EX(s, SGM, 14));
-			                    break;
-			                //開卡取消
-			                case 518:
-			                    --int_9_time;
-	                            int_9_money -=  _StrToInt(_StringSegment_EX(s, SGM, 14));
-			                    break;
-			                //加值取消
-			                case 118:
-			                    --int_11_time;
-			                    int_11_money -= _StrToInt(_StringSegment_EX(s, SGM, 14));
-	                            break;
-	                        case 509:
-	                             break;
-	                            
-		                       // 824799  信用加值 AutoLoad
-		                       // 學生卡展期加值:816799    學生卡展期:813399 // 展期:811399
-		                    case 247:
-							case 257:
-							case 167:
-							case 133:
-							case 113:
-								break;
+                            int_2_money += _StrToInt(_StringSegment_EX(s, SGM, 13));
+                            break;
+                        }
+                    }   // end if (str_r_type.Pos("FF") || str_r_type.Pos("Z0") || str_r_type.Pos("Z1"))
+                    else if (_StrFind(str_r_type, "R2") || _StrFind(str_r_type, "R3"))
+                    {
+                        switch (int_type)
+                        {
+                            //結帳
+                        case 0:
+                            --int_0_time;
+                            break;
+                            //加值
+                        case 417:
+                        case 117:
+                            --int_2_time;
+                            int_2_money -= _StrToInt(_StringSegment_EX(s, SGM, 13));
+                            break;
+                            //開售卡
+                        case 517:
+                            --int_7_time;
+                            int_7_money -= _StrToInt(_StringSegment_EX(s, SGM, 13));
+                            break;
+                            //開卡取消
+                        case 518:
+                            --int_9_time;
+                            int_9_money -= _StrToInt(_StringSegment_EX(s, SGM, 13));
+                            break;
+                            //加值取消
+                        case 118:
+                            --int_11_time;
+                            int_11_money -= _StrToInt(_StringSegment_EX(s, SGM, 13));
+                            break;
+                        case 509:
+                            break;
 
-							default:
-								--int_2_time;
-								int_2_money -= _StrToInt(_StringSegment_EX(s, SGM, 14));
-								break;
-					}
-				}   // end else if (str_r_type.Pos("R2") || str_r_type.Pos("R3"))
+                            // 824799  信用加值 AutoLoad
+                            // 學生卡展期加值:816799    學生卡展期:813399 // 展期:811399
+                        case 247:
+                        case 257:
+                        case 167:
+                        case 133:
+                        case 113:
+                            break;
+
+                        default:
+                            --int_2_time;
+                            int_2_money -= _StrToInt(_StringSegment_EX(s, SGM, 13));
+                            break;
+                        }
+                    }   // end else if (str_r_type.Pos("R2") || str_r_type.Pos("R3"))
 #pragma endregion
-			  }// end of   else if( StrTranType == "1038")
-            else // ( StrTranType == "1035") OR 1038
-              {
-                 ;;
-              }// end of   if( StrTranType == "1035") else
+                }// end of   else if( StrTranType == "1038")
+                else // ( StrTranType == "1035") OR 1038
+                {
+                    ;;
+                }// end of   if( StrTranType == "1035") else
+            }
+     }
+
+        //開售卡
+        giA = (int_7_time - int_9_time);
+        giB = (int_7_money - int_9_money);
+
+        //加值
+        giC = (int_2_time - int_11_time);
+        giD = (int_2_money - int_11_money);
+
+        //結帳
+        if (int_0_time)
+        {
+            giE = int_0_time;     //2003/04/01 liu
+            giF = (giB + giD);
         }
-    }
+        else
+        {
+            // giE = 1;           //2003/04/02 liu
+            // giF = (giB + giD); //2003/04/02 liu
+            giE = 0;         //2003/04/02 liu
+            giF = 0;         //2003/04/02 liu
+        }
 
-    //開售卡
-    giA = (int_7_time  - int_9_time);
-    giB = (int_7_money - int_9_money);
+        //取消
+        giG = (int_9_time + int_11_time);   //2005/07/01
+        giH = 0 - (int_9_money + int_11_money);  //2005/07/01
 
-    //加值
-    giC = (int_2_time  - int_11_time);
-    giD = (int_2_money - int_11_money);
+        //取消
+        giG = 0;     //2005/07/01
+        giH = 0;     //2005/07/01
+        //結帳
+        giE = 0;         //2005/07/01 liu
+        giF = 0;         //2005/07/01 liu
 
-    //結帳
-    if (int_0_time)
-    {
-        giE = int_0_time;     //2003/04/01 liu
-        giF = (giB + giD);
-    }
-    else
-    {
-       // giE = 1;           //2003/04/02 liu
-       // giF = (giB + giD); //2003/04/02 liu
-        giE = 0;         //2003/04/02 liu
-        giF = 0;         //2003/04/02 liu
-    }
-
-    //取消
-    giG = (int_9_time + int_11_time);   //2005/07/01
-    giH = 0 - (int_9_money + int_11_money);  //2005/07/01
-
-    //取消
-    giG = 0;     //2005/07/01
-    giH = 0;     //2005/07/01
-    //結帳
-    giE = 0;         //2005/07/01 liu
-    giF = 0;         //2005/07/01 liu
-
-    return 0;
+        return 0;
+   
 }
-
 
 //FETC 加值機   2005/07/01
 int __fastcall BASIC::fetc_card(int StartLine, int TotalLine)
