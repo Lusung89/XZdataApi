@@ -10,6 +10,7 @@
 int __stdcall wx_ok(string StoreNO, string EcrNO, string SalesNo, string SalFileName, string Version);
 int __stdcall wz_ok(string StoreNO, string EcrNO, string SalesNo, string SalFileName, string Version); // , bool delFolder);
 int __stdcall MtnDirHistory(string RptYYYYMMDD, string SysYYYYMMDD, string RptDatez);
+string __stdcall GetStoreName();
 //---------------------------------------------------------------------------
 //class XREPORT  
 /// <summary> class XDATA

@@ -143,17 +143,23 @@
     <Text Include="XZDataApiUpdateLst.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Attribute.h" />
+    <ClInclude Include="Cxml.h" />
     <ClInclude Include="INI.h" />
     <ClInclude Include="Lcommon.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ULOG.h" />
     <ClInclude Include="UReport.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="UXZDataClass.h" />
     <ClInclude Include="XZdataApi.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Attribute.cpp" />
+    <ClCompile Include="Cxml.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
@@ -170,6 +176,7 @@
     </ClCompile>
     <ClCompile Include="INI.cpp" />
     <ClCompile Include="Lcommon.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -178,6 +185,7 @@
     </ClCompile>
     <ClCompile Include="ULOG.cpp" />
     <ClCompile Include="UReport.cpp" />
+    <ClCompile Include="utils.cpp" />
     <ClCompile Include="UXZDataClass.cpp" />
     <ClCompile Include="XZdataApi.cpp" />
   </ItemGroup>

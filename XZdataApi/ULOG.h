@@ -184,7 +184,7 @@ public:
     TStringList *Autotsl_rec, *Autotsl_tot, *Autotsl_drop, *Autotsl_easy_card, *Autotsl_pay_sub;
     TStringList *Autotsl_subsale,*Autotsl_bil, *Autotsl_fetc_card, *Auto_Sal, *Auto_1051_sal ;
 
-
+    string g_store_name;            //店名
     //char gchar_tencode[7];        //店別
     string g_tencode;        //店別
     //char gchar_ecr_no[5];         //機號

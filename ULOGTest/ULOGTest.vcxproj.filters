@@ -48,6 +48,15 @@
     <ClInclude Include="..\XZdataApi\Lcommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\XZdataApi\Cxml.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\XZdataApi\Node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\XZdataApi\utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -69,6 +78,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\XZdataApi\Lcommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\XZdataApi\Cxml.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\XZdataApi\Attribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\XZdataApi\Node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\XZdataApi\utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

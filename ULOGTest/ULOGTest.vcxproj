@@ -145,10 +145,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\XZdataApi\Cxml.h" />
     <ClInclude Include="..\XZdataApi\INI.h" />
     <ClInclude Include="..\XZdataApi\Lcommon.h" />
+    <ClInclude Include="..\XZdataApi\Node.h" />
     <ClInclude Include="..\XZdataApi\ULOG.h" />
     <ClInclude Include="..\XZdataApi\UReport.h" />
+    <ClInclude Include="..\XZdataApi\utils.h" />
     <ClInclude Include="..\XZdataApi\UXZDataClass.h" />
     <ClInclude Include="..\XZdataApi\XZdataApi.h" />
     <ClInclude Include="Resource.h" />
@@ -157,10 +160,14 @@
     <ClInclude Include="ULOGTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\XZdataApi\Attribute.cpp" />
+    <ClCompile Include="..\XZdataApi\Cxml.cpp" />
     <ClCompile Include="..\XZdataApi\INI.cpp" />
     <ClCompile Include="..\XZdataApi\Lcommon.cpp" />
+    <ClCompile Include="..\XZdataApi\Node.cpp" />
     <ClCompile Include="..\XZdataApi\ULOG.cpp" />
     <ClCompile Include="..\XZdataApi\UReport.cpp" />
+    <ClCompile Include="..\XZdataApi\utils.cpp" />
     <ClCompile Include="..\XZdataApi\UXZDataClass.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

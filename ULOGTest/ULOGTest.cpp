@@ -250,6 +250,10 @@ int ULogInit_DATA()
 	string stest, str, ustr;   //非Unicode
 	wstring wstr, wsustr;              //Unicode 通用字串
 
+	str = GetStoreName();
+	return(0);
+
+
 	/*stest = "0";*/
 	//stest = "1010 | 0563 | 019989 | 01 | 20171228184408 | 01153 | 0028318719 | A0 | 000 | 00 | | XY99900065 | 0000021800000 | | | | M999999 | M121704 | 六龜 - 農會測試商品０元 | 02012000 | | | 0000000200 | 0000019200 | 0000019200 | 0001 | PS | 0000000200 | 0000000200 | 0000000000 | 0000000000 | 0000000000 | 000 | 000000 | 1 | 17110 | 11000000 | Z0 | 0000000000 | | | | | | 0 | |";
 	stest = "xxx|||||1010 || M999999 || M121704 || 六龜 - 農會測試商品０元 ||";
@@ -396,7 +400,7 @@ int ULog_XREPORT()
 	int irtn;
 	XREPORT *xreport = new XREPORT(); //讀帳 XREPORT::WriteData
 	//irtn = xreport->WriteData("012731", "02", "00320", "c:\\FTLPOS\\XZDATA\\02_UTF8.sal", "V99.9999");
-	irtn = xreport->WriteData("019989", "03", "99999", "c:\\FTLPOS\\XZDATA\\011U.sal", "V99.9999");
+	irtn = xreport->WriteData("009939", "01", "99999", "c:\\FTLPOS\\XZDATA\\01.sal", "V99.9999");
 	return irtn;
 }
 
@@ -442,8 +446,8 @@ int ULog_ZDATA()
 	int irtn;
 
 	ZDATA *zdata = new ZDATA();         //日結  OK
-	irtn = zdata->WriteData("019989", "03", "99999", "c:\\FTLPOS\\XZDATA\\011.sal", "V99.9999", "");
-	wz_ok("019989", "03", "99999", "c:\\FTLPOS\\XZDATA\\011.sal", "V99.9999");
+	irtn = zdata->WriteData("009939", "01", "99999", "c:\\FTLPOS\\XZDATA\\01.sal", "V99.9999", "");
+	wz_ok("009939", "01", "99999", "c:\\FTLPOS\\XZDATA\\01.sal", "V99.9999");
 
 	return irtn;
 }
