@@ -1,0 +1,52 @@
+
+盤點帳表用法
+
+
+1. 盤點人員確認登入/登出 , 要將 條碼/(登入/登出) 資料寫入 XZDATA.INI
+   
+   C:\FTLPOS\INI\XZDATA.INI
+   
+   [VXZ] 
+
+    CD_SATNCODE=1234567890123  /條碼
+    CS_ENTRY=1  (登入:1/登出:2)
+
+
+
+2.  Call XZDATA.DLL -> WVXZ(..) 參數同 CALL Checkin 
+    
+    extern "C" __declspec(dllexport) int __stdcall Checkin(byte *StoreNO, byte *EcrNO, byte *SalesNo, byte *SalFileName, byte *Version)
+    extern "C" __declspec(dllexport) int __stdcall WVXZ(byte *StoreNO, byte *EcrNO, byte *SalesNo, byte *SalFileName, byte *Version)
+    {
+
+        TfrmAction *frmAction = new TfrmAction(NULL);
+        int iResult = 0;
+
+        try {
+                iResult = frmAction->_WVXZ(StoreNO,EcrNO,SalesNo,SalFileName,Version);
+        } __finally {
+                delete frmAction;
+        }
+        
+        return iResult;
+    }
+
+
+
+3. 
+    if( WVXZ(..)>0 )
+      {
+        3.1 將電文寫入  DB> TFM_TRLOG
+            資料來源
+            [VXZ] 
+            ZFILENAME=C:\FTLPOS\HISTORY\25\03\021303250312.vdt   
+        
+        3.2  
+            列印帳表 
+
+            資料來源
+            [VXZ] 
+            ZRPTNAME=C:\FTLPOS\HISTORY\25\03\021303250312.vrp
+            DEPTNAME=C:\FTLPOS\HISTORY\25\03\021303250312.vpt 
+
+      }
