@@ -3118,11 +3118,11 @@ int __fastcall BASIC::SumRelDimAgn(int StartLine, int TotalLine)
 
             }
 
-            //str_trans_type=_StringSegment_EX(s, "|", 8);
+            sType = _StringSegment_EX(s, SGM, seg1);  //銷貨型態 FG_SALETYPE 
             sFG_SPC = _StringSegment_EX(s, SGM, seg2);
 
-            iQty = _StrToInt(_StringSegment_EX(s, SGM, 26));
-            iAmt = _StrToInt(_StringSegment_EX(s, SGM, 29));
+            iQty = _StrToInt(_StringSegment_EX(s, SGM, seg4));
+            iAmt = _StrToInt(_StringSegment_EX(s, SGM, seg5));
 
             //連線商品區分
             sRelType = _StringSegment_EX(s, SGM, seg10).substr(0,2);  //CS_PRODTYPE
@@ -3136,7 +3136,6 @@ int __fastcall BASIC::SumRelDimAgn(int StartLine, int TotalLine)
                 //if (iRelType==7 || iRelType==9)  //2006/12/20
                 if (iRelType>0 )
                 {
-                    sType = _StringSegment_EX(s, SGM, 8);
 					if (_StrFind(sType, "S0") || (_StrFind(sType, "A0") && _StrFind(sFG_SPC,"9")))        //銷售   A0 09 預售商品
                     {
                         giA += iQty;
@@ -3154,10 +3153,8 @@ int __fastcall BASIC::SumRelDimAgn(int StartLine, int TotalLine)
             }
 			else if (_StrFind(sRType, "R2") || _StrFind(sRType,"R3"))    //前筆誤打、退貨
             {
-                //if (iRelType==7 || iRelType==9)
                 if (iRelType>0 )
                 {
-                    sType = _StringSegment_EX(s, SGM, 8);
 					if (_StrFind(sType, "S0") || (_StrFind(sType, "A0") && _StrFind(sFG_SPC,"9")))        //部門銷售
                     {
                         giA -= iQty;
@@ -7666,7 +7663,6 @@ int __fastcall BASIC::SumBillCPN(int StartLine, int TotalLine)
 }
 
 
-
 ////即時購合計   即時購與銷轉進值 3110, 3113
 int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
 {
@@ -7674,9 +7670,9 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
     string str_sale_type;       //銷貨型態
     string str_r_type;          //誤打、退貨型態
     string str_spc_flag,s;        //交易類別
-    string VdcStatus,stmp,TaxFlg, sRelType, TmpBarcode2;
+    string VdcStatus,stmp,TaxFlg, sRelType, TmpBarcode2, FG_MOVSTK;
     int ifg_spc, tmpQty, tmpAmt, iRelType, iTmpAmt, iVDC99Cnt, iVDC99Amt;
-    int i_type, seg1, seg2, seg3, seg4, seg5, seg6, seg7, seg8, seg9, seg10, seg11, segDONGLE, segNam;
+    int i_type, seg1, seg2, seg3, seg4, seg5, seg6, seg7, seg8, seg9, seg10, seg11, segDONGLE, segNam, segMOVSTK;
 
     //次數、金額
     giA = 0;
@@ -7704,12 +7700,14 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
                 seg1 = 9, seg2 = 10, seg3 = 17, seg4 = 28, seg5 = 31, seg6 = 32, seg7 = 33, seg8 = 34,
                     seg9 = 37, seg10 = 38, seg11 = 43;
                 segDONGLE = 11, segNam = 19;
+                segMOVSTK = seg10;
                 break;
             case 113:
                 // seg1.銷貨型態:9, seg2.NO_REPCNT:10, seg3.CD_FMCODE:17, seg4.銷售數量:29, seg5.AM_ITEM:32, seg6.AM_DIS_SUB:33,  
                 // seg7.AM_SUB_SUB:34,  seg8.AM_PAY_SUB:35, seg9.FG_TAX:38, seg10.連線商品狀態:19 , seg11.交易狀態區分:82 
                 seg1 = 9, seg2 = 10, seg3 = 17, seg4 = 29, seg5 = 32, seg6 = 33, seg7 = 34, seg8 = 35;
                 seg9 = 38, seg10 = 19, seg11 = 82;
+                segMOVSTK = 20; //庫存推移FLAG
                 break;
             case 120:
                 //seg1, seg2, seg3, seg4, seg5, seg6, seg7, seg8, seg9, seg10, seg11;
@@ -7740,31 +7738,26 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
             ifg_spc=_StrToInt(str_spc_flag);
             //連線商品狀態
 			VdcStatus = _StringSegment_EX(s, SGM, seg10);
-
             //連線商品區分
             iRelType=0;
 			sRelType = Trim(VdcStatus.substr(0, 2));
             iRelType=_StrToInt(sRelType);
             TmpBarcode2="";
+            FG_MOVSTK= _StringSegment_EX(s, SGM, segMOVSTK);  //庫存推移FLAG
 
-            /************    2012/04/01 Update,  2012/04/04 ReCover  ******************/
-			if (Trim(VdcStatus.substr(1, 1)) == "0" || Trim(VdcStatus.substr(1, 1)) == "")  //存貨推移FG
+            /******************************/
+			if (FG_MOVSTK == "0" || FG_MOVSTK == "")  //存貨推移FG
                     continue;
-
-            //if ( _StrFind(str_sale_type,"A") && ifg_spc==9 )  //預售商品
-            //   { ;; }
-            //else if ( ifg_spc==4 || ifg_spc==5 || ifg_spc==6 || ifg_spc==9 )
-            //   {     continue;   }
-
-            if (ifg_spc == 4 || ifg_spc == 5 || ifg_spc == 6 || ifg_spc == 9)
+            
+            if (_StrFind(str_sale_type, "A") && ifg_spc == 9)  //預售商品
+               { ;; }
+            else if (ifg_spc == 4 || ifg_spc == 5 || ifg_spc == 6 || ifg_spc == 9)
                {     continue;   }
 
-            /************             2012/04/01  Update            ******************/
-
+            /******************************/
 
             //if (iRelType==0 || iRelType==3 || iRelType==4 )
             //    continue;
-
 
             tmpQty= _StrToInt(_StringSegment_EX(s, SGM, seg4));      //數量;
             tmpAmt= _StrToInt(_StringSegment_EX(s, SGM, seg5));      //金額
@@ -7817,9 +7810,7 @@ int __fastcall BASIC::VdcInvSumdat(int StartLine, int TotalLine)
                         iVDC99Cnt += tmpQty;
                         iVDC99Amt += tmpAmt;
                     }
-                                    
-                  //logsprintf("VdcInvSumdat:即時購與銷轉進值:%s->金額:+%d, Acc=%d ... VDC99(%d,%d)", s.c_str(),tmpAmt, giB+giD, iVDC99Cnt, iVDC99Amt );
-
+                   //logsprintf("VdcInvSumdat:即時購與銷轉進值:%s->金額:+%d, Acc=%d ... VDC99(%d,%d)", s.c_str(),tmpAmt, giB+giD, iVDC99Cnt, iVDC99Amt );
                 }
                else if (str_r_type=="R2" || str_r_type=="R3" )
                 {
