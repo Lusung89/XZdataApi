@@ -64,6 +64,7 @@ typedef std::list<string> TStringList;    //for (list<string>::iterator ls = xxL
 #define REC41LENGTH    471   
 #define REC50LENGTH    373
 #define REC51LENGTH    130
+#define REC54LENGTH    37
 #define REC97LENGTH    103
 #define REC98LENGTH    109
 
@@ -183,6 +184,8 @@ public:
     TStringList *tsl_subsale,*gtsl_bil, *gtsl_fetc_card, *gtsl_1051_sal;
     TStringList *Autotsl_rec, *Autotsl_tot, *Autotsl_drop, *Autotsl_easy_card, *Autotsl_pay_sub;
     TStringList *Autotsl_subsale,*Autotsl_bil, *Autotsl_fetc_card, *Auto_Sal, *Auto_1051_sal ;
+    TStringList *Autotsl_3054_sal, *gtsl_3054_sal;
+    TStringList *Autotsl_Ticket, *gtsl_Ticket;
 
     string g_store_name;            //店名
     //char gchar_tencode[7];        //店別
@@ -290,6 +293,8 @@ public:
     bool gbl_fetc_haveline;           //Fetc card
     //bool gbl_0041_haveline;           //投庫
     bool gbl_1051_haveline;           //1051電文
+    bool gbl_3054_haveline;
+    bool gbl_Ticket_haveline;
 
     int gi_tot_line;                 //TOT檔總行數
     int gi_rec_line;                 //REC
@@ -298,6 +303,9 @@ public:
     int gi_pay_line;
     int gi_fetc_line;                //Fetc EASY CARD
     int gi_1051_line;                //計算1051行數
+    int gi_3054_line;
+    int gi_Ticket_line;
+        
     //int gi_0041_line;                //投庫
 
     int __fastcall subsale_update(TStringList * tsl, string good_no,
@@ -403,6 +411,14 @@ protected:
 
     void __fastcall pay_sub_amt(int StartLine, int TotalLine);  //折扣讓 
 
+    //接班明細:信用卡簽單張數
+    //新增：信用卡簽單張數依1028.FG_SIGN=’1’
+    void __fastcall BASIC::Sig_Cnt(int StartLine, int TotalLine);
+
+    //劃位票券退票張數
+    //依1805.FU_SPACE第3碼='1'及1806~1807.FU_SPACE 第1碼='1'，判斷劃位票券退票張數。
+    void __fastcall BASIC::Rtn_Ticket(int StartLine, int TotalLine);
+
 	void __fastcall BASIC::Sum_BaseTbSubrev(string menu_no, string item_amt, string item_qty,int NegTive=1 );
 
     int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
@@ -453,6 +469,9 @@ protected:
     // 外加手續費,即時購代售點卡集計 以連線區分分類
     // Sub_C0InvoAmt4VDC NextPOS 合併 Sub_C0InvoAmt   A-giH , B-giI , C-giJ , D-giK , E-giL , F-giM , G-giN 
     void __fastcall BASIC::Sub_C0InvoAmt4VDC(int StartLine, int TotalLine);
+
+    //環保杯轉儲
+    void __fastcall BASIC::Sum3054_SUB_AMT(int StartLine, int TotalLine);
 
 	int __fastcall BASIC::read_ten_name(string &sStoreNo, string &sStoreName);
 	void __fastcall BASIC::scan_fixstr(FILE *f, register char *str, register int len);

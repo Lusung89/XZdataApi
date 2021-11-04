@@ -1288,7 +1288,7 @@ int __fastcall  BASIC::GetZCNT_SalData(string AutoZCnt)
     irtn+=1;
 #pragma endregion
 
-#pragma region   Autotsl_fetc_card to gtsl_fetc_card
+#pragma region   Autotsl_fetc_card to gtsl_fetc_card 3228
     gtsl_fetc_card->clear();
     //gtsl_fetc_card->Assign(Autotsl_fetc_card);
     if( Autotsl_fetc_card->size() > 0)
@@ -1361,6 +1361,57 @@ int __fastcall  BASIC::GetZCNT_SalData(string AutoZCnt)
             }
        }
        irtn+=1;
+#pragma endregion
+
+#pragma region   Autotsl_3054_sal to gtsl_3054_sal  依日結序號切 3054 List
+
+       gtsl_3054_sal->clear();
+       //tsl_subsale->Assign(Autotsl_subsale);
+       if (Autotsl_3054_sal->size() > 0)
+       {
+           for (list<string>::iterator s = Autotsl_3054_sal->begin(); s != Autotsl_3054_sal->end(); s++)   
+           {
+               sRec = *s;  
+               TmpZcnt = _StringSegment_EX(sRec, SGM, 6);  //日結序號
+               sTmpDttm = _StringSegment_EX(sRec, SGM, 5);
+               //if( sTmpDttm.SubString(1,8)<=sYYYYMMDD )
+
+               if (TmpZcnt == SalZcnt)
+               {
+                   gtsl_3054_sal->push_back(sRec);
+               }
+               else
+               {
+                   ;;//tsl_subsale->Delete(i);
+               }
+           }
+       }
+       irtn += 1;
+#pragma endregion
+
+#pragma region   Autotsl_Ticket to gtsl_Ticket    3805~3807 List
+
+       gtsl_Ticket->clear();
+       if (Autotsl_Ticket->size() > 0)
+       {
+           for (list<string>::iterator s = Autotsl_Ticket->begin(); s != Autotsl_Ticket->end(); s++)
+           {
+               sRec = *s;
+               TmpZcnt = _StringSegment_EX(sRec, SGM, 6);  //日結序號
+               sTmpDttm = _StringSegment_EX(sRec, SGM, 5);
+               //if( sTmpDttm.SubString(1,8)<=sYYYYMMDD )
+
+               if (TmpZcnt == SalZcnt)
+               {
+                   gtsl_Ticket->push_back(sRec);
+               }
+               else
+               {
+                   ;;//tsl_subsale->Delete(i);
+               }
+           }
+       }
+       irtn += 1;
 #pragma endregion
 
     } // end of try
@@ -1533,7 +1584,8 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
                     case 811: //plus Pay
                         gtsl_easy_card->push_back(str_sal_data);
                         break;
-                    case 30:
+                    
+                    case 228:
                         gtsl_fetc_card->push_back(str_sal_data);
                         break;
                         //Bil
@@ -1555,6 +1607,15 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
                         gtsl_1051_sal->push_back(stmp);
                         break;
 
+                    case 54:
+                        gtsl_3054_sal->push_back(stmp);
+                        break;
+
+                    case 805:
+                    case 806:
+                    case 807:
+                        gtsl_Ticket->push_back(stmp);
+                        break;
                     case 14:
                     case 15:
                     case 16:
@@ -1593,6 +1654,8 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
         gbl_bil_haveline = false;
         gbl_fetc_haveline = false;
         gbl_1051_haveline = false;        //gbl_0041_haveline = false;
+        gbl_3054_haveline = false;
+        gbl_Ticket_haveline = false;
 
         writelog("開啟交易檔案發生錯誤 " + FileName);
         return 0;
@@ -1639,7 +1702,7 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
             case 811: //plus Pay
                 gtsl_easy_card->push_back(stmp);
                 break;
-            case 330:
+            case 228:
                 gtsl_fetc_card->push_back(stmp);
                 break;
                 // BIL
@@ -1661,6 +1724,14 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
                 break;
             case 51:
                 gtsl_1051_sal->push_back(stmp);
+                break;
+            case 54:
+                gtsl_3054_sal->push_back(stmp);
+                break;
+            case 805:
+            case 806:
+            case 807:
+                gtsl_Ticket->push_back(stmp);
                 break;
             default:
                 //writelog(FileName+ "for_x :Data Erroe " + str_sal_data);
@@ -1693,9 +1764,12 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
     gi_bil_line = (gtsl_bil->size() - 1);           //BIL
     gi_fetc_line = (gtsl_fetc_card->size() - 1);    //Fetc Card
     gi_1051_line = (gtsl_1051_sal->size() - 1);      //1051行數
+    gi_3054_line = (gtsl_3054_sal->size() - 1);      //3054行數
+    gi_Ticket_line =  (gtsl_Ticket->size() - 1);      //3805~5807行數
 
-    logsprintf("取得本次帳表資料筆數 3110,3113=%d, 3011,3311=%d, 1031~1035=%d, 3240=%d, 3241=%d, 3050=%d, 3051=%d ",
-        gtsl_rec->size(), gtsl_pay_sub->size(), gtsl_easy_card->size(), gtsl_bil->size(), gtsl_drop->size(), gtsl_tot->size(), gtsl_1051_sal->size());
+    logsprintf("取得本次帳表資料筆數 3110,3113=%d, 3011,3311=%d, 3031~3035=%d, 3240=%d, 3241=%d, 3050=%d, 3051=%d, 3054=%d, 3805~3807=%d ",
+        gtsl_rec->size(), gtsl_pay_sub->size(), gtsl_easy_card->size(), gtsl_bil->size(), gtsl_drop->size(), gtsl_tot->size(), 
+        gtsl_1051_sal->size(), gtsl_3054_sal->size(), gtsl_Ticket->size());
 
     if (gi_tot_line > -1)
         gbl_tot_haveline = true;    //TOT筆數為正值
@@ -1733,6 +1807,16 @@ int __fastcall BASIC::wloadsalfile(string FileName, bool for_x, string AutoZ_Cnt
     else
         gbl_1051_haveline = false;
 
+
+    if (gi_3054_line > -1)
+        gbl_3054_haveline = true;   //3054筆數為正值
+    else
+        gbl_3054_haveline = false;
+
+    if (gi_Ticket_line > -1)
+        gbl_Ticket_haveline = true;    
+    else
+        gbl_Ticket_haveline = false;
 
     return OK;
 }
@@ -1806,7 +1890,7 @@ int __fastcall BASIC::loadsalfile(string FileName, bool for_x, string AutoZ_Cnt,
         gbl_bil_haveline = false;
         gbl_fetc_haveline = false;
         gbl_1051_haveline = false;        //gbl_0041_haveline = false;
-
+        gbl_3054_haveline = false;
         writelog("開啟交易檔案發生錯誤 " + FileName);
         return 0;
     }
@@ -1975,7 +2059,9 @@ int __fastcall BASIC::loadsalfile(string FileName, bool for_x, string AutoZ_Cnt,
                         case 51:
                             gtsl_1051_sal->push_back(stmp);
                             break;
-
+                        case 54:
+                            gtsl_3054_sal->push_back(stmp);
+                            break;
                         case 14:
                         case 15:
                         case 16:
@@ -2040,26 +2126,28 @@ int __fastcall BASIC::loadsalfile(string FileName, bool for_x, string AutoZ_Cnt,
                 case 38:  //TM二代悠遊卡加值 二代悠遊加值明細 3238
 					gtsl_easy_card->push_back(stmp);
                     break;
-                case 1030:
+                case 30:
 					gtsl_fetc_card->push_back(stmp);
                     break;
                 // BIL
                 //case 40:
-                case 1040:
+                case 40:
 					gtsl_bil->push_back(stmp);
                     break;
                 //投庫
                 //case 41:
-                case 1041:
+                case 41:
 					gtsl_drop->push_back(stmp);
                     break;
                 //TOT
-                //case 50:
-                case 1050:
+                case 50:
 					gtsl_tot->push_back(stmp);
                     break;
-                case 1051:
+                case 51:
 					gtsl_1051_sal->push_back(stmp);
+                    break;
+                case 54:
+                    gtsl_3054_sal->push_back(stmp);
                     break;
             }
         }
@@ -2098,8 +2186,9 @@ int __fastcall BASIC::loadsalfile(string FileName, bool for_x, string AutoZ_Cnt,
 	gi_fetc_line = (gtsl_fetc_card->size() - 1);    //Fetc Card
 	gi_1051_line = (gtsl_1051_sal->size() - 1);      //1051行數
 
-	logsprintf("取得本次帳表資料筆數 1010=%d, 1011=%d, 1031~1035=%d, 1040=%d, 1041=%d, 1050=%d, 1051=%d ",
-		gtsl_rec->size(), gtsl_pay_sub->size(), gtsl_easy_card->size(),	gtsl_bil->size(), gtsl_drop->size(), gtsl_tot->size(), gtsl_1051_sal->size());
+    logsprintf("取得本次帳表資料筆數 3110,3113=%d, 3011,3311=%d, 3031~3035=%d, 3240=%d, 3241=%d, 3050=%d, 3051=%d, 3054=%d, 3805~3807=%d ",
+        gtsl_rec->size(), gtsl_pay_sub->size(), gtsl_easy_card->size(), gtsl_bil->size(), gtsl_drop->size(), gtsl_tot->size(),
+        gtsl_1051_sal->size(), gtsl_3054_sal->size(), gtsl_Ticket->size());
 
     if (gi_tot_line > -1)
         gbl_tot_haveline = true;    //TOT筆數為正值
@@ -2137,6 +2226,10 @@ int __fastcall BASIC::loadsalfile(string FileName, bool for_x, string AutoZ_Cnt,
     else
         gbl_1051_haveline = false;
 
+    if (gi_3054_line > -1)
+        gbl_3054_haveline = true;   //3054筆數為正值
+    else
+        gbl_3054_haveline = false;
 
     return OK;
 }
@@ -2378,7 +2471,9 @@ BASIC::~BASIC()
            gtsl_easy_card,
            gtsl_pay_sub,
            gtsl_1051_sal,
-           tsl_subsale;
+           gtsl_3054_sal,
+           tsl_subsale,
+           gtsl_Ticket;
 
     delete Autotsl_rec ;
     delete Autotsl_tot ;
@@ -2390,6 +2485,8 @@ BASIC::~BASIC()
     delete Autotsl_subsale ;
     delete Auto_Sal ;
     delete Auto_1051_sal;
+    delete Autotsl_3054_sal;
+    delete Autotsl_Ticket;
 
 }
 
@@ -5722,6 +5819,8 @@ BASIC::BASIC()
     gtsl_fetc_card = new TStringList();
     tsl_subsale = new TStringList();
     gtsl_1051_sal = new TStringList();
+    gtsl_3054_sal = new TStringList();
+    gtsl_Ticket = new TStringList();
 
     Autotsl_rec = new TStringList();
     Autotsl_tot = new TStringList();
@@ -5732,7 +5831,9 @@ BASIC::BASIC()
     Autotsl_fetc_card = new TStringList();
     Autotsl_subsale = new TStringList();
     Auto_1051_sal = new TStringList();
+    Autotsl_3054_sal = new TStringList();
     Auto_Sal= new TStringList();
+    Autotsl_Ticket = new TStringList();
 
     //gchar_tencode[0] = 0;
     //gchar_ecr_no[0] = 0;
@@ -6100,6 +6201,59 @@ int __fastcall BASIC::easy_card(int StartLine, int TotalLine)
                     }   // end else if (str_r_type.Pos("R2") || str_r_type.Pos("R3"))
 #pragma endregion
                 }// end of   else if( StrTranType == "1038")
+               else if (StrTranType == "3811")   
+#pragma region  plus Pay 
+               {
+                 str_sale_type = _StringSegment_EX(s, SGM, 9).substr(0, 2);
+                 str_r_type = _StringSegment_EX(s, SGM, 10).substr(0, 2);   //FG_SaleType  S0,S1
+                 str_type = _StringSegment_EX(s, SGM, 12).substr(1, 3);     //Tran_type  310/320
+                 int_type = _StrToInt(str_type);
+ 
+                 if (_StrFind(str_sale_type, "X") || _StrFind(str_sale_type, "V"))
+                   continue;
+
+                 if (_StrFind(str_sale_type, "Z0") || _StrFind(str_sale_type, "Z1"))   // str_sale_type
+                 {
+                   if (str_type == "310") // 加值
+                   {
+                       ++int_2_time;
+                       int_2_money += _StrToInt(_StringSegment_EX(s, "|", 21));
+                   }
+                   else if (str_type == "320")     //加值取消
+                   {
+                       ++int_11_time;
+                       int_11_money += _StrToInt(_StringSegment_EX(s, "|", 21));
+                   }
+                   else
+                   {
+                       //++int_2_time;
+                  //int_2_money += _StrToInt(_StringSegment_EX(s, "|", 21));
+                       ;;
+                   }
+
+                 }   // end if (str_r_type.Pos("FF") || str_r_type.Pos("Z0") || str_r_type.Pos("Z1"))
+                 else if (_StrFind(str_sale_type, "R2") || _StrFind(str_sale_type, "R3"))
+                 {
+                   if (str_type == "310") // 加值
+                   {
+                       --int_2_time;
+                       int_2_money -= _StrToInt(_StringSegment_EX(s, "|", 21));
+                   }
+                   else  if (str_type == "320")     //加值取消
+                   {
+                       --int_11_time;
+                       int_11_money -= _StrToInt(_StringSegment_EX(s, "|", 21));
+                   }
+                   else
+                   {
+                       //  --int_2_time;
+                       // int_2_money -= _StrToInt(_StringSegment_EX(s, "|", 21));
+                       ;;
+                   }
+
+                 }   // end else if (str_r_type.Pos("R2") || str_r_type.Pos("R3"))
+#pragma endregion
+               } // end of if( StrTranType == "3811")
                 else // ( StrTranType == "1035") OR 1038
                 {
                     ;;
@@ -6312,6 +6466,104 @@ int __fastcall BASIC::fetc_card(int StartLine, int TotalLine)
                   int_1_time, int_1_money, int_2_time, int_2_money );
     //writelog(sTmp);
     return 0;
+}
+
+
+//接班明細:信用卡簽單張數
+//新增：信用卡簽單張數依3228.(35)FG_SIGN=’1’
+void __fastcall BASIC::Sig_Cnt(int StartLine, int TotalLine)
+{
+    string str_type, sTmp, s, sFG_SIGN, StrTranType;        //Fetc 加值交易類別
+    int iFG_SIGN_Cnt, int_type = 0;
+    iFG_SIGN_Cnt = giA = 0;
+
+    if (gbl_fetc_haveline)
+    {
+        for (list<string>::iterator ls = gtsl_fetc_card->begin(); ls != gtsl_fetc_card->end(); ls++)
+        {
+            s = *ls;
+            StrTranType = _StringSegment_EX(s, SGM, 1);
+            int_type = _StrToInt(StrTranType) % 1000;
+            
+            if (int_type == 228)
+            {
+                //信用卡簽單張數  FG_SIGN==1   '1'(紙本)
+                sFG_SIGN = _StringSegment_EX(s, "|", 35);
+                str_type = _StringSegment_EX(s, "|", 9);
+                if (_StrFind(str_type, "FF") || _StrFind(str_type, "Z0") || _StrFind(str_type, "Z1") || Trim(str_type) == "")
+                {
+                    if (sFG_SIGN == "1")
+                        iFG_SIGN_Cnt++;   //信用卡簽單張數
+                }
+                continue;
+            } // end of   if( int_type == 3228)
+
+        }
+
+    }
+
+    giA = iFG_SIGN_Cnt;   //信用卡簽單張數
+
+    logsprintf("Sig_Cnt: 信用卡簽單張數=%d", iFG_SIGN_Cnt);
+   
+}
+
+
+
+//接班明細:劃位票券退票張數
+//依1805.FU_SPACE第3碼='1'及1806~1807.FU_SPACE 第1碼='1'，判斷劃位票券退票張數。
+void __fastcall BASIC::Rtn_Ticket(int StartLine, int TotalLine)
+{
+    string str_type;
+    string str_Space, s, sTmp, StrTranType;
+    int int_type = 0;
+    giA = giB = giC = 0;
+
+    if (gbl_Ticket_haveline)
+    {
+        //for (int i = 0; i < gtsl_Ticket->Count; i++)
+        for (list<string>::iterator ls = gtsl_Ticket->begin(); ls != gtsl_Ticket->end(); ls++)
+        {
+            s = *ls;
+            StrTranType = _StringSegment_EX(s, SGM, 1);
+            int_type = _StrToInt(StrTranType)%1000;
+            _StrToInt(_StringSegment_EX(s, SGM, 16));
+            switch (int_type)
+            {
+            case 805:
+                str_type = _StringSegment_EX(s, "|", 9);  //S0
+                str_Space = _StringSegment_EX(s, "|", 26).substr(2, 1);  
+                if (_StrFind(str_type, "S0") && str_Space == "1")   
+                {
+                    giA++;
+                }
+                break;
+            case 806:
+                str_type = _StringSegment_EX(s, "|", 9); //S0
+                str_Space = _StringSegment_EX(s, "|", 27).substr(0, 1);
+                if (_StrFind(str_type, "S0") && str_Space == "1")
+                {
+                    giB++;
+                }
+                break;
+            case 807:
+                str_type = _StringSegment_EX(s, "|", 9); //S0
+                str_Space = _StringSegment_EX(s, "|", 28).substr(0, 1);
+                if (_StrFind(str_type, "S0") && str_Space == "1")
+                {
+                    giC++;
+                }
+                break;
+            default:
+                break;
+            }
+
+        }    //for (int i=0; i<gtsl_Ticket->Count; i++)
+    }
+
+
+    logsprintf("Rtn_Ticket:劃位票券退票張數:合計(3805=%d,3806=%d,3807=%d)", giA, giB, giC);
+    
 }
 
 
@@ -6669,7 +6921,7 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
 
     int ipay_cash_amt, ipay_present_amt, ipay_cpn_amt,cashi, iTmp;
 
-    int pay_other1_amt, pay_other2_amt;
+    int pay_other1_amt, pay_other2_amt, ipay_CldInvo800_amt;
 
     //PAYCASHREC pay_cash_rec[100];
 	PAYCASHREC pay_cash_rec[101];
@@ -6687,7 +6939,7 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
 
     ipay_cash_amt=ipay_present_amt=ipay_cpn_amt=0;
 
-	pay_other1_amt=pay_other2_amt=0;
+    pay_other1_amt = pay_other2_amt = ipay_CldInvo800_amt = 0;
 
     string str_sale_type, strtmp, tmpSer, tmp0041Date1, tmp0041ChrName,s, sLog;       //結帳型態
 
@@ -6732,6 +6984,9 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
 
             //折價券
                ipay_cpn_amt += _StrToInt(_StringSegment_EX(s, SGM, 15));
+
+            //Cloud 中獎發票金額(800) ipay_CldInvo800_amt 20210601 Update
+               ipay_CldInvo800_amt += _StrToInt(_StringSegment_EX(s, "|", 18));
 
 			//中獎發票金額  500
 			   pay_other1_amt += _StrToInt(_StringSegment_EX(s, SGM, 19));
@@ -6802,11 +7057,11 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
     int itotSumCash41=(ipay_cash_amt+itot_acc_amt)-(iSumCash41-iSumPsRtn41);     // 2017/0815 Update
     int itotSumPresent41=ipay_present_amt-iSumPresent41; //禮券短溢收,當acc_type > 01時才有值
     int itotSumCpn41=ipay_cpn_amt-iSumCpn41;
-    int itotWinInvoAmt41=(iacc_invo_amt+ pay_other1_amt+pay_other2_amt)-iWinnInvoAmt;    // 2017/08/15 Update 中獎發票金額
+    int itotWinInvoAmt41=(iacc_invo_amt+ pay_other1_amt+pay_other2_amt + ipay_CldInvo800_amt)-iWinnInvoAmt;    // 2017/08/15 Update 中獎發票金額
 
     int iqt_cetel, iqt_R23Cnt, iqt_VCnt;
     int iqt_food,iamt_food;   //giH giI 食安退貨金額、次數
-
+    int iqt_RTicketCnt, iqt_SigCnt;
     int iRentAmt, iRemtCnt;
     sub_times(0,gi_rec_line);   //giH giI 食安退貨金額、次數       //代收次數,  租賃 退押金次數(giB), 退押金(giA) , 代付(giG)
     iRentAmt=giA; iRemtCnt=giB;
@@ -6828,6 +7083,12 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
     iqt_R23Cnt=giA;
     iqt_VCnt=giB;
 
+    Rtn_Ticket(0, gbl_Ticket_haveline);
+    iqt_RTicketCnt = giA + giB + giC;  //1805, 1806, 1807 筆數為正值
+
+    Sig_Cnt(0, gi_fetc_line); //信用卡簽單張數
+    iqt_SigCnt = giA;
+
     logsprintf("SumCasherRpt 收銀員交接班明細表:收銀員交班(%s) 投庫筆數(%d), 代收張數(%d), 作廢發票張數(%d), 交易取消作廢發票張數(%d), 找餘額券(%d),提貨券金額(%d),提貨券張數(%d)",
         _StringSegment_EX(sTranCnt, SGM, 8).c_str(), int_drop_line + 1, iqt_cetel, iqt_R23Cnt, iqt_VCnt, iSumPsRtn41, iacc_amt14, iacc_cnt14);
     //writelog(strtmp);
@@ -6845,7 +7106,7 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
        {
         try
          {
-          //3041|電文  RtnSumCasherData.sprintf
+          //3041|電文  RtnSumCasherData.sprintf  無規劃雲端中獎發票新增獎項800元  ipay_CldInvo800_amt,
 		 sprintf_s(buffer, sizeof(buffer),"%s||%04d||%04d||%010ld||%010ld||%010ld||%2s||%010ld||%010ld||%010ld  ||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||  %010ld||%010ld||%010ld||%010ld||%04d||%04d||%04d||%-10.10s||%s||",
                                          sTranCnt.c_str(),  // ID_RECTYPE :1  ~ NO_CASHER:8
                                          0,                 //本日投庫累計次數  
@@ -6902,12 +7163,12 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
           fprintf(fxdata,"%s\n",sStr1099.c_str());
 
 
-		  logsprintf("收銀員交班DATA->0041:%s OK", sXdtFile.c_str());
+		  logsprintf("收銀員交班DATA->3041:%s OK", sXdtFile.c_str());
           //writelog(strtmp);
         }
       catch(...)
        {
-		   logsprintf("收銀員交班DATA->0041:%s Catch Error", sXdtFile.c_str());
+		   logsprintf("收銀員交班DATA->3041:%s Catch Error", sXdtFile.c_str());
           //writelog(strtmp);
        }
 
@@ -7104,6 +7365,22 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
 	   m_IniReader.WriteString("AutoX", "invo500", string(buffer));   //AutoCrpIni->WriteString("AutoX", "invo500", strtmp);
    }
 
+   ////////
+   strtmp = m_IniReader.ReadString("AutoX", "invo800", "0");  //strtmp = AutoCrpIni->ReadString("AutoX", "invo1000", "0");
+   i1 = _StrToInt(_StringSegment_EX(strtmp, SGM, 2));
+   i2 = _StrToInt(_StringSegment_EX(strtmp, SGM, 3));
+
+   sprintf_s(buffer, sizeof(buffer), "%s  ＋中獎發票金額(800元) :%7ld", CmdStr.c_str(), ipay_CldInvo800_amt + i2);  tslCrp->push_back(buffer);
+
+   if (Update)
+   {
+       if (iAutoZ)
+           sprintf_s(buffer, sizeof(buffer), "中獎800||%02d||%8ld||", 0, ipay_CldInvo800_amt + i2);
+       else
+           sprintf_s(buffer, sizeof(buffer), "中獎800||%02d||%8ld||", 0, 0);
+       m_IniReader.WriteString("AutoX", "invo800", string(buffer));   //AutoCrpIni->WriteString("AutoX", "invo500", strtmp);
+   }
+
     ////////
    strtmp = m_IniReader.ReadString("AutoX", "invo1000", "0");  //strtmp = AutoCrpIni->ReadString("AutoX", "invo1000", "0");
    i1=_StrToInt(_StringSegment_EX(strtmp, SGM, 2));
@@ -7168,7 +7445,8 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
 
    sprintf_s(buffer, sizeof(buffer), "------------------------------------"); tslCrp->push_back(buffer);
    sprintf_s(buffer, sizeof(buffer), "%s  投庫小計         :   %8ld\n", CmdStr.c_str(), ipay_cash_amt + ipay_present_amt + ipay_cpn_amt +
-	   iacc_invo_amt + pay_other1_amt + pay_other2_amt + itot_acc_amt + i2);                   tslCrp->push_back(buffer);
+             ipay_CldInvo800_amt + iacc_invo_amt + pay_other1_amt + pay_other2_amt + itot_acc_amt + i2);                   
+   tslCrp->push_back(buffer);
    if( Update )
      {
       if( iAutoZ )
@@ -7410,7 +7688,7 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
    logsprintf("SumCasherRpt 收銀員交接班明細表: AutoCrp.ini:: AutoX -> BillAmt = %s ,提貨券張數 :%4ld, 提貨券金額 :%8ld,", strtmp.c_str(),
                                                       iacc_cnt14+i1, iacc_amt14+i2);
    sprintf_s(buffer, sizeof(buffer), "%s提貨券金額  :%7ld │         │", CmdStr.c_str(), iacc_amt14 + i2);   tslCrp->push_back(buffer);
-   sprintf_s(buffer, sizeof(buffer), "%s提貨券張數  :%7ld └─── ─┘", CmdStr.c_str(), iacc_cnt14 + i1);   tslCrp->push_back(buffer);
+   sprintf_s(buffer, sizeof(buffer), "%s提貨券張數  :%7ld │         │", CmdStr.c_str(), iacc_cnt14 + i1);   tslCrp->push_back(buffer);
    if( Update )
      {
       if( iAutoZ )
@@ -7419,6 +7697,45 @@ int __fastcall BASIC::SumCasherRpt(int iAutoZ, int StartLine, int iSumCash41,
 		  sprintf_s(buffer, sizeof(buffer), "提貨||%04d||%8ld||", 0, 0);
 	  m_IniReader.WriteString("AutoX", "BillAmt", string(buffer));   //AutoCrpIni->WriteString("AutoX","BillAmt",strtmp);
      }
+
+   ////////////////////////////// 票券退票張數 //////////////////////////////////////
+   strtmp = m_IniReader.ReadString("AutoX", "rTickcnt", "0");
+   i1 = _StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2 = _StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   logsprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,票券退票張數  :%8ld", strtmp,
+       iqt_RTicketCnt + i2);
+ 
+   sprintf_s(buffer, sizeof(buffer), "%s劃位票券退票張數:%3ld │         │", CmdStr.c_str(), iqt_RTicketCnt + i2);   tslCrp->push_back(buffer);
+
+   if (Update)
+   {
+       if (iAutoZ)
+           sprintf_s(buffer, sizeof(buffer), "退票|%02d|%8ld|", 0, iqt_RTicketCnt + i2);
+       else
+           sprintf_s(buffer, sizeof(buffer), "退票|%02d|%8ld|", 0, 0);
+       m_IniReader.WriteString("AutoX", "rTickcnt", string(buffer));
+   }
+
+   ////////////////////////////// 信用卡簽單張數 //////////////////////////////////////
+   //strtmp = AutoCrpIni->ReadString("AutoX", "rSigcnt", "0");
+   strtmp = m_IniReader.ReadString("AutoX", "rSigcnt", "0");
+   i1 = _StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2 = _StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   logsprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,信用卡簽單張數  :%8ld", strtmp,
+       iqt_SigCnt + i2);
+  
+   sprintf_s(buffer, sizeof(buffer), "%s信用卡簽單張數:%5ld └─── ─┘", CmdStr.c_str(), iqt_SigCnt + i2);   tslCrp->push_back(buffer);
+
+   if (Update)
+   {
+       if (iAutoZ)
+           sprintf_s(buffer, sizeof(buffer), "簽單|%02d|%8ld|", 0, iqt_SigCnt + i2);
+       else
+           sprintf_s(buffer, sizeof(buffer), "簽單|%02d|%8ld|", 0, 0);
+       m_IniReader.WriteString("AutoX", "rSigcnt", string(buffer));
+   }
 
  /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -8930,7 +9247,7 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
 
     int ipay_cash_amt, ipay_present_amt, ipay_cpn_amt,cashi, iTmp;
 
-    int  pay_other1_amt, pay_other2_amt;
+    int  pay_other1_amt, pay_other2_amt, ipay_CldInvo800_amt;
 
     //PAYCASHREC pay_cash_rec[100];
 	PAYCASHREC pay_cash_rec[101];
@@ -8949,7 +9266,7 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
 
     ipay_cash_amt=ipay_present_amt=ipay_cpn_amt=0;
 
-	pay_other1_amt=pay_other2_amt=0;
+    pay_other1_amt = pay_other2_amt = ipay_CldInvo800_amt = 0;
 
     string str_sale_type, strtmp, tmpSer, tmp0041Date1, tmp0041ChrName,s;       //結帳型態
 
@@ -8992,6 +9309,9 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
 
             //折價券
                ipay_cpn_amt += _StrToInt(_StringSegment_EX(s, SGM, 15));
+
+            //Cloud 中獎發票金額(800) ipay_CldInvo800_amt 20210601 Update
+            ipay_CldInvo800_amt += _StrToInt(_StringSegment_EX(s, "|", 18));
 
 			//中獎發票金額(500)
 			   pay_other1_amt += _StrToInt(_StringSegment_EX(s, SGM, 19));
@@ -9061,10 +9381,10 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
     int itotSumCash41=(ipay_cash_amt+itot_acc_amt)-(iSumCash41-iSumPsRtn41);
     int itotSumPresent41=ipay_present_amt-iSumPresent41; //禮券短溢收,當acc_type > 01時才有值
     int itotSumCpn41=ipay_cpn_amt-iSumCpn41;
-    int itotWinInvoAmt41=(iacc_invo_amt+ pay_other1_amt+pay_other2_amt)-iWinnInvoAmt;    // 2017/08/15 Update 中獎發票金額
+    int itotWinInvoAmt41=(iacc_invo_amt+ pay_other1_amt+pay_other2_amt + ipay_CldInvo800_amt)-iWinnInvoAmt;    // 2017/08/15 Update 中獎發票金額
     int iqt_cetel, iqt_R23Cnt, iqt_VCnt;
     int iqt_food,iamt_food;   //giH giI 食安退貨金額、次數
-
+    int iqt_RTicketCnt, iqt_SigCnt;
     int iRentAmt, iRemtCnt;
     sub_times(0,gi_rec_line);   //giH giI 食安退貨金額、次數      //代收次數,  租賃 退押金次數(giB), 退押金(giA) , 代付(giG)
     iRentAmt=giA; iRemtCnt=giB;
@@ -9086,6 +9406,12 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
     iqt_R23Cnt=giA;
     iqt_VCnt=giB;
 
+    Rtn_Ticket(0, gbl_Ticket_haveline);
+    iqt_RTicketCnt = giA + giB + giC;  ///1805, 1806, 1807 筆數為正值
+
+    Sig_Cnt(0, gi_fetc_line); //信用卡簽單張數
+    iqt_SigCnt = giA;
+
     logsprintf("SumCasherRptXDT 收銀員交接班明細表:收銀員交班(%s) 投庫筆數(%d), 代收張數(%d), 作廢發票張數(%d), 交易取消作廢發票張數(%d), 找餘額券(%d),提貨券金額(%d),提貨券張數(%d)",
                    sTranCnt.substr(52,8).c_str(), int_drop_line+1, iqt_cetel, iqt_R23Cnt, iqt_VCnt, iSumPsRtn41, iacc_amt14, iacc_cnt14);
 
@@ -9103,7 +9429,7 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
 	char buffer[4096];
     try
        {
-        //3041|電文
+        //3041|電文  RtnSumCasherData.sprintf  無規劃雲端中獎發票新增獎項800元  ipay_CldInvo800_amt,
 		   sprintf_s(buffer, sizeof(buffer),"%s%14s||%5s||%-10s||%-20s||%04d||%04d||%010ld||%010ld||%010ld||%2s||%010ld||%010ld||%010ld||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%04d||%010ld||%010ld||%010ld||%010ld||%04d||%04d||%04d||%-10.10s||%s||\n",
                                          sTranCnt.substr(0,24).c_str(),
                                          nXDTdttn.c_str(),
@@ -9357,6 +9683,22 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
 	   m_IniReader.WriteString("AutoX", "invo500", string(buffer));   //AutoCrpIni->WriteString("AutoX","invo500",strtmp);
    }
 
+   ////////
+   strtmp = m_IniReader.ReadString("AutoX", "invo800", "0");  //strtmp = AutoCrpIni->ReadString("AutoX", "invo1000", "0");
+   i1 = _StrToInt(_StringSegment_EX(strtmp, SGM, 2));
+   i2 = _StrToInt(_StringSegment_EX(strtmp, SGM, 3));
+
+   sprintf_s(buffer, sizeof(buffer), "%s  ＋中獎發票金額(800元) :%7ld", CmdStr.c_str(), ipay_CldInvo800_amt + i2);  tslCrp->push_back(buffer);
+
+   if (Update)
+   {
+       if (iAutoZ)
+           sprintf_s(buffer, sizeof(buffer), "中獎800||%02d||%8ld||", 0, ipay_CldInvo800_amt + i2);
+       else
+           sprintf_s(buffer, sizeof(buffer), "中獎800||%02d||%8ld||", 0, 0);
+       m_IniReader.WriteString("AutoX", "invo800", string(buffer));   //AutoCrpIni->WriteString("AutoX", "invo500", strtmp);
+   }
+
     ////////
    strtmp = m_IniReader.ReadString("AutoX", "invo1000", "0");   //strtmp=AutoCrpIni->ReadString("AutoX","invo1000","0");
    i1=_StrToInt(_StringSegment_EX(strtmp, SGM, 2));
@@ -9415,7 +9757,8 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
 
    sprintf_s(buffer, sizeof(buffer), "------------------------------------"); tslCrp->push_back(string(buffer));
    sprintf_s(buffer, sizeof(buffer), "%s  投庫小計         :   %8ld\n", CmdStr.c_str(), ipay_cash_amt + ipay_present_amt + ipay_cpn_amt +
-	   iacc_invo_amt + pay_other1_amt + pay_other2_amt + itot_acc_amt + i2);                                                           tslCrp->push_back(string(buffer));
+             ipay_CldInvo800_amt + iacc_invo_amt + pay_other1_amt + pay_other2_amt + itot_acc_amt + i2);   
+   tslCrp->push_back(string(buffer));
    if( Update )
      {
       if( iAutoZ )
@@ -9656,7 +9999,7 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
   logsprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> BillAmt = %s ,提貨券張數 :%4ld, 提貨券金額 :%8ld,", strtmp.c_str(), iacc_cnt14 + i1, iacc_amt14 + i2);
    
   sprintf_s(buffer, sizeof(buffer), "%s提貨券金額  :%7ld │         │", CmdStr.c_str(), iacc_amt14 + i2);   tslCrp->push_back(string(buffer));
-  sprintf_s(buffer, sizeof(buffer), "%s提貨券張數  :%7ld └──── ┘", CmdStr.c_str(), iacc_cnt14 + i1);  tslCrp->push_back(string(buffer));
+  sprintf_s(buffer, sizeof(buffer), "%s提貨券張數  :%7ld │         │", CmdStr.c_str(), iacc_cnt14 + i1);  tslCrp->push_back(string(buffer));
    if( Update )
      {
       if( iAutoZ )
@@ -9666,7 +10009,47 @@ int __fastcall BASIC::SumCasherRptXDT(int iAutoZ, int StartLine, int iSumCash41,
 	  m_IniReader.WriteString("AutoX", "BillAmt", string(buffer));  //AutoCrpIni->WriteString("AutoX","BillAmt",strtmp);
      }
 
- /////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+////////////////////////////// 票券退票張數 //////////////////////////////////////
+   strtmp = m_IniReader.ReadString("AutoX", "rTickcnt", "0");
+   i1 = _StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2 = _StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   logsprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,票券退票張數  :%8ld", strtmp,
+       iqt_RTicketCnt + i2);
+
+   sprintf_s(buffer, sizeof(buffer), "%s劃位票券退票張數:%3ld │         │", CmdStr.c_str(), iqt_RTicketCnt + i2);   tslCrp->push_back(buffer);
+
+   if (Update)
+   {
+       if (iAutoZ)
+           sprintf_s(buffer, sizeof(buffer), "退票|%02d|%8ld|", 0, iqt_RTicketCnt + i2);
+       else
+           sprintf_s(buffer, sizeof(buffer), "退票|%02d|%8ld|", 0, 0);
+       m_IniReader.WriteString("AutoX", "rTickcnt", string(buffer));
+   }
+
+   ////////////////////////////// 信用卡簽單張數 //////////////////////////////////////
+   //strtmp = AutoCrpIni->ReadString("AutoX", "rSigcnt", "0");
+   strtmp = m_IniReader.ReadString("AutoX", "rSigcnt", "0");
+   i1 = _StrToInt(_StringSegment_EX(strtmp, "|", 2));
+   i2 = _StrToInt(_StringSegment_EX(strtmp, "|", 3));
+
+   logsprintf("SumCasherRptXDT 收銀員交接班明細表: AutoCrp.ini:: AutoX -> rTickcnt = %s ,信用卡簽單張數  :%8ld", strtmp,
+       iqt_SigCnt + i2);
+
+   sprintf_s(buffer, sizeof(buffer), "%s信用卡簽單張數:%5ld └─── ─┘", CmdStr.c_str(), iqt_SigCnt + i2);   tslCrp->push_back(buffer);
+
+   if (Update)
+   {
+       if (iAutoZ)
+           sprintf_s(buffer, sizeof(buffer), "簽單|%02d|%8ld|", 0, iqt_SigCnt + i2);
+       else
+           sprintf_s(buffer, sizeof(buffer), "簽單|%02d|%8ld|", 0, 0);
+       m_IniReader.WriteString("AutoX", "rSigcnt", string(buffer));
+   }
+
+   /////////////////////////////////////////////////////////////////////////////////////////////////
 
    strtmp = m_IniReader.ReadString("AutoX", "xBtrPaks", "0");   //strtmp=AutoCrpIni->ReadString("AutoX","xBtrPaks","0");
    i1=_StrToInt(_StringSegment_EX(strtmp, SGM, 2));
@@ -9898,4 +10281,54 @@ void __fastcall BASIC::S1051MissCnt(int StartLine, int TotalLine, string &sMissR
 		 logsprintf("S1051MissCnt:紙本作廢發票張數(%d), 載具作廢發票張數(%d), (%s) ", giA, giB, sMissRec.c_str());
     }
  }
+
+
+//Sum3054_SUB_AMT(0, gi_3054_haveline)  get giU; giV; giW;
+ //環保杯轉儲
+void __fastcall BASIC::Sum3054_SUB_AMT(int StartLine, int TotalLine)
+{
+    string str_trans_type, strtmp, s;       //銷售型態
+
+    int iQtY = 0;
+    int iTAX_AMT = 0;
+    int iSUB_AMT = 0;
+
+    giU = 0; giV = 0; giW = 0;
+    if (gbl_3054_haveline)
+    {
+        //for (int i = StartLine; i < gtsl_1054_sal->Count; i++)
+        for (list<string>::iterator ls = gtsl_3054_sal->begin(); ls != gtsl_3054_sal->end(); ls++)
+        {
+            s = *ls;
+            logsprintf("Sum3054_SUB_AMT:環保杯轉儲 3054(%s)", s.c_str());
+           
+            str_trans_type = _StringSegment_EX(s, "|", 9);        //結帳型態
+            iQtY = _StrToInt(_StringSegment_EX(s, "|", 16));       //環保杯數量
+            iTAX_AMT = _StrToInt(_StringSegment_EX(s, "|", 17));   //應稅銷售額合計
+            iSUB_AMT = _StrToInt(_StringSegment_EX(s, "|", 18));   //折扣小計
+
+            if (_StrFind(str_trans_type, "Z"))
+            {
+                giU += iQtY;
+                giV += iTAX_AMT; //* iQtY;
+                giW += iSUB_AMT; //* iQtY;
+
+            }
+            else if (_StrFind(str_trans_type, "R2") || _StrFind(str_trans_type, "R3"))
+            {
+                giU -= iQtY;
+                giV -= iTAX_AMT;
+                giW -= iSUB_AMT;
+            }
+        }
+    }
+
+    int mit = -1;
+    giU = iQtY * mit;
+    giV = iTAX_AMT * mit;
+    giW = iSUB_AMT * mit;
+
+    logsprintf("Sum3054_SUB_AMT:環保杯轉儲 iQtY=%d, TAX_AMT=%d, SUB_AMT=%d", giU, giV, giW);
+    return;
+}
 

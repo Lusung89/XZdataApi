@@ -1,3 +1,224 @@
+// XZDATA_Mag2021/10/28
+ //代售商品折讓金額 & 折扣(應稅) (環保杯轉儲計算) giU,giV,giW=SUB_AMT  2021/10/28 Update
+    Sum3054_SUB_AMT(0, gi_3054_line);
+    iPreSalINVODisAmt = giW;   //重算  iPreSalINVODisAmt
+ 
+
+XZDATA_Mag20210615
+2021/6/24更新----------------------------------------------------------------------
+
+1."票券退票張數"改成"劃位票券退票張數"(手動&自動日結2個地方)
+2."票券退票張數"&"信用卡簽單張數"位置移到"提貨券張數"下(手動&自動日結2個地方)
+3.log補上函式名稱：Rtn_Ticket:劃位票券退票張數
+ref:票券退票張數.txt
+
+ //接班明細:信用卡簽單張數
+    //新增：信用卡簽單張數依1028.FG_SIGN=’1’
+    v//接班明細:信用卡簽單張數
+//新增：信用卡簽單張數依3228.(35)FG_SIGN=’1’
+void __fastcall BASIC::Sig_Cnt(int StartLine, int TotalLine)
+{
+    string str_type, sTmp, s, sFG_SIGN, StrTranType;        //Fetc 加值交易類別
+    int iFG_SIGN_Cnt, int_type = 0;
+    iFG_SIGN_Cnt = giA = 0;
+
+    if (gbl_fetc_haveline)
+    {
+        for (list<string>::iterator ls = gtsl_fetc_card->begin(); ls != gtsl_fetc_card->end(); ls++)
+        {
+            s = *ls;
+            StrTranType = _StringSegment_EX(s, SGM, 1);
+            int_type = _StrToInt(StrTranType) % 1000;
+            
+            if (int_type == 228)
+            {
+                //信用卡簽單張數  FG_SIGN==1   '1'(紙本)
+                sFG_SIGN = _StringSegment_EX(s, "|", 35);
+                str_type = _StringSegment_EX(s, "|", 9);
+                if (_StrFind(str_type, "FF") || _StrFind(str_type, "Z0") || _StrFind(str_type, "Z1") || Trim(str_type) == "")
+                {
+                    if (sFG_SIGN == "1")
+                        iFG_SIGN_Cnt++;   //信用卡簽單張數
+                }
+                continue;
+            } // end of   if( int_type == 3228)
+
+        }
+
+    }
+
+    giA = iFG_SIGN_Cnt;   //信用卡簽單張數
+
+    logsprintf("Sig_Cnt: 信用卡簽單張數=%d", iFG_SIGN_Cnt);
+   
+}
+
+////////////////////////////////////
+
+    //劃位票券退票張數
+    //依1805.FU_SPACE第3碼='1'及1806~1807.FU_SPACE 第1碼='1'，判斷劃位票券退票張數。
+    //接班明細:劃位票券退票張數
+//依1805.FU_SPACE第3碼='1'及1806~1807.FU_SPACE 第1碼='1'，判斷劃位票券退票張數。
+void __fastcall BASIC::Rtn_Ticket(int StartLine, int TotalLine)
+{
+    string str_type;
+    string str_Space, s, sTmp, StrTranType;
+    int int_type = 0;
+    giA = giB = giC = 0;
+
+    if (gbl_Ticket_haveline)
+    {
+        //for (int i = 0; i < gtsl_Ticket->Count; i++)
+        for (list<string>::iterator ls = gtsl_Ticket->begin(); ls != gtsl_Ticket->end(); ls++)
+        {
+            s = *ls;
+            StrTranType = _StringSegment_EX(s, SGM, 1);
+            int_type = _StrToInt(StrTranType)%1000;
+            _StrToInt(_StringSegment_EX(s, SGM, 16));
+            switch (int_type)
+            {
+            case 805:
+                str_type = _StringSegment_EX(s, "|", 9);  //S0
+                str_Space = _StringSegment_EX(s, "|", 26)..substr(2, 1);  
+                if (_StrFind(str_type, "S0") && str_Space == "1")   
+                {
+                    giA++;
+                }
+                break;
+            case 806:
+                str_type = _StringSegment_EX(s, "|", 9); //S0
+                str_Space = _StringSegment_EX(s, "|", 27).substr(0, 1);
+                if (_StrFind(str_type, "S0") && str_Space == "1")
+                {
+                    giB++;
+                }
+                break;
+            case 807:
+                str_type = _StringSegment_EX(s, "|", 9); //S0
+                str_Space = _StringSegment_EX(s, "|", 28).substr(0, 1);
+                if (_StrFind(str_type, "S0") && str_Space == "1")
+                {
+                    giC++;
+                }
+                break;
+            default:
+                break;
+            }
+
+        }    //for (int i=0; i<gtsl_Ticket->Count; i++)
+    }
+
+
+    logsprintf("Rtn_Ticket:劃位票券退票張數:合計(3805=%d,3806=%d,3807=%d)", giA, giB, giC);
+    
+}
+
+
+
+
+
+
+
+
+XZDATA_Mag20210601
+// 雲端中獎發票新增獎項800元
+// 投庫1041   雲端800的中獎金額  寫入  1041. AM_PAY_GROUP 欄位  
+// ==> 3041 取消  AM_PAY_GROUP 欄位
+
+pay_other1_amt = pay_other2_amt = ipay_CldInvo800_amt = 0;
+
+//Cloud 中獎發票金額(800) ipay_CldInvo800_amt 20210601 Update
+ipay_CldInvo800_amt += _StrToInt(_StringSegment_EX(s, "|", 18));
+
+int itotWinInvoAmt41=(iacc_invo_amt+ pay_other1_amt+pay_other2_amt + ipay_CldInvo800_amt)-iWinnInvoAmt;   
+
+ //3041|電文  RtnSumCasherData.sprintf  無規劃雲端中獎發票新增獎項800元  ipay_CldInvo800_amt,
+
+
+
+  ////////
+   strtmp = m_IniReader.ReadString("AutoX", "invo800", "0");  //strtmp = AutoCrpIni->ReadString("AutoX", "invo1000", "0");
+   i1 = _StrToInt(_StringSegment_EX(strtmp, SGM, 2));
+   i2 = _StrToInt(_StringSegment_EX(strtmp, SGM, 3));
+
+   sprintf_s(buffer, sizeof(buffer), "%s  ＋中獎發票金額(800元) :%7ld", CmdStr.c_str(), ipay_CldInvo800_amt + i2);  tslCrp->push_back(buffer);
+
+   if (Update)
+   {
+       if (iAutoZ)
+           sprintf_s(buffer, sizeof(buffer), "中獎800||%02d||%8ld||", 0, ipay_CldInvo800_amt + i2);
+       else
+           sprintf_s(buffer, sizeof(buffer), "中獎800||%02d||%8ld||", 0, 0);
+       m_IniReader.WriteString("AutoX", "invo800", string(buffer));   //AutoCrpIni->WriteString("AutoX", "invo500", strtmp);
+   }
+
+sprintf_s(buffer, sizeof(buffer), "%s  投庫小計         :   %8ld\n", CmdStr.c_str(), ipay_cash_amt + ipay_present_amt + ipay_cpn_amt +
+             ipay_CldInvo800_amt + iacc_invo_amt + pay_other1_amt + pay_other2_amt + itot_acc_amt + i2); 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+XZDATA_Mag20210423   plus Pay  注意 2021/11/11 開發時尚未有 3811 電文
+ADD :
+case 811:
+case 811:
+gtsl_easy_card->Add(tsl_x_data->Strings[i]);
+
+
+else if (StrTranType == "3811")   
+#pragma region  plus Pay 
+               {
+                 str_sale_type = _StringSegment_EX(s, SGM, 9).substr(0, 2);
+                 str_r_type = _StringSegment_EX(s, SGM, 10).substr(0, 2);   //FG_SaleType  S0,S1
+                 str_type = _StringSegment_EX(s, SGM, 12).substr(1, 3);     //Tran_type  310/320
+                 int_type = _StrToInt(str_type);
+ 
+                 if (_StrFind(str_sale_type, "X") || _StrFind(str_sale_type, "V"))
+                   continue;
+
+                 if (_StrFind(str_sale_type, "Z0") || _StrFind(str_sale_type, "Z1"))   // str_sale_type
+                 {
+                   if (str_type == "310") // 加值
+                   {
+                       ++int_2_time;
+                       int_2_money += _StrToInt(_StringSegment_EX(s, "|", 21));
+                   }
+                   else if (str_type == "320")     //加值取消
+                   {
+                       ++int_11_time;
+                       int_11_money += _StrToInt(_StringSegment_EX(s, "|", 21));
+                   }
+                   else
+                   {
+                       //++int_2_time;
+                  //int_2_money += _StrToInt(_StringSegment_EX(s, "|", 21));
+                       ;;
+                   }
+
+                 }   // end if (str_r_type.Pos("FF") || str_r_type.Pos("Z0") || str_r_type.Pos("Z1"))
+                 else if (_StrFind(str_sale_type, "R2") || _StrFind(str_sale_type, "R3"))
+                 {
+                   if (str_type == "310") // 加值
+                   {
+                       --int_2_time;
+                       int_2_money -= _StrToInt(_StringSegment_EX(s, "|", 21));
+                   }
+                   else  if (str_type == "320")     //加值取消
+                   {
+                       --int_11_time;
+                       int_11_money -= _StrToInt(_StringSegment_EX(s, "|", 21));
+                   }
+                   else
+                   {
+                       //  --int_2_time;
+                       // int_2_money -= _StrToInt(_StringSegment_EX(s, "|", 21));
+                       ;;
+                   }
+
+                 }   // end else if (str_r_type.Pos("R2") || str_r_type.Pos("R3"))
+#pragma endregion
+               } // end of if( StrTranType == "3811")
+
+
+
 
 
 XZDATA_Mag20201103

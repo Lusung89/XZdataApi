@@ -832,6 +832,10 @@ int __fastcall XDATA::GetXDTData(string StrZCnt, string StoreNO, string EcrNO, s
     SumPreSal_INVO_DisAmt(0, gi_rec_line);
     iPreSalINVODisAmt = giU;
 
+    //代售商品折讓金額 & 折扣(應稅) (環保杯轉儲計算) giU,giV,giW=SUB_AMT  2021/10/28 Update
+    Sum3054_SUB_AMT(0, gi_3054_line);
+    iPreSalINVODisAmt = giW;   //重算  iPreSalINVODisAmt
+
     int iCSMAmt=0;//消費券
     iCSMAmt=SumBillCSM(0, gi_bil_line);//計算 2008/12/04 消費券
     //giS:消費券金額 , giT:消費券回數;
@@ -1447,6 +1451,8 @@ int __fastcall XDATA::WriteData(const string StoreNO, const string EcrNO, const 
 	Autotsl_fetc_card->assign(gtsl_fetc_card->begin(), gtsl_fetc_card->end());
 	Autotsl_subsale->assign(tsl_subsale->begin(), tsl_subsale->end());
 	Auto_1051_sal->assign(gtsl_1051_sal->begin(), gtsl_1051_sal->end());
+    Autotsl_3054_sal->assign(gtsl_3054_sal->begin(), gtsl_3054_sal->end());
+    Autotsl_Ticket->assign(gtsl_Ticket->begin(), gtsl_Ticket->end());
 
 
     TStringList *Z_CntLst = new TStringList;
@@ -2339,6 +2345,10 @@ int __fastcall ZDATA::GetZDTData(string StrZCnt, string StoreNO,  string EcrNO, 
     SumPreSal_INVO_DisAmt(0, gi_rec_line);
     iPreSalINVODisAmt = giU;
 
+    //代售商品折讓金額 & 折扣(應稅) (環保杯轉儲計算) giU,giV,giW=SUB_AMT  2021/10/28 Update
+    Sum3054_SUB_AMT(0, gi_3054_line);
+    iPreSalINVODisAmt = giW;   //重算  iPreSalINVODisAmt
+
     int iCSMAmt=0;//消費券
     iCSMAmt=SumBillCSM(0, gi_bil_line);//計算 2008/12/04 消費券
     //giS:消費券金額 , giT:消費券回數;
@@ -2794,6 +2804,8 @@ int __fastcall ZDATA::WriteData(const string StoreNO, const string EcrNO, const 
 	Autotsl_fetc_card->assign(gtsl_fetc_card->begin(), gtsl_fetc_card->end());
 	Autotsl_subsale->assign(tsl_subsale->begin(), tsl_subsale->end());
     //Auto_1051_sal->Assign(gtsl_1051_sal);       自動日結無須使用
+    Autotsl_3054_sal->assign(gtsl_3054_sal->begin(), gtsl_3054_sal->end());
+    Autotsl_Ticket->assign(gtsl_Ticket->begin(), gtsl_Ticket->end());
 
     TStringList *Z_CntLst = new TStringList;
     TStringList *ZDT_Lst = new TStringList;
@@ -3686,6 +3698,9 @@ int __fastcall XREPORT::WriteData( const string StoreNO, const string EcrNO, con
     SumPreSal_INVO_DisAmt(0, gi_rec_line);
     iPreSalINVODisAmt = giU;
 
+    //代售商品折讓金額 & 折扣(應稅) (環保杯轉儲計算) giU,giV,giW=SUB_AMT  2021/10/28 Update
+    Sum3054_SUB_AMT(0, gi_3054_line);
+    iPreSalINVODisAmt = giW;   //重算  iPreSalINVODisAmt
 
     int iCSMAmt=0;//消費券 NextPOS
     iCSMAmt=SumBillCSM(0, gi_bil_line);//計算 2008/12/04 消費券
@@ -4481,6 +4496,10 @@ int __fastcall CHECKIN::WriteData(const string StoreNO, const string EcrNO, cons
     SumPreSal_INVO_DisAmt(0, gi_rec_line);
     iPreSalINVODisAmt = giU;
 
+    //代售商品折讓金額 & 折扣(應稅) (環保杯轉儲計算) giU,giV,giW=SUB_AMT  2021/10/28 Update
+    Sum3054_SUB_AMT(0, gi_3054_line);
+    iPreSalINVODisAmt = giW;   //重算  iPreSalINVODisAmt
+
     int iCSMAmt=0;//消費券
     iCSMAmt=SumBillCSM(0, gi_bil_line);//計算 2008/12/04 消費券
     //giS:消費券金額 , giT:消費券回數;
@@ -5029,8 +5048,7 @@ void __fastcall ZDATA::mtn_dat_folder() //維護DAT下傳檔30日內
 void __fastcall ZDATA::del_list_file(TStringList *slist, string path)
 {
     string str_sal_00;
-
-    //for (int i=0; i<list->Count; i++) //for (list<string>::iterator ls = gtsl_1051_sal->begin(); ls != gtsl_1051_sal->end(); ls++)
+    
 	for (list<string>::iterator ls = slist->begin(); ls != slist->end(); ls++)
     {
 		str_sal_00 = path + *ls; // list->Strings[i]);
@@ -6264,6 +6282,10 @@ int __fastcall VXZDATA::WriteData(const string StoreNO, const string EcrNO, cons
     SumPreSal_INVO_DisAmt(0, gi_rec_line);
     iPreSalINVODisAmt = giU;
 
+    //代售商品折讓金額 & 折扣(應稅) (環保杯轉儲計算) giU,giV,giW=SUB_AMT  2021/10/28 Update
+    Sum3054_SUB_AMT(0, gi_3054_line);
+    iPreSalINVODisAmt = giW;   //重算  iPreSalINVODisAmt
+
     int iCSMAmt=0;//消費券
     iCSMAmt=SumBillCSM(0, gi_bil_line);//計算 2008/12/04 消費券
     //giS:消費券金額 , giT:消費券回數;
@@ -7190,8 +7212,7 @@ int __fastcall AUTOZDATA::GetYYYYMDD_SalData(string &AutoZCnt, string AutoZdt , 
        if( sTmlLst->size() > 0)
        {
         Auto_Sal->clear();
-        //for (int i=0;  i<sTmlLst->Count; i++)  //for (list<string>::iterator ls = gtsl_1051_sal->begin(); ls != gtsl_1051_sal->end(); ls++)
-		for (list<string>::iterator ls = sTmlLst->begin(); ls != sTmlLst->end(); ls++)
+        for (list<string>::iterator ls = sTmlLst->begin(); ls != sTmlLst->end(); ls++)
             {
 				sRec = *ls; // sTmlLst->Strings[i];
              RecNo=_StringSegment_EX(sRec, "|", 1);
@@ -7465,6 +7486,59 @@ int __fastcall AUTOZDATA::GetYYYYMDD_SalData(string &AutoZCnt, string AutoZdt , 
             }
        }
        irtn+=1;
+
+#pragma region   Autotsl_3054_sal to gtsl_3054_sal  依日結序號切 3054 List
+
+       gtsl_3054_sal->clear();
+       //tsl_subsale->Assign(Autotsl_subsale);
+       if (Autotsl_3054_sal->size() > 0)
+       {
+           for (list<string>::iterator s = Autotsl_3054_sal->begin(); s != Autotsl_3054_sal->end(); s++)
+           {
+               sRec = *s;
+               TmpZcnt = _StringSegment_EX(sRec, SGM, 6);  //日結序號
+               sTmpDttm = _StringSegment_EX(sRec, SGM, 5);
+               //if( sTmpDttm.SubString(1,8)<=sYYYYMMDD )
+
+               if (TmpZcnt == SalZcnt)
+               {
+                   gtsl_3054_sal->push_back(sRec);
+               }
+               else
+               {
+                   ;;//tsl_subsale->Delete(i);
+               }
+           }
+       }
+       irtn += 1;
+#pragma endregion
+
+#pragma region   Autotsl_Ticket to gtsl_Ticket    3805~3807 List
+
+       gtsl_Ticket->clear();
+       if (Autotsl_Ticket->size() > 0)
+       {
+           for (list<string>::iterator s = Autotsl_Ticket->begin(); s != Autotsl_Ticket->end(); s++)
+           {
+               sRec = *s;
+               TmpZcnt = _StringSegment_EX(sRec, SGM, 6);  //日結序號
+               sTmpDttm = _StringSegment_EX(sRec, SGM, 5);
+               //if( sTmpDttm.SubString(1,8)<=sYYYYMMDD )
+
+               if (TmpZcnt == SalZcnt)
+               {
+                   gtsl_Ticket->push_back(sRec);
+               }
+               else
+               {
+                   ;;//tsl_subsale->Delete(i);
+               }
+           }
+       }
+       irtn += 1;
+#pragma endregion
+
+
     } // end of try
   catch(...)
     {
@@ -7808,6 +7882,10 @@ int __fastcall AUTOZDATA::GetZDTData(string StrZCnt, string StoreNO,  string Ecr
     int iPreSalINVODisAmt ;
     SumPreSal_INVO_DisAmt(0, gi_rec_line);
     iPreSalINVODisAmt = giU;
+
+    //代售商品折讓金額 & 折扣(應稅) (環保杯轉儲計算) giU,giV,giW=SUB_AMT  2021/10/28 Update
+    Sum3054_SUB_AMT(0, gi_3054_line);
+    iPreSalINVODisAmt = giW;   //重算  iPreSalINVODisAmt
 
     int iCSMAmt=0;//消費券
     iCSMAmt=SumBillCSM(0, gi_bil_line);//計算 2008/12/04 消費券
@@ -8322,6 +8400,9 @@ int __fastcall AUTOZDATA::WriteData(const string StoreNO, const string EcrNO, co
      gtsl_fetc_card->clear();
      tsl_subsale->clear();
      gtsl_1051_sal->clear();
+     gtsl_3054_sal->clear();
+     gtsl_Ticket->clear();
+
      str_date_time = g_date_time;  // 交易時間取自動交班
 
 
@@ -8387,6 +8468,8 @@ int __fastcall AUTOZDATA::WriteData(const string StoreNO, const string EcrNO, co
 	Autotsl_fetc_card->assign(gtsl_fetc_card->begin(), gtsl_fetc_card->end() );
 	Autotsl_subsale->assign(tsl_subsale->begin(), tsl_subsale->end());
     //Auto_1051_sal->Assign(gtsl_1051_sal);           自動日結無須使用
+    Autotsl_3054_sal->assign(gtsl_3054_sal->begin(), gtsl_3054_sal->end());
+    Autotsl_Ticket->assign(gtsl_Ticket->begin(), gtsl_Ticket->end());
 
     AutoZstartTrans=GetSysDttmMaxTransNo(str_date_time.substr(0,8) );
 
@@ -9183,6 +9266,8 @@ string __fastcall AUTOZDATA::AutoXData(const string StoreNO, const string EcrNO,
 	Autotsl_fetc_card->assign(gtsl_fetc_card->begin(), gtsl_fetc_card->end());
 	Autotsl_subsale->assign(tsl_subsale->begin(), tsl_subsale->end());
 	Auto_1051_sal->assign(gtsl_1051_sal->begin(), gtsl_1051_sal->end());
+    Autotsl_3054_sal->assign(gtsl_3054_sal->begin(), gtsl_3054_sal->end());
+    Autotsl_Ticket->assign(gtsl_Ticket->begin(), gtsl_Ticket->end());
 
     if( !GetYYYYMDD_SalData(SalAutoZcnt,AutoZ_Dt,1) )
         return ""; // 取得 日歷日之 sal 資料
@@ -9462,6 +9547,10 @@ string __fastcall AUTOZDATA::AutoXData(const string StoreNO, const string EcrNO,
     int iPreSalINVODisAmt ;
     SumPreSal_INVO_DisAmt(0, gi_rec_line);
     iPreSalINVODisAmt = giU;
+
+    //代售商品折讓金額 & 折扣(應稅) (環保杯轉儲計算) giU,giV,giW=SUB_AMT  2021/10/28 Update
+    Sum3054_SUB_AMT(0, gi_3054_line);
+    iPreSalINVODisAmt = giW;   //重算  iPreSalINVODisAmt
 
     int iCSMAmt=0;//消費券
     iCSMAmt=SumBillCSM(0, gi_bil_line);//計算 2008/12/04 消費券
